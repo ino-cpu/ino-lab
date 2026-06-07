@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    /* (semua style sama seperti sebelumnya, tidak berubah) */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #0a0c12; font-family: 'Inter', 'Space Grotesk', sans-serif; color: #eef5ff; overflow-x: hidden; }
     .sidebar { position: fixed; top: 0; left: -260px; width: 260px; height: 100%; background: rgba(8,12,20,0.96); backdrop-filter: blur(16px); border-right: 1px solid rgba(0,255,255,0.2); z-index: 1000; transition: left 0.3s ease; padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 1.5rem; }
@@ -57,6 +58,7 @@
     .chat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.7rem; color: #0ff; border-bottom: 1px dashed rgba(0,255,255,0.3); padding-bottom: 0.3rem; }
     .chat-content { font-size: 0.85rem; line-height: 1.4; white-space: pre-wrap; word-break: break-word; }
     .copy-chat { background: rgba(0,255,255,0.1); border: none; color: #0ff; font-size: 0.7rem; padding: 2px 8px; border-radius: 1rem; cursor: pointer; }
+    .retry-btn { background: rgba(255,100,100,0.2); border: 1px solid #ff8888; margin-top: 0.5rem; padding: 0.2rem 0.6rem; }
     @media (max-width: 768px) { .main-content { padding: 1rem; } .banner h1 { font-size: 1.5rem; } .stat-card { padding: 0.5rem 1rem; } .grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -74,14 +76,11 @@
     </div>
   </div>
   <div class="overlay" id="overlay"></div>
-
   <div class="main-content">
     <!-- HOME TAB -->
     <div id="homeTab" class="tab-pane active">
       <div class="banner">
-        <img src="https://files.catbox.moe/ya9m8g.png" 
-             onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=Home';"
-             class="banner-img">
+        <img src="https://files.catbox.moe/ya9m8g.png" onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=Home';" class="banner-img">
         <h1>INO.DIGITAL</h1>
         <p>AI-Powered Creative Suite | Upscaler, Maker, Random Media & More</p>
       </div>
@@ -99,59 +98,33 @@
           <a href="mailto:hello@ino.digital" class="social-link"><i class="fas fa-envelope"></i> Contact Dev</a>
         </div>
         <div class="support-title" style="margin-top:0.8rem;"><i class="fas fa-hand-holding-heart"></i> Donasi</div>
-        <div class="social-row">
-          <div class="qr-trigger" id="qrTrigger"><i class="fas fa-qrcode"></i> Tampilkan QR Donasi</div>
-        </div>
+        <div class="social-row"><div class="qr-trigger" id="qrTrigger"><i class="fas fa-qrcode"></i> Tampilkan QR Donasi</div></div>
       </div>
     </div>
 
     <!-- AI TOOLS TAB -->
     <div id="aiTab" class="tab-pane">
-      <div class="banner" style="margin-bottom:1rem">
-        <img src="https://files.catbox.moe/iyfl5r.png" 
-             onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=AI+Tools';"
-             class="banner-img">
-      </div>
+      <div class="banner" style="margin-bottom:1rem"><img src="https://files.catbox.moe/iyfl5r.png" onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=AI+Tools';" class="banner-img"></div>
       <div class="grid" id="aiGrid"></div>
     </div>
-
     <!-- RANDOM TAB -->
     <div id="randomTab" class="tab-pane">
-      <div class="banner" style="margin-bottom:1rem">
-        <img src="https://files.catbox.moe/2i4bua.png" 
-             onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=Random';"
-             class="banner-img">
-      </div>
+      <div class="banner" style="margin-bottom:1rem"><img src="https://files.catbox.moe/2i4bua.png" onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=Random';" class="banner-img"></div>
       <div class="grid" id="randomGrid"></div>
     </div>
-
     <!-- MAKER TAB -->
     <div id="makerTab" class="tab-pane">
-      <div class="banner" style="margin-bottom:1rem">
-        <img src="https://files.catbox.moe/h9texf.png" 
-             onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=Maker';"
-             class="banner-img">
-      </div>
+      <div class="banner" style="margin-bottom:1rem"><img src="https://files.catbox.moe/h9texf.png" onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=Maker';" class="banner-img"></div>
       <div class="grid" id="makerGrid"></div>
     </div>
-
     <!-- EXTRA TAB -->
     <div id="extraTab" class="tab-pane">
-      <div class="banner" style="margin-bottom:1rem">
-        <img src="https://files.catbox.moe/62tsye.png" 
-             onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=Extra';"
-             class="banner-img">
-      </div>
+      <div class="banner" style="margin-bottom:1rem"><img src="https://files.catbox.moe/62tsye.png" onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=Extra';" class="banner-img"></div>
       <div class="grid" id="extraGrid"></div>
     </div>
-
     <footer>INO.DIGITAL — creative tools for everyone</footer>
   </div>
-
-  <div id="qrFullscreen" class="qr-fullscreen">
-    <img id="qrFullImage" src="" alt="QR Donasi">
-    <button class="close-fullscreen" id="closeFullscreen">Tutup</button>
-  </div>
+  <div id="qrFullscreen" class="qr-fullscreen"><img id="qrFullImage" src=""><button class="close-fullscreen" id="closeFullscreen">Tutup</button></div>
 </div>
 
 <script>
@@ -163,8 +136,7 @@
     let t=document.createElement('div');
     t.style.cssText='position:fixed;bottom:20px;right:20px;background:#0a141fe6;backdrop-filter:blur(8px);border-left:3px solid cyan;padding:6px 12px;border-radius:10px;z-index:2000;font-size:0.75rem;color:white';
     t.innerHTML=`<i class="fas ${isErr?'fa-times-circle':'fa-check-circle'}" style="color:${isErr?'#ff8888':'#0ff'}"></i> ${msg}`;
-    document.body.appendChild(t);
-    setTimeout(()=>t.remove(),3000);
+    document.body.appendChild(t); setTimeout(()=>t.remove(),3000);
   }
   function attachDownload(container) {
     container.querySelectorAll('.download-btn').forEach(btn=>{
@@ -174,27 +146,29 @@
       });
     });
   }
-  async function proxyGet(url) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
-    try {
-      const res = await fetch(`/api/proxy?url=${encodeURIComponent(url)}`, { signal: controller.signal });
-      clearTimeout(timeout);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const text = await res.text();
+  // Proxy dengan retry (3x) dan timeout 20 detik
+  async function proxyGet(url, retries=3) {
+    for(let i=0;i<retries;i++){
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 20000);
       try {
-        return JSON.parse(text);
-      } catch(e) {
-        console.error('Invalid JSON:', text);
-        throw new Error('Respons dari server tidak valid (bukan JSON)');
+        const res = await fetch(`/api/proxy?url=${encodeURIComponent(url)}`, { signal: controller.signal });
+        clearTimeout(timeout);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        try {
+          return JSON.parse(text);
+        } catch(e) {
+          throw new Error('Respons bukan JSON');
+        }
+      } catch(err) {
+        clearTimeout(timeout);
+        if(i===retries-1) throw err;
+        await new Promise(r=>setTimeout(r,1000));
       }
-    } catch(err) {
-      clearTimeout(timeout);
-      throw err;
     }
   }
-
-  async function fetchRandomImage(apiUrl, resultDiv) {
+  async function fetchRandomImage(apiUrl, resultDiv, retryBtn=null) {
     resultDiv.innerHTML = `<span class="loading"></span> Memuat...`;
     try {
       let data = await proxyGet(apiUrl);
@@ -209,82 +183,44 @@
         resultDiv.innerHTML = `<img src="${imgUrl}" class="preview-img"><div class="flex-btns"><button class="download-btn" data-url="${imgUrl}"><i class="fas fa-download"></i> Download</button></div>`;
         attachDownload(resultDiv);
         incGen();
-      } else throw new Error('No image url');
-    } catch(err) { resultDiv.innerHTML = `<span style="color:#ff8888">Error: ${err.message}</span>`; }
+      } else throw new Error('URL tidak ditemukan');
+    } catch(err) {
+      resultDiv.innerHTML = `<span style="color:#ff8888">❌ Gagal: ${err.message}</span><br><button class="retry-btn" onclick="this.parentElement.parentElement.querySelector('button').click()">🔄 Coba Lagi</button>`;
+    }
   }
-
   function renderChatBubble(title, content, isError=false) {
-    if(isError) return `<div class="chat-bubble" style="border-color:#ff8888"><div class="chat-header"><span>⚠️ Error</span></div><div class="chat-content" style="color:#ff8888">${content}</div></div>`;
+    if(isError) return `<div class="chat-bubble" style="border-color:#ff8888"><div class="chat-header"><span>⚠️ Error</span></div><div class="chat-content" style="color:#ff8888">${content}</div><button class="retry-btn" onclick="this.closest('.card').querySelector('button').click()">🔄 Coba Lagi</button></div>`;
     const escaped = content.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
-    return `
-      <div class="chat-bubble">
-        <div class="chat-header">
-          <span><i class="fas fa-robot"></i> ${title}</span>
-          <button class="copy-chat" onclick="copyToClipboard(this)"><i class="far fa-copy"></i> Salin</button>
-        </div>
-        <div class="chat-content">${escaped}</div>
-      </div>
-    `;
+    return `<div class="chat-bubble"><div class="chat-header"><span><i class="fas fa-robot"></i> ${title}</span><button class="copy-chat" onclick="copyToClipboard(this)"><i class="far fa-copy"></i> Salin</button></div><div class="chat-content">${escaped}</div></div>`;
   }
   window.copyToClipboard = function(btn) {
     const bubble = btn.closest('.chat-bubble');
     const contentDiv = bubble.querySelector('.chat-content');
     let text = contentDiv.innerText;
-    navigator.clipboard.writeText(text).then(() => showToast('Teks disalin')).catch(() => showToast('Gagal menyalin', true));
+    navigator.clipboard.writeText(text).then(()=>showToast('Teks disalin')).catch(()=>showToast('Gagal menyalin',true));
   };
 
-  // AI Grid
+  // =============== AI GRID ===============
   const aiGrid = document.getElementById('aiGrid');
   aiGrid.innerHTML = `
-    <div class="card"><div class="card-title"><i class="fas fa-magic"></i> HD Upscaler</div>
-      <div class="quality-row" id="qualitySelector">
-        <span class="quality-btn" data-quality="4x">4x</span>
-        <span class="quality-btn" data-quality="6x">6x</span>
-        <span class="quality-btn" data-quality="8x">8x</span>
-      </div>
-      <div id="hdDropzone" class="upload-area"><i class="fas fa-cloud-upload-alt"></i> Upload or drag image<input type="file" id="hdFile" accept="image/jpeg,image/png,image/webp" style="display:none"></div>
-      <div id="hdPreview" style="display:none; text-align:center"><img id="hdPreviewImg" class="preview-img"></div>
-      <button id="hdUpscaleBtn" disabled>Upscale to <span id="selectedQuality">4x</span></button>
-      <div id="hdResult" class="result-box"></div>
-    </div>
-    <div class="card"><div class="card-title"><i class="fas fa-comments"></i> Multi AI (7 Models)</div>
-      <select id="aiModel"><option>ChatGPT</option><option>DeepSeek</option><option>Claude</option><option>Grok</option><option>Perplexity</option><option>Llama</option><option>Qwen</option></select>
-      <textarea id="aiPrompt" rows="2" placeholder="Tanyakan sesuatu..."></textarea>
-      <button id="sendAi">Kirim</button>
-      <div id="aiResult" style="margin-top:0.8rem;"></div>
-    </div>
-    <div class="card"><div class="card-title"><i class="fas fa-box"></i> Blackbox AI</div>
-      <textarea id="blackboxQuery" rows="2" placeholder="e.g. fungsi sorting php"></textarea>
-      <button id="sendBlackbox">Execute</button>
-      <div id="blackboxResult" style="margin-top:0.8rem;"></div>
-    </div>
-    <div class="card"><div class="card-title"><i class="fas fa-skull"></i> WormGPT</div>
-      <textarea id="wormPrompt" rows="2" placeholder="Prompt bebas..."></textarea>
-      <button id="sendWorm">Generate</button>
-      <div id="wormResult" style="margin-top:0.8rem;"></div>
-      <div class="warning">⚠️ Unfiltered</div>
-    </div>
-    <div class="card"><div class="card-title"><i class="fas fa-image"></i> Image → Prompt</div>
-      <div id="imgDropzone" class="upload-area"><i class="fas fa-cloud-upload-alt"></i> Upload image<input type="file" id="imgFile" accept="image/jpeg,image/png" style="display:none"></div>
-      <div id="imgPreview" style="display:none; text-align:center"><img id="previewImg" class="preview-img"></div>
-      <button id="genPrompt">Generate Prompt</button>
-      <div id="promptResult" style="margin-top:0.8rem;"></div>
-    </div>
+    <div class="card"><div class="card-title"><i class="fas fa-magic"></i> HD Upscaler</div><div class="quality-row" id="qualitySelector"><span class="quality-btn" data-quality="4x">4x</span><span class="quality-btn" data-quality="6x">6x</span><span class="quality-btn" data-quality="8x">8x</span></div><div id="hdDropzone" class="upload-area"><i class="fas fa-cloud-upload-alt"></i> Upload or drag image<input type="file" id="hdFile" accept="image/jpeg,image/png,image/webp" style="display:none"></div><div id="hdPreview" style="display:none; text-align:center"><img id="hdPreviewImg" class="preview-img"></div><button id="hdUpscaleBtn" disabled>Upscale to <span id="selectedQuality">4x</span></button><div id="hdResult" class="result-box"></div></div>
+    <div class="card"><div class="card-title"><i class="fas fa-comments"></i> Multi AI (7 Models)</div><select id="aiModel"><option>ChatGPT</option><option>DeepSeek</option><option>Claude</option><option>Grok</option><option>Perplexity</option><option>Llama</option><option>Qwen</option></select><textarea id="aiPrompt" rows="2" placeholder="Tanyakan sesuatu..."></textarea><button id="sendAi">Kirim</button><div id="aiResult" style="margin-top:0.8rem;"></div></div>
+    <div class="card"><div class="card-title"><i class="fas fa-box"></i> Blackbox AI</div><textarea id="blackboxQuery" rows="2" placeholder="e.g. fungsi sorting php"></textarea><button id="sendBlackbox">Execute</button><div id="blackboxResult" style="margin-top:0.8rem;"></div></div>
+    <div class="card"><div class="card-title"><i class="fas fa-skull"></i> WormGPT</div><textarea id="wormPrompt" rows="2" placeholder="Prompt bebas..."></textarea><button id="sendWorm">Generate</button><div id="wormResult" style="margin-top:0.8rem;"></div><div class="warning">⚠️ Unfiltered</div></div>
+    <div class="card"><div class="card-title"><i class="fas fa-image"></i> Image → Prompt</div><div id="imgDropzone" class="upload-area"><i class="fas fa-cloud-upload-alt"></i> Upload image<input type="file" id="imgFile" accept="image/jpeg,image/png" style="display:none"></div><div id="imgPreview" style="display:none; text-align:center"><img id="previewImg" class="preview-img"></div><button id="genPrompt">Generate Prompt</button><div id="promptResult" style="margin-top:0.8rem;"></div></div>
   `;
-
   // Quality selector
   let currentQuality = '4x';
-  document.querySelectorAll('.quality-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.quality-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.quality-btn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       currentQuality = btn.getAttribute('data-quality');
       document.getElementById('selectedQuality').innerText = currentQuality;
     });
   });
   document.querySelector('.quality-btn').classList.add('active');
-
-  // Upscaler
+  // Upscaler logic
   let selectedHdFile=null;
   const hdDrop=document.getElementById('hdDropzone'), hdInput=document.getElementById('hdFile'), hdPreviewDiv=document.getElementById('hdPreview'), hdPreviewImg=document.getElementById('hdPreviewImg'), hdBtn=document.getElementById('hdUpscaleBtn');
   hdDrop.addEventListener('click',()=>hdInput.click());
@@ -294,15 +230,13 @@
   hdDrop.addEventListener('dragleave',()=>hdDrop.classList.remove('drag-over'));
   hdDrop.addEventListener('drop',(e)=>{e.preventDefault();hdDrop.classList.remove('drag-over');if(e.dataTransfer.files[0]) handleHdFile(e.dataTransfer.files[0]);});
   function handleHdFile(file){ if(!file.type.startsWith('image/')) return showToast('Only images',true); selectedHdFile=file; const r=new FileReader(); r.onload=(e)=>{hdPreviewImg.src=e.target.result; hdPreviewDiv.style.display='block'; hdBtn.disabled=false;}; r.readAsDataURL(file); }
-  hdBtn.addEventListener('click',async()=>{ if(!selectedHdFile) return; const fd=new FormData(); fd.append('file',selectedHdFile); const resDiv=document.getElementById('hdResult'); resDiv.innerHTML='<span class="loading"></span>'; try{ const r=await fetch('/api/hdimage',{method:'POST',body:fd}); const d=await r.json(); if(d.status===true && d.result?.url){ resDiv.innerHTML=`<img src="${d.result.url}" class="preview-img"><div class="flex-btns"><button class="download-btn" data-url="${d.result.url}"><i class="fas fa-download"></i> Download</button></div><div style="font-size:0.7rem">Enhanced to ${currentQuality}</div>`; attachDownload(resDiv); incGen(); } else throw new Error(d.message||'Gagal'); }catch(err){ resDiv.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span>`; } });
-
+  hdBtn.addEventListener('click',async()=>{ if(!selectedHdFile) return; const fd=new FormData(); fd.append('file',selectedHdFile); const resDiv=document.getElementById('hdResult'); resDiv.innerHTML='<span class="loading"></span>'; try{ const r=await fetch('/api/hdimage',{method:'POST',body:fd}); const d=await r.json(); if(d.status===true && d.result?.url){ resDiv.innerHTML=`<img src="${d.result.url}" class="preview-img"><div class="flex-btns"><button class="download-btn" data-url="${d.result.url}"><i class="fas fa-download"></i> Download</button></div><div style="font-size:0.7rem">Enhanced to ${currentQuality}</div>`; attachDownload(resDiv); incGen(); } else throw new Error(d.message||'Gagal'); }catch(err){ resDiv.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span><button class="retry-btn" onclick="hdBtn.click()">🔄 Coba Lagi</button>`; } });
   // AI calls
   async function callBlackbox(q){ let d=await proxyGet(`https://api-nanzz.my.id/docs/api/ai/blackbox.php?q=${encodeURIComponent(q)}`); if(d.status===true && d.result?.response) return d.result.response; throw new Error('Gagal'); }
   document.getElementById('sendAi').onclick=async()=>{ let p=document.getElementById('aiPrompt').value, m=document.getElementById('aiModel').value; if(!p){showToast('Pesan kosong',true);return;} let div=document.getElementById('aiResult'); div.innerHTML='<span class="loading"></span>'; try{ let resp=await callBlackbox(`(gaya ${m}) ${p}`); div.innerHTML=renderChatBubble(`${m} AI`, resp); incGen(); }catch(err){ div.innerHTML=renderChatBubble('Error', err.message, true); } };
   document.getElementById('sendBlackbox').onclick=async()=>{ let q=document.getElementById('blackboxQuery').value; if(!q) return; let div=document.getElementById('blackboxResult'); div.innerHTML='<span class="loading"></span>'; try{ let resp=await callBlackbox(q); div.innerHTML=renderChatBubble('Blackbox AI', resp); incGen(); }catch(err){ div.innerHTML=renderChatBubble('Error', err.message, true); } };
   async function callWorm(p){ let d=await proxyGet(`https://api-nanzz.my.id/docs/api/ai/worm-gpt.php?prompt=${encodeURIComponent(p)}`); if(d.status===true && d.result?.response) return d.result.response; throw new Error('Worm error'); }
   document.getElementById('sendWorm').onclick=async()=>{ let p=document.getElementById('wormPrompt').value; if(!p) return; let div=document.getElementById('wormResult'); div.innerHTML='<span class="loading"></span>'; try{ let resp=await callWorm(p); div.innerHTML=renderChatBubble('WormGPT', resp); incGen(); }catch(err){ div.innerHTML=renderChatBubble('Error', err.message, true); } };
-
   // Image to Prompt
   let selectedImgFile=null;
   const imgDrop=document.getElementById('imgDropzone'), imgInput=document.getElementById('imgFile'), imgPrevDiv=document.getElementById('imgPreview'), previewImg=document.getElementById('previewImg');
@@ -314,92 +248,49 @@
   imgDrop.addEventListener('drop',(e)=>{e.preventDefault();imgDrop.classList.remove('drag-over');if(e.dataTransfer.files[0]) handleImgFile(e.dataTransfer.files[0]);});
   function handleImgFile(file){ if(!file.type.startsWith('image/')) return; selectedImgFile=file; const r=new FileReader(); r.onload=(e)=>{previewImg.src=e.target.result; imgPrevDiv.style.display='block';}; r.readAsDataURL(file); }
   document.getElementById('genPrompt').onclick=async()=>{ if(!selectedImgFile){showToast('Upload image first',true);return;} const fd=new FormData(); fd.append('file',selectedImgFile); const div=document.getElementById('promptResult'); div.innerHTML='<span class="loading"></span>'; try{ const r=await fetch('/api/image2prompt',{method:'POST',body:fd}); const d=await r.json(); if(d.status===true && d.result){ div.innerHTML=renderChatBubble('Generated Prompt', d.result); } else throw new Error('Gagal'); incGen(); }catch(err){ div.innerHTML=renderChatBubble('Error', err.message, true); } };
-
   // Random Media
   const randomGrid = document.getElementById('randomGrid');
-  randomGrid.innerHTML = `
-    <div class="card"><div class="card-title"><i class="fas fa-landmark"></i> Meme Presiden</div><button id="genPresiden">Random</button><div id="presidenResult" class="result-box"></div></div>
+  randomGrid.innerHTML = `<div class="card"><div class="card-title"><i class="fas fa-landmark"></i> Meme Presiden</div><button id="genPresiden">Random</button><div id="presidenResult" class="result-box"></div></div>
     <div class="card"><div class="card-title"><i class="fas fa-user-secret"></i> Random PAP</div><button id="genPap">Random</button><div id="papResult" class="result-box"></div></div>
     <div class="card"><div class="card-title"><i class="fas fa-image"></i> Random Wallpaper</div><button id="genWall">Random</button><div id="wallResult" class="result-box"></div></div>
-    <div class="card"><div class="card-title"><i class="fas fa-laugh-squint"></i> Meme Indonesia</div><button id="genMeme">Random</button><div id="memeResult" class="result-box"></div></div>
-  `;
+    <div class="card"><div class="card-title"><i class="fas fa-laugh-squint"></i> Meme Indonesia</div><button id="genMeme">Random</button><div id="memeResult" class="result-box"></div></div>`;
   document.getElementById('genPresiden').onclick=()=>fetchRandomImage('https://api-nanzz.my.id/docs/api/random/random-meme-presiden.php', document.getElementById('presidenResult'));
   document.getElementById('genPap').onclick=()=>fetchRandomImage('https://api-nanzz.my.id/docs/api/random/random-pap.php', document.getElementById('papResult'));
   document.getElementById('genWall').onclick=()=>fetchRandomImage('https://api-nanzz.my.id/docs/api/random/random-wallpaper.php', document.getElementById('wallResult'));
   document.getElementById('genMeme').onclick=()=>fetchRandomImage('https://api-nanzz.my.id/docs/api/random/meme.php', document.getElementById('memeResult'));
-
   // Maker Tools
   const makerGrid = document.getElementById('makerGrid');
-  makerGrid.innerHTML = `
-    <div class="card"><div class="card-title"><i class="fas fa-gamepad"></i> Fake Lobby FF</div><input id="ffUser" placeholder="Username" value="Ino.digital"><button id="genFF">Generate Gold Text</button><div id="ffResult" class="result-box"></div></div>
-    <div class="card"><div class="card-title"><i class="fas fa-trophy"></i> MLBB Fake Rank</div>
-      <input id="mlUser" placeholder="Username" value="Ino.digital">
-      <select id="mlRank"><option>warrior</option><option>elite</option><option>master</option><option>grandmaster</option><option>epic</option><option>legend</option><option>mythic</option><option>mythic_honor</option><option>mythic_glory</option><option>imo</option></select>
-      <select id="mlBorder"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select>
-      <button id="genML">Generate Rank</button><div id="mlResult" class="result-box"></div>
-    </div>
-    <div class="card"><div class="card-title"><i class="fas fa-mobile-alt"></i> Nokia Chat</div><input id="nokiaSender" placeholder="Pengirim" value="Ino.digital"><input id="nokiaMsg" placeholder="Pesan" value="Halo bro!"><button id="genNokia">Buat Chat</button><div id="nokiaResult" class="result-box"></div></div>
-  `;
-  document.getElementById('genFF').onclick=async()=>{ let user=document.getElementById('ffUser').value.trim(); if(!user) return; let div=document.getElementById('ffResult'); div.innerHTML='<span class="loading"></span>'; try{ let d=await proxyGet(`https://api-nanzz.my.id/docs/api/maker/fake-lobby-ff.php?username=${encodeURIComponent(user)}`); if(d.status===true && d.result?.url){ let url=d.result.url; div.innerHTML=`<img src="${url}" class="preview-img"><div class="flex-btns"><button class="download-btn" data-url="${url}"><i class="fas fa-download"></i> Download</button></div>`; attachDownload(div); incGen(); } else throw new Error('Gagal'); }catch(err){ div.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span>`; } };
-  document.getElementById('genML').onclick=async()=>{ let user=document.getElementById('mlUser').value.trim(); let rank=document.getElementById('mlRank').value; let border=document.getElementById('mlBorder').value; let defaultAvatar = "https://www.upload.ee/image/19400325/images.webp"; if(!user){showToast('Username required',true);return;} let div=document.getElementById('mlResult'); div.innerHTML='<span class="loading"></span>'; try{ let d=await proxyGet(`https://api-nanzz.my.id/docs/api/maker/fake-lobby-ml.php?username=${encodeURIComponent(user)}&avatar=${encodeURIComponent(defaultAvatar)}&rank=${rank}&border=${border}`); if(d.status===true && d.result?.url){ let url=d.result.url; div.innerHTML=`<img src="${url}" class="preview-img"><div class="flex-btns"><button class="download-btn" data-url="${url}"><i class="fas fa-download"></i> Download</button></div>`; attachDownload(div); incGen(); } else throw new Error('Gagal'); }catch(err){ div.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span>`; } };
-  document.getElementById('genNokia').onclick=async()=>{ let sender=document.getElementById('nokiaSender').value.trim(), msg=document.getElementById('nokiaMsg').value.trim(); if(!sender||!msg) return; let div=document.getElementById('nokiaResult'); div.innerHTML='<span class="loading"></span>'; try{ let d=await proxyGet(`https://api-nanzz.my.id/docs/api/maker/nokia-msg.php?sender=${encodeURIComponent(sender)}&pesan=${encodeURIComponent(msg)}`); if(d.status===true && d.result?.url){ let url=d.result.url; div.innerHTML=`<img src="${url}" class="preview-img"><div class="flex-btns"><button class="download-btn" data-url="${url}"><i class="fas fa-download"></i> Download</button></div>`; attachDownload(div); incGen(); } else throw new Error('Gagal'); }catch(err){ div.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span>`; } };
-
+  makerGrid.innerHTML = `<div class="card"><div class="card-title"><i class="fas fa-gamepad"></i> Fake Lobby FF</div><input id="ffUser" placeholder="Username" value="Ino.digital"><button id="genFF">Generate Gold Text</button><div id="ffResult" class="result-box"></div></div>
+    <div class="card"><div class="card-title"><i class="fas fa-trophy"></i> MLBB Fake Rank</div><input id="mlUser" placeholder="Username" value="Ino.digital"><select id="mlRank"><option>warrior</option><option>elite</option><option>master</option><option>grandmaster</option><option>epic</option><option>legend</option><option>mythic</option><option>mythic_honor</option><option>mythic_glory</option><option>imo</option></select><select id="mlBorder"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select><button id="genML">Generate Rank</button><div id="mlResult" class="result-box"></div></div>
+    <div class="card"><div class="card-title"><i class="fas fa-mobile-alt"></i> Nokia Chat</div><input id="nokiaSender" placeholder="Pengirim" value="Ino.digital"><input id="nokiaMsg" placeholder="Pesan" value="Halo bro!"><button id="genNokia">Buat Chat</button><div id="nokiaResult" class="result-box"></div></div>`;
+  document.getElementById('genFF').onclick=async()=>{ let user=document.getElementById('ffUser').value.trim(); if(!user) return; let div=document.getElementById('ffResult'); div.innerHTML='<span class="loading"></span>'; try{ let d=await proxyGet(`https://api-nanzz.my.id/docs/api/maker/fake-lobby-ff.php?username=${encodeURIComponent(user)}`); if(d.status===true && d.result?.url){ let url=d.result.url; div.innerHTML=`<img src="${url}" class="preview-img"><div class="flex-btns"><button class="download-btn" data-url="${url}"><i class="fas fa-download"></i> Download</button></div>`; attachDownload(div); incGen(); } else throw new Error('Gagal'); }catch(err){ div.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span><button class="retry-btn" onclick="document.getElementById('genFF').click()">🔄 Coba Lagi</button>`; } };
+  document.getElementById('genML').onclick=async()=>{ let user=document.getElementById('mlUser').value.trim(); let rank=document.getElementById('mlRank').value; let border=document.getElementById('mlBorder').value; let defaultAvatar="https://www.upload.ee/image/19400325/images.webp"; if(!user){showToast('Username required',true);return;} let div=document.getElementById('mlResult'); div.innerHTML='<span class="loading"></span>'; try{ let d=await proxyGet(`https://api-nanzz.my.id/docs/api/maker/fake-lobby-ml.php?username=${encodeURIComponent(user)}&avatar=${encodeURIComponent(defaultAvatar)}&rank=${rank}&border=${border}`); if(d.status===true && d.result?.url){ let url=d.result.url; div.innerHTML=`<img src="${url}" class="preview-img"><div class="flex-btns"><button class="download-btn" data-url="${url}"><i class="fas fa-download"></i> Download</button></div>`; attachDownload(div); incGen(); } else throw new Error('Gagal'); }catch(err){ div.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span><button class="retry-btn" onclick="document.getElementById('genML').click()">🔄 Coba Lagi</button>`; } };
+  document.getElementById('genNokia').onclick=async()=>{ let sender=document.getElementById('nokiaSender').value.trim(), msg=document.getElementById('nokiaMsg').value.trim(); if(!sender||!msg) return; let div=document.getElementById('nokiaResult'); div.innerHTML='<span class="loading"></span>'; try{ let d=await proxyGet(`https://api-nanzz.my.id/docs/api/maker/nokia-msg.php?sender=${encodeURIComponent(sender)}&pesan=${encodeURIComponent(msg)}`); if(d.status===true && d.result?.url){ let url=d.result.url; div.innerHTML=`<img src="${url}" class="preview-img"><div class="flex-btns"><button class="download-btn" data-url="${url}"><i class="fas fa-download"></i> Download</button></div>`; attachDownload(div); incGen(); } else throw new Error('Gagal'); }catch(err){ div.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span><button class="retry-btn" onclick="document.getElementById('genNokia').click()">🔄 Coba Lagi</button>`; } };
   // Extra Tab
   const extraGrid = document.getElementById('extraGrid');
-  extraGrid.innerHTML = `
-    <div class="card"><div class="card-title"><i class="fab fa-whatsapp"></i> WA Reactor</div>
-      <input id="waUrl" placeholder="Channel post URL">
-      <input id="customEmoji" placeholder="Emoji yang diinginkan (contoh: 👍, ❤️, 😊)">
-      <button id="sendReaction">Send Reaction</button>
-      <div id="reactResult" class="result-box"></div>
-    </div>
-    <div class="card"><div class="card-title"><i class="fas fa-download"></i> All-in-One Downloader</div>
-      <input id="downloaderUrl" placeholder="Instagram/TikTok/YouTube URL">
-      <button id="startDownload">Process</button>
-      <div id="downloadResult" class="result-box"></div>
-    </div>
-  `;
-  document.getElementById('sendReaction').onclick=async()=>{ let url=document.getElementById('waUrl').value.trim(); let emoji=document.getElementById('customEmoji').value.trim(); if(!url || !emoji){showToast('URL dan emoji wajib diisi',true);return;} let div=document.getElementById('reactResult'); div.innerHTML='<span class="loading"></span>'; try{ let d=await proxyGet(`/api/react?url=${encodeURIComponent(url)}&emojis=${encodeURIComponent(emoji)}&apikey=nanasfree`); if(d.status===true) div.innerHTML=`✅ ${d.message}<br>URL: ${d.url}<br>Emoji: ${d.emojis}`; else throw new Error(d.message); incGen(); }catch(err){ div.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span>`; } };
-  document.getElementById('startDownload').onclick=async()=>{ let url=document.getElementById('downloaderUrl').value.trim(); if(!url){showToast('URL required',true);return;} let div=document.getElementById('downloadResult'); div.innerHTML='<span class="loading"></span>'; try{ let d=await proxyGet(`/api/downloader?url=${encodeURIComponent(url)}`); if(d.status===true && d.result?.result?.medias){ let html='<div class="flex-btns" style="flex-direction:column">'; d.result.result.medias.forEach(m=>{html+=`<a href="${m.url}" target="_blank" class="download-btn" style="margin:4px">Download ${m.quality||'Media'}</a>`;}); html+='</div>'; div.innerHTML=html; incGen(); } else throw new Error('No media'); }catch(err){ div.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span>`; } };
-
+  extraGrid.innerHTML = `<div class="card"><div class="card-title"><i class="fab fa-whatsapp"></i> WA Reactor</div><input id="waUrl" placeholder="Channel post URL"><input id="customEmoji" placeholder="Emoji (contoh: 👍)"><button id="sendReaction">Send Reaction</button><div id="reactResult" class="result-box"></div></div>
+    <div class="card"><div class="card-title"><i class="fas fa-download"></i> All-in-One Downloader</div><input id="downloaderUrl" placeholder="Instagram/TikTok/YouTube URL"><button id="startDownload">Process</button><div id="downloadResult" class="result-box"></div></div>`;
+  document.getElementById('sendReaction').onclick=async()=>{ let url=document.getElementById('waUrl').value.trim(); let emoji=document.getElementById('customEmoji').value.trim(); if(!url||!emoji){showToast('URL dan emoji wajib',true);return;} let div=document.getElementById('reactResult'); div.innerHTML='<span class="loading"></span>'; try{ let d=await proxyGet(`/api/react?url=${encodeURIComponent(url)}&emojis=${encodeURIComponent(emoji)}&apikey=nanasfree`); if(d.status===true) div.innerHTML=`✅ ${d.message}<br>URL: ${d.url}<br>Emoji: ${d.emojis}`; else throw new Error(d.message); incGen(); }catch(err){ div.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span><button class="retry-btn" onclick="document.getElementById('sendReaction').click()">🔄 Coba Lagi</button>`; } };
+  document.getElementById('startDownload').onclick=async()=>{ let url=document.getElementById('downloaderUrl').value.trim(); if(!url){showToast('URL required',true);return;} let div=document.getElementById('downloadResult'); div.innerHTML='<span class="loading"></span>'; try{ let d=await proxyGet(`/api/downloader?url=${encodeURIComponent(url)}`); if(d.status===true && d.result?.result?.medias){ let html='<div class="flex-btns" style="flex-direction:column">'; d.result.result.medias.forEach(m=>{html+=`<a href="${m.url}" target="_blank" class="download-btn" style="margin:4px">Download ${m.quality||'Media'}</a>`;}); html+='</div>'; div.innerHTML=html; incGen(); } else throw new Error('No media'); }catch(err){ div.innerHTML=`<span style="color:#ff8888">Error: ${err.message}</span><button class="retry-btn" onclick="document.getElementById('startDownload').click()">🔄 Coba Lagi</button>`; } };
   // QR Fullscreen
-  const qrTrigger = document.getElementById('qrTrigger');
-  const qrFullscreen = document.getElementById('qrFullscreen');
-  const qrFullImage = document.getElementById('qrFullImage');
-  const closeFullscreen = document.getElementById('closeFullscreen');
-  const qrData = "KOPAY NMD : ID1025411950211";
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
-  qrFullImage.src = qrUrl;
-  qrTrigger.addEventListener('click', () => { qrFullscreen.style.display = 'flex'; });
-  closeFullscreen.addEventListener('click', () => { qrFullscreen.style.display = 'none'; });
-  qrFullscreen.addEventListener('click', (e) => { if(e.target === qrFullscreen) qrFullscreen.style.display = 'none'; });
-
-  // Sidebar toggle
-  const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('overlay');
-  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
-  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); }
-  menuToggle.addEventListener('click', () => { if(sidebar.classList.contains('open')) closeSidebar(); else openSidebar(); });
-  overlay.addEventListener('click', closeSidebar);
-
+  const qrTrigger=document.getElementById('qrTrigger'), qrFull=document.getElementById('qrFullscreen'), qrImg=document.getElementById('qrFullImage'), closeQr=document.getElementById('closeFullscreen');
+  const qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent('KOPAY NMD : ID1025411950211')}`;
+  qrImg.src=qrUrl;
+  qrTrigger.onclick=()=>qrFull.style.display='flex';
+  closeQr.onclick=()=>qrFull.style.display='none';
+  qrFull.onclick=(e)=>{if(e.target===qrFull) qrFull.style.display='none';};
+  // Sidebar
+  const menuToggle=document.getElementById('menuToggle'), sidebar=document.getElementById('sidebar'), overlay=document.getElementById('overlay');
+  function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('active'); }
+  function openSidebar(){ sidebar.classList.add('open'); overlay.classList.add('active'); }
+  menuToggle.onclick=()=>{ if(sidebar.classList.contains('open')) closeSidebar(); else openSidebar(); };
+  overlay.onclick=closeSidebar;
   // Tab switching
-  const navBtns = document.querySelectorAll('.nav-item');
-  const panes = document.querySelectorAll('.tab-pane');
-  navBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tabId = btn.getAttribute('data-tab') + 'Tab';
-      navBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      panes.forEach(p => p.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      closeSidebar();
-    });
-  });
-
-  // Style loading
-  const style = document.createElement('style');
-  style.textContent = `.loading { display: inline-block; width: 14px; height: 14px; border: 2px solid #0ff; border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; } @keyframes spin { to { transform: rotate(360deg); } } .drag-over { border-color: #0ff; background: rgba(0,255,255,0.05); }`;
+  const navBtns=document.querySelectorAll('.nav-item'), panes=document.querySelectorAll('.tab-pane');
+  navBtns.forEach(btn=>{ btn.onclick=()=>{ let tabId=btn.getAttribute('data-tab')+'Tab'; navBtns.forEach(b=>b.classList.remove('active')); btn.classList.add('active'); panes.forEach(p=>p.classList.remove('active')); document.getElementById(tabId).classList.add('active'); closeSidebar(); }; });
+  // Loading style
+  const style=document.createElement('style');
+  style.textContent='.loading{display:inline-block;width:14px;height:14px;border:2px solid #0ff;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.drag-over{border-color:#0ff;background:rgba(0,255,255,0.05)}';
   document.head.appendChild(style);
 </script>
 </body>
