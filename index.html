@@ -2,31 +2,20 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INO.DIGITAL — Ultimate API Suite</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: radial-gradient(circle at 10% 20%, #0a0a1a, #010005);
-      font-family: 'Inter', 'Space Grotesk', system-ui, sans-serif;
+      font-family: 'Inter', sans-serif;
       color: #eef5ff;
       min-height: 100vh;
+      overflow-x: hidden;
     }
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjciIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMDMiLz48L3N2Zz4=');
-      background-repeat: repeat;
-      pointer-events: none;
-      opacity: 0.2;
-      z-index: 0;
-    }
+    /* Menu button */
     .menu-btn {
       position: fixed;
       top: 1.2rem;
@@ -43,11 +32,12 @@
       transition: 0.2s;
     }
     .menu-btn:hover { background: #0ff22; box-shadow: 0 0 10px cyan; }
+    /* Sidebar - tetap fixed tapi tidak menutupi karena konten bergeser */
     .sidebar {
       position: fixed;
       top: 0;
       left: -280px;
-      width: 270px;
+      width: 280px;
       height: 100vh;
       background: rgba(6,8,22,0.96);
       backdrop-filter: blur(20px);
@@ -61,38 +51,20 @@
       gap: 1.8rem;
     }
     .sidebar.open { left: 0; }
-    .sidebar-header { border-bottom: 1px solid rgba(0,255,255,0.2); padding-bottom: 0.6rem; }
-    .sidebar-header h2 {
-      font-size: 1.7rem;
-      background: linear-gradient(125deg, #fff, #0ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    /* Konten utama akan bergeser saat sidebar terbuka */
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 2rem;
+      transition: transform 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
+      transform: translateX(0);
+      position: relative;
+      z-index: 1;
     }
-    .sidebar-header p { font-size: 0.7rem; color: #7aa2f7; margin-top: 4px; }
-    .nav-menu { display: flex; flex-direction: column; gap: 0.8rem; }
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      border-radius: 40px;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(0,255,255,0.2);
-      cursor: pointer;
-      transition: 0.2s;
-      font-weight: 500;
-      font-size: 0.95rem;
-      color: #ccf;
+    body.sidebar-open .main-content {
+      transform: translateX(280px);
     }
-    .nav-item i { width: 28px; font-size: 1.2rem; color: #0ff; }
-    .nav-item.active, .nav-item:hover {
-      background: rgba(0,255,255,0.12);
-      border-color: #0ff;
-      box-shadow: 0 0 6px rgba(0,255,255,0.3);
-      color: white;
-    }
-    .sidebar-footer { margin-top: auto; font-size: 0.65rem; text-align: center; opacity: 0.5; }
+    /* Overlay */
     .overlay {
       position: fixed;
       inset: 0;
@@ -102,90 +74,65 @@
       display: none;
     }
     .overlay.active { display: block; }
-    .main-content {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 1rem 1.5rem 2rem;
-      position: relative;
-      z-index: 2;
+    /* Responsif untuk layar kecil: konten tidak bergeser penuh, cukup padding */
+    @media (max-width: 640px) {
+      body.sidebar-open .main-content {
+        transform: translateX(0);
+        opacity: 0.5;
+        pointer-events: none;
+      }
+      .sidebar {
+        width: 260px;
+      }
     }
-    @media (max-width: 640px) { .main-content { padding: 0.8rem 1rem 1.5rem; } }
-    .hero-banner img, .category-banner img {
-      width: 100%;
-      border-radius: 28px;
-      box-shadow: 0 15px 25px -10px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,255,255,0.25);
-      transition: 0.2s;
-      margin-bottom: 1.2rem;
-      display: block;
-    }
-    .section { display: none; animation: fadeIn 0.3s ease; }
-    .section.active-section { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
-    .section-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #fff, #0ff);
+    /* Style lainnya (sama seperti sebelumnya) */
+    .sidebar-header h2 {
+      font-size: 1.7rem;
+      background: linear-gradient(125deg, #fff, #0ff);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin: 1rem 0 1rem 0;
-      border-left: 4px solid #0ff;
-      padding-left: 0.9rem;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 40px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(0,255,255,0.2);
+      cursor: pointer;
+      margin: 10px 0;
+      color: #ccf;
+      transition: 0.2s;
+    }
+    .nav-item i { color: #0ff; width: 28px; }
+    .nav-item.active, .nav-item:hover {
+      background: rgba(0,255,255,0.12);
+      border-color: #0ff;
     }
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 1.4rem;
-      margin-top: 0.8rem;
+      margin: 1rem 0;
     }
     .cyber-card {
       background: rgba(12,14,28,0.7);
       backdrop-filter: blur(12px);
       border-radius: 26px;
       border: 1px solid rgba(0,255,255,0.25);
-      transition: all 0.2s;
       overflow: hidden;
     }
-    .cyber-card:hover {
-      border-color: #0ff;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px -10px rgba(0,255,255,0.2);
-    }
     .card-header {
-      padding: 0.9rem 1.2rem 0.4rem;
+      padding: 0.9rem 1.2rem;
       display: flex;
       align-items: center;
       gap: 10px;
       border-bottom: 1px dashed rgba(0,255,255,0.2);
     }
-    .card-header i { font-size: 1.6rem; color: #0ff; }
-    .card-header h3 {
-      font-weight: 700;
-      font-size: 1.2rem;
-      background: linear-gradient(145deg, #fff, #c0f0ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .badge-method {
-      margin-left: auto;
-      background: #0a0f1f;
-      padding: 3px 8px;
-      border-radius: 30px;
-      font-size: 0.6rem;
-      font-weight: bold;
-      border: 1px solid #0ff;
-      color: #0ff;
-    }
+    .card-header h3 { font-size: 1.2rem; color: #0ff; }
     .card-body { padding: 0.8rem 1.2rem 1.2rem; }
-    .input-group { margin-bottom: 0.8rem; }
-    .input-group label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: #9bb9ff;
-    }
     input, select, textarea {
       width: 100%;
       background: rgba(0,0,0,0.55);
@@ -193,14 +140,7 @@
       border-radius: 18px;
       padding: 8px 12px;
       color: #fff;
-      font-family: 'Inter', monospace;
-      font-size: 0.85rem;
-    }
-    select option { background: #0a0f1f; }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #0ff;
-      box-shadow: 0 0 5px rgba(0,255,255,0.4);
+      margin: 8px 0;
     }
     button {
       background: linear-gradient(95deg, #0a1a2f, #010d1f);
@@ -215,70 +155,47 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: 0.2s;
-      font-size: 0.85rem;
     }
     button:hover {
       background: #0ff;
       color: #000;
-      box-shadow: 0 0 12px cyan;
     }
     .output-area {
       margin-top: 0.9rem;
       background: #03050bc9;
       border-radius: 20px;
       padding: 10px;
-      font-size: 0.7rem;
-      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.75rem;
+      font-family: monospace;
       border-left: 3px solid #0ff;
-      overflow-x: auto;
       max-height: 200px;
-      word-break: break-word;
-    }
-    .img-preview {
-      max-width: 100%;
-      max-height: 110px;
-      border-radius: 14px;
-      margin-top: 6px;
-      border: 1px solid cyan;
+      overflow: auto;
     }
     .stats-widget {
       display: flex;
       gap: 1rem;
       justify-content: center;
-      flex-wrap: wrap;
-      margin: 1.5rem 0 1rem;
+      margin: 1rem 0;
     }
     .stat-home-card {
       background: rgba(0,30,45,0.5);
-      backdrop-filter: blur(8px);
       border-radius: 28px;
       padding: 0.8rem 1.5rem;
       text-align: center;
-      border: 1px solid #0ff66;
-      min-width: 130px;
+      border: 1px solid #0ff;
     }
     .stat-home-number { font-size: 1.8rem; font-weight: 800; color: #0ff; }
-    .social-home {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      margin: 1.2rem 0 1rem;
-    }
-    .social-home a { color: #ccf; font-size: 1.7rem; transition: 0.2s; }
-    .social-home a:hover { color: #0ff; transform: scale(1.05); }
     footer {
       text-align: center;
-      margin-top: 2.5rem;
+      margin-top: 2rem;
       padding: 1rem;
       border-top: 1px solid rgba(0,255,255,0.15);
       font-size: 0.7rem;
-      color: #7f9fcf;
     }
-    @media (max-width: 560px) {
-      .card-grid { grid-template-columns: 1fr; }
-      .stat-home-card { padding: 0.6rem 1rem; min-width: 100px; }
-      .stat-home-number { font-size: 1.4rem; }
+    .hero-banner img, .category-banner img {
+      width: 100%;
+      border-radius: 28px;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
@@ -286,248 +203,52 @@
 <div class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></div>
 <div class="overlay" id="overlay"></div>
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <h2>INO.DIGITAL</h2>
-    <p>cyber core • premium suite</p>
-  </div>
-  <div class="nav-menu">
-    <div class="nav-item active" data-section="home"><i class="fas fa-home"></i> Beranda</div>
-    <div class="nav-item" data-section="ai"><i class="fas fa-microchip"></i> AI Tools</div>
-    <div class="nav-item" data-section="random"><i class="fas fa-dice-d6"></i> Random</div>
-    <div class="nav-item" data-section="maker"><i class="fas fa-magic"></i> Maker</div>
-    <div class="nav-item" data-section="extra"><i class="fas fa-bolt"></i> Extra</div>
-  </div>
-  <div class="sidebar-footer"><i class="fas fa-shield-alt"></i> encrypted layer</div>
+  <div class="sidebar-header"><h2>INO.DIGITAL</h2><p>cyber core</p></div>
+  <div class="nav-item active" data-section="home"><i class="fas fa-home"></i> Beranda</div>
+  <div class="nav-item" data-section="ai"><i class="fas fa-microchip"></i> AI Tools</div>
+  <div class="nav-item" data-section="random"><i class="fas fa-dice-d6"></i> Random</div>
+  <div class="nav-item" data-section="maker"><i class="fas fa-magic"></i> Maker</div>
+  <div class="nav-item" data-section="extra"><i class="fas fa-bolt"></i> Extra</div>
 </aside>
 <div class="main-content">
-  <!-- HOME -->
   <div id="home-section" class="section active-section">
-    <div class="hero-banner"><img src="https://files.catbox.moe/ya9m8g.png" alt="INO.DIGITAL Home"></div>
-    <div style="text-align: center; margin-top: 0.5rem;">
-      <h1 style="font-size: 2.2rem; background: linear-gradient(125deg,#fff,#0ff); -webkit-background-clip:text; background-clip:text; color:transparent;">INO.DIGITAL</h1>
-      <p style="opacity:0.8; margin-top: 0.3rem;">Next‑gen API Gateway · AI · Image · Random · Creator</p>
-    </div>
+    <div class="hero-banner"><img src="https://placehold.co/1200x300/0a0a1a/0ff?text=INO.DIGITAL+Banner" alt="Banner"></div>
+    <h1 style="text-align:center; font-size:2.5rem; background:linear-gradient(125deg,#fff,#0ff); -webkit-background-clip:text; background-clip:text; color:transparent;">INO.DIGITAL</h1>
     <div class="stats-widget">
-      <div class="stat-home-card"><i class="fas fa-chart-line"></i><div class="stat-home-number" id="statCalls">18.2K</div><div>Hits Today</div></div>
-      <div class="stat-home-card"><i class="fas fa-cubes"></i><div class="stat-home-number">18</div><div>Endpoints</div></div>
-      <div class="stat-home-card"><i class="fas fa-globe"></i><div class="stat-home-number">99.99%</div><div>Uptime</div></div>
-    </div>
-    <div class="social-home">
-      <a href="#"><i class="fab fa-twitter"></i></a>
-      <a href="#"><i class="fab fa-discord"></i></a>
-      <a href="#"><i class="fab fa-github"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-telegram"></i></a>
+      <div class="stat-home-card"><i class="fas fa-chart-line"></i><div class="stat-home-number" id="statCalls">12.4K</div><div>Hits Today</div></div>
+      <div class="stat-home-card"><i class="fas fa-cubes"></i><div class="stat-home-number">15</div><div>Endpoints</div></div>
     </div>
   </div>
-  <!-- AI TOOLS -->
   <div id="ai-section" class="section">
-    <div class="category-banner"><img src="https://files.catbox.moe/iyfl5r.png" alt="AI Tools"></div>
+    <div class="category-banner"><img src="https://placehold.co/1200x200/0a0a1a/0ff?text=AI+Tools" alt="AI Banner"></div>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-robot"></i><h3>Blackbox AI</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Prompt (q)</label><input type="text" id="bb_prompt" placeholder="Tanyakan sesuatu..."></div><button id="btn_blackbox"><i class="fas fa-terminal"></i> Generate</button><div class="output-area" id="output_blackbox"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-comment-dots"></i><h3>ChatGPT Free</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Pesan</label><input type="text" id="chat_text" placeholder="Halo AI..."></div><div class="input-group"><label>Model</label><select id="chat_model"><option>chatgpt</option><option>deepseek</option><option>claude</option><option>gemini</option></select></div><button id="btn_chatgpt"><i class="fas fa-message"></i> Kirim</button><div class="output-area" id="output_chatgpt"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-skull"></i><h3>WormGPT</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Prompt</label><input type="text" id="worm_prompt" placeholder="Prompt..."></div><button id="btn_worm"><i class="fas fa-dragon"></i> Execute</button><div class="output-area" id="output_worm"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-robot"></i><h3>Blackbox AI</h3></div><div class="card-body"><input type="text" id="bb_prompt" placeholder="Prompt..."><button id="btn_blackbox"><i class="fas fa-terminal"></i> Generate</button><div class="output-area" id="output_blackbox"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-comment-dots"></i><h3>ChatGPT Free</h3></div><div class="card-body"><input type="text" id="chat_text" placeholder="Pesan..."><select id="chat_model"><option>chatgpt</option><option>deepseek</option></select><button id="btn_chatgpt"><i class="fas fa-message"></i> Kirim</button><div class="output-area" id="output_chatgpt"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-skull"></i><h3>WormGPT</h3></div><div class="card-body"><input type="text" id="worm_prompt" placeholder="Prompt..."><button id="btn_worm"><i class="fas fa-dragon"></i> Execute</button><div class="output-area" id="output_worm"></div></div></div>
     </div>
-    <h2 class="section-title"><i class="fas fa-camera"></i> Image Processing</h2>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-expand-alt"></i><h3>Upscale 4K</h3><span class="badge-method">POST</span></div><div class="card-body"><div class="input-group"><label>Upload Gambar</label><input type="file" id="upscale_file" accept="image/*"></div><button id="btn_upscale"><i class="fas fa-magic"></i> Upscale</button><div class="output-area" id="output_upscale"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-star-of-life"></i><h3>HD Upscaler</h3><span class="badge-method">POST</span></div><div class="card-body"><div class="input-group"><label>Gambar</label><input type="file" id="hd_file" accept="image/*"></div><div class="input-group"><label>Kualitas</label><select id="hd_quality"><option>4k</option><option>6K</option><option>8K</option></select></div><button id="btn_hd"><i class="fas fa-highlighter"></i> Spark Upscale</button><div class="output-area" id="output_hd"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-image"></i><h3>Image to Prompt</h3><span class="badge-method">POST</span></div><div class="card-body"><div class="input-group"><label>Gambar</label><input type="file" id="img2prompt_file" accept="image/*"></div><button id="btn_img2prompt"><i class="fas fa-code-branch"></i> Generate</button><div class="output-area" id="output_img2prompt"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-expand-alt"></i><h3>Upscale 4K</h3></div><div class="card-body"><input type="file" id="upscale_file" accept="image/*"><button id="btn_upscale"><i class="fas fa-magic"></i> Upscale</button><div class="output-area" id="output_upscale"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-image"></i><h3>Image to Prompt</h3></div><div class="card-body"><input type="file" id="img2prompt_file" accept="image/*"><button id="btn_img2prompt"><i class="fas fa-code-branch"></i> Generate</button><div class="output-area" id="output_img2prompt"></div></div></div>
     </div>
   </div>
-  <!-- RANDOM -->
   <div id="random-section" class="section">
-    <div class="category-banner"><img src="https://files.catbox.moe/2i4bua.png" alt="Random Suite"></div>
+    <div class="category-banner"><img src="https://placehold.co/1200x200/0a0a1a/0ff?text=Random+Suite" alt="Random Banner"></div>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-landmark"></i><h3>Meme Presiden</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_meme_pres"><i class="fas fa-random"></i> Ambil Meme</button><div class="output-area" id="output_meme_pres"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-heart"></i><h3>Random PAP</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_pap"><i class="fas fa-user-secret"></i> Random PAP</button><div class="output-area" id="output_pap"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-desktop"></i><h3>Random Wallpaper</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_wall"><i class="fas fa-images"></i> Ambil Wallpaper</button><div class="output-area" id="output_wall"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-smile-wink"></i><h3>Meme Indonesia</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_meme_id"><i class="fas fa-laugh-squint"></i> Meme ID</button><div class="output-area" id="output_meme_id"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-landmark"></i><h3>Meme Presiden</h3></div><div class="card-body"><button id="btn_meme_pres"><i class="fas fa-random"></i> Ambil Meme</button><div class="output-area" id="output_meme_pres"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-heart"></i><h3>Random PAP</h3></div><div class="card-body"><button id="btn_pap"><i class="fas fa-user-secret"></i> Random PAP</button><div class="output-area" id="output_pap"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-desktop"></i><h3>Random Wallpaper</h3></div><div class="card-body"><button id="btn_wall"><i class="fas fa-images"></i> Ambil Wallpaper</button><div class="output-area" id="output_wall"></div></div></div>
     </div>
   </div>
-  <!-- MAKER -->
   <div id="maker-section" class="section">
-    <div class="category-banner"><img src="https://files.catbox.moe/h9texf.png" alt="Maker Studio"></div>
+    <div class="category-banner"><img src="https://placehold.co/1200x200/0a0a1a/0ff?text=Maker+Studio" alt="Maker Banner"></div>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-gamepad"></i><h3>Fake Lobby FF</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Username</label><input type="text" id="ff_user" placeholder="User123"></div><button id="btn_ff"><i class="fas fa-crown"></i> Buat Gold Text</button><div class="output-area" id="output_ff"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-trophy"></i><h3>MLBB Fake Rank</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Username</label><input type="text" id="ml_user" placeholder="ProPlayer"></div><div class="input-group"><label>Rank</label><input type="text" id="ml_rank" placeholder="Mythic Glory"></div><div class="input-group"><label>Border (1-12)</label><select id="ml_border"><option value="1">Border 1</option><option value="2">Border 2</option><option value="3">Border 3</option><option value="4">Border 4</option><option value="5">Border 5</option><option value="6">Border 6</option><option value="7">Border 7</option><option value="8">Border 8</option><option value="9">Border 9</option><option value="10">Border 10</option><option value="11">Border 11</option><option value="12">Border 12</option></select></div><button id="btn_ml"><i class="fas fa-chart-line"></i> Generate Rank</button><div class="output-area" id="output_ml"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-phone-alt"></i><h3>Nokia Chat</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Pengirim</label><input type="text" id="nokia_sender" placeholder="Budi"></div><div class="input-group"><label>Pesan</label><textarea id="nokia_msg" rows="2" placeholder="Halo..."></textarea></div><button id="btn_nokia"><i class="fas fa-comment-dots"></i> Generate</button><div class="output-area" id="output_nokia"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-gamepad"></i><h3>Fake Lobby FF</h3></div><div class="card-body"><input type="text" id="ff_user" placeholder="Username"><button id="btn_ff"><i class="fas fa-crown"></i> Buat</button><div class="output-area" id="output_ff"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-trophy"></i><h3>MLBB Fake Rank</h3></div><div class="card-body"><input type="text" id="ml_user" placeholder="Username"><input type="text" id="ml_rank" placeholder="Rank"><select id="ml_border"><option>Border 1</option><option>Border 2</option></select><button id="btn_ml"><i class="fas fa-chart-line"></i> Generate</button><div class="output-area" id="output_ml"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-phone-alt"></i><h3>Nokia Chat</h3></div><div class="card-body"><input type="text" id="nokia_sender" placeholder="Pengirim"><textarea id="nokia_msg" placeholder="Pesan"></textarea><button id="btn_nokia"><i class="fas fa-comment-dots"></i> Generate</button><div class="output-area" id="output_nokia"></div></div></div>
     </div>
   </div>
-  <!-- EXTRA -->
   <div id="extra-section" class="section">
-    <div class="category-banner"><img src="https://files.catbox.moe/62tsye.png" alt="Extra Tools"></div>
+    <div class="category-banner"><img src="https://placehold.co/1200x200/0a0a1a/0ff?text=Extra+Tools" alt="Extra Banner"></div>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fab fa-whatsapp"></i><h3>WA Channel Reactor</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Channel URL</label><input type="text" id="wa_url" placeholder="https://chat.whatsapp.com/..."></div><div class="input-group"><label>Emojis (pisah koma)</label><input type="text" id="wa_emojis" placeholder="🔥,❤️,😂"></div><button id="btn_wa"><i class="fas fa-bolt"></i> React Channel</button><div class="output-area" id="output_wa"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-download"></i><h3>All-in-One Downloader</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>URL</label><input type="text" id="dl_url" placeholder="https://..."></div><button id="btn_dl"><i class="fas fa-cloud-download-alt"></i> Ambil Data</button><div class="output-area" id="output_dl"></div></div></div>
-    </div>
-  </div>
-  <footer>⚡ INO.DIGITAL — semua endpoint aktif | real‑time response</footer>
-</div>
-
-<script>
-  // Helper functions
-  async function apiGet(endpoint, params = {}) {
-    const url = new URL(endpoint, window.location.origin);
-    Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
-    const resp = await fetch(url.toString());
-    const text = await resp.text();
-    try { return JSON.parse(text); } catch(e) { return { raw: text, status: resp.status }; }
-  }
-  async function apiPostFile(endpoint, formData) {
-    const resp = await fetch(endpoint, { method: 'POST', body: formData });
-    const text = await resp.text();
-    try { return JSON.parse(text); } catch(e) { return { raw: text, status: resp.status }; }
-  }
-  function renderOutput(containerId, data) {
-    const div = document.getElementById(containerId);
-    if(!div) return;
-    let html = '';
-    if(data && typeof data === 'object') {
-      if(data.url || data.image_url || data.link) {
-        const imgUrl = data.url || data.image_url || data.link;
-        html = `<img src="${imgUrl}" class="img-preview" onerror="this.style.display='none'" alt="preview"><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
-      } else {
-        html = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-      }
-    } else if(typeof data === 'string') {
-      html = `<pre>${data}</pre>`;
-    } else {
-      html = `<pre>✅ Request completed</pre>`;
-    }
-    div.innerHTML = html;
-  }
-  function setLoading(btnId, outId, msg) {
-    const btn = document.getElementById(btnId);
-    const out = document.getElementById(outId);
-    if(btn) { btn.disabled = true; btn.setAttribute('data-orig', btn.innerHTML); btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processing...'; }
-    if(out) out.innerHTML = `<div><i class="fas fa-circle-notch fa-spin"></i> ${msg}</div>`;
-    return () => {
-      if(btn) { btn.disabled = false; btn.innerHTML = btn.getAttribute('data-orig'); }
-    };
-  }
-  document.querySelectorAll('button').forEach(btn => { if(!btn.getAttribute('data-orig')) btn.setAttribute('data-orig', btn.innerHTML); });
-
-  // ========== ENDPOINTS (API AKTIF) ==========
-  document.getElementById('btn_blackbox').onclick = async () => {
-    const q = document.getElementById('bb_prompt').value.trim();
-    if(!q) return alert('Prompt diperlukan');
-    const reset = setLoading('btn_blackbox', 'output_blackbox', 'Menghubungi Blackbox AI...');
-    try { const res = await apiGet('/docs/api/ai/blackbox.php', { q }); renderOutput('output_blackbox', res); } catch(e) { renderOutput('output_blackbox', { error: e.message }); } finally { reset(); }
-  };
-  document.getElementById('btn_chatgpt').onclick = async () => {
-    const text = document.getElementById('chat_text').value.trim();
-    const model = document.getElementById('chat_model').value;
-    if(!text) return alert('Pesan kosong');
-    const reset = setLoading('btn_chatgpt', 'output_chatgpt', 'ChatGPT memproses...');
-    try { const res = await apiGet('/docs/api/ai/chat-gpt.php', { text, model }); renderOutput('output_chatgpt', res); } catch(e) { renderOutput('output_chatgpt', { error: e.message }); } finally { reset(); }
-  };
-  document.getElementById('btn_worm').onclick = async () => {
-    const prompt = document.getElementById('worm_prompt').value.trim();
-    if(!prompt) return alert('Prompt diperlukan');
-    const reset = setLoading('btn_worm', 'output_worm', 'WormGPT merespon...');
-    try { const res = await apiGet('/docs/api/ai/worm-gpt.php', { prompt }); renderOutput('output_worm', res); } catch(e) { renderOutput('output_worm', { error: e.message }); } finally { reset(); }
-  };
-  document.getElementById('btn_upscale').onclick = async () => {
-    const file = document.getElementById('upscale_file').files[0];
-    if(!file) return alert('Upload gambar');
-    const fd = new FormData(); fd.append('file', file);
-    const reset = setLoading('btn_upscale', 'output_upscale', 'Upscaling 4K...');
-    try { const res = await apiPostFile('/docs/api/tools/image/upscale.php', fd); renderOutput('output_upscale', res); } catch(e) { renderOutput('output_upscale', { error: e.message }); } finally { reset(); }
-  };
-  document.getElementById('btn_hd').onclick = async () => {
-    const file = document.getElementById('hd_file').files[0];
-    const quality = document.getElementById('hd_quality').value;
-    if(!file) return alert('Upload gambar');
-    const fd = new FormData(); fd.append('file', file); fd.append('quality', quality);
-    const reset = setLoading('btn_hd', 'output_hd', 'SparkPix HD...');
-    try { const res = await apiPostFile('/docs/api/tools/image/hdimage.php', fd); renderOutput('output_hd', res); } catch(e) { renderOutput('output_hd', { error: e.message }); } finally { reset(); }
-  };
-  document.getElementById('btn_img2prompt').onclick = async () => {
-    const file = document.getElementById('img2prompt_file').files[0];
-    if(!file) return alert('Upload gambar');
-    const fd = new FormData(); fd.append('file', file);
-    const reset = setLoading('btn_img2prompt', 'output_img2prompt', 'Menganalisis gambar...');
-    try { const res = await apiPostFile('/docs/api/ai-image/image-2-prompt.php', fd); renderOutput('output_img2prompt', res); } catch(e) { renderOutput('output_img2prompt', { error: e.message }); } finally { reset(); }
-  };
-  async function fetchRandom(endpoint, outId, btnId) {
-    const reset = setLoading(btnId, outId, 'Mengambil random...');
-    try { const res = await apiGet(endpoint); renderOutput(outId, res); } catch(e) { renderOutput(outId, { error: e.message }); } finally { reset(); }
-  }
-  document.getElementById('btn_meme_pres').onclick = () => fetchRandom('/docs/api/random/random-meme-presiden.php', 'output_meme_pres', 'btn_meme_pres');
-  document.getElementById('btn_pap').onclick = () => fetchRandom('/docs/api/random/random-pap.php', 'output_pap', 'btn_pap');
-  document.getElementById('btn_wall').onclick = () => fetchRandom('/docs/api/random/random-wallpaper.php', 'output_wall', 'btn_wall');
-  document.getElementById('btn_meme_id').onclick = () => fetchRandom('/docs/api/random/meme.php', 'output_meme_id', 'btn_meme_id');
-  document.getElementById('btn_ff').onclick = async () => {
-    const username = document.getElementById('ff_user').value.trim();
-    if(!username) return alert('Username FF diperlukan');
-    const reset = setLoading('btn_ff', 'output_ff', 'Membuat lobby FF...');
-    try { const res = await apiGet('/docs/api/maker/fake-lobby-ff.php', { username }); renderOutput('output_ff', res); } catch(e) { renderOutput('output_ff', { error: e.message }); } finally { reset(); }
-  };
-  document.getElementById('btn_ml').onclick = async () => {
-    const username = document.getElementById('ml_user').value.trim();
-    const rank = document.getElementById('ml_rank').value.trim();
-    const border = document.getElementById('ml_border').value;
-    if(!username) return alert('Username MLBB diperlukan');
-    const reset = setLoading('btn_ml', 'output_ml', 'Generate rank MLBB...');
-    try { const res = await apiGet('/docs/api/maker/fake-lobby-ml.php', { username, rank, border }); renderOutput('output_ml', res); } catch(e) { renderOutput('output_ml', { error: e.message }); } finally { reset(); }
-  };
-  document.getElementById('btn_nokia').onclick = async () => {
-    const sender = document.getElementById('nokia_sender').value.trim();
-    const pesan = document.getElementById('nokia_msg').value.trim();
-    if(!sender || !pesan) return alert('Isi pengirim & pesan');
-    const reset = setLoading('btn_nokia', 'output_nokia', 'Membuat chat Nokia...');
-    try { const res = await apiGet('/docs/api/maker/nokia-msg.php', { sender, pesan }); renderOutput('output_nokia', res); } catch(e) { renderOutput('output_nokia', { error: e.message }); } finally { reset(); }
-  };
-  document.getElementById('btn_wa').onclick = async () => {
-    const url = document.getElementById('wa_url').value.trim();
-    const emojis = document.getElementById('wa_emojis').value.trim();
-    if(!url || !emojis) return alert('URL dan emojis diperlukan');
-    const reset = setLoading('btn_wa', 'output_wa', 'Mengirim reaksi WA...');
-    try { const res = await apiGet('/docs/api/tools/react-ch-free.php', { url, emojis, apikey: 'nanasfree' }); renderOutput('output_wa', res); } catch(e) { renderOutput('output_wa', { error: e.message }); } finally { reset(); }
-  };
-  document.getElementById('btn_dl').onclick = async () => {
-    const dlUrl = document.getElementById('dl_url').value.trim();
-    if(!dlUrl) return alert('Masukkan URL');
-    const reset = setLoading('btn_dl', 'output_dl', 'Mengunduh data...');
-    try { const res = await apiGet('/docs/api/donwloader/all-in-one.php', { url: dlUrl }); renderOutput('output_dl', res); } catch(e) { renderOutput('output_dl', { error: e.message }); } finally { reset(); }
-  };
-
-  // SIDEBAR
-  const menuBtn = document.getElementById('menuBtn');
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('overlay');
-  function toggleSidebar(open) {
-    if(open) { sidebar.classList.add('open'); overlay.classList.add('active'); }
-    else { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
-  }
-  menuBtn.onclick = () => toggleSidebar(!sidebar.classList.contains('open'));
-  overlay.onclick = () => toggleSidebar(false);
-  const navItems = document.querySelectorAll('.nav-item');
-  const sections = {
-    home: document.getElementById('home-section'),
-    ai: document.getElementById('ai-section'),
-    random: document.getElementById('random-section'),
-    maker: document.getElementById('maker-section'),
-    extra: document.getElementById('extra-section')
-  };
-  function activateSection(sectionId) {
-    Object.values(sections).forEach(sec => sec.classList.remove('active-section'));
-    sections[sectionId].classList.add('active-section');
-    navItems.forEach(item => {
-      if(item.getAttribute('data-section') === sectionId) item.classList.add('active');
-      else item.classList.remove('active');
-    });
-    if(window.innerWidth <= 1023) toggleSidebar(false);
-  }
-  navItems.forEach(item => {
-    item.addEventListener('click', () => activateSection(item.getAttribute('data-section')));
-  });
-  let callStat = 18200;
-  setInterval(() => {
-    const el = document.getElementById('statCalls');
-    if(el) { callStat += Math.floor(Math.random() * 35); el.innerText = callStat.toLocaleString(); }
-  }, 7000);
-</script>
-</body>
-</html>
+      <div class="cyber-card"><div class="card-header"><i class="fab fa-whatsapp"></i><h3>WA Reactor</h3></div><div class="card-body"><input type="text" id="wa_url" placeholder="Channel URL"><input type="text" id="wa_emojis" placeholder="🔥,❤️"><button id="btn_wa"><i class="fas fa-bolt"></i> React</button><div class="output-area" id="output_wa"></div></div></div>
+      <div class="cyber-card"><div
