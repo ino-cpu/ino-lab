@@ -2,257 +2,544 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>INO.DIGITAL | HD Upscaler</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>INO.DIGITAL — Ultimate API Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0a0c12; font-family: 'Inter', 'Space Grotesk', sans-serif; color: #eef5ff; overflow-x: hidden; }
-    .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: rgba(8,12,20,0.96); backdrop-filter: blur(16px); border-right: 1px solid rgba(0,255,255,0.2); z-index: 1000; transition: left 0.3s ease; padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 1.5rem; }
-    .sidebar.open { left: 0; }
-    .sidebar-brand .brand-text { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg, #fff, #7df9ff); -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; }
-    .nav-sidebar { display: flex; flex-direction: column; gap: 0.5rem; }
-    .nav-item { background: transparent; border: none; padding: 0.7rem 1rem; font-size: 0.95rem; font-weight: 500; color: #bbd4f0; cursor: pointer; border-radius: 1rem; display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; }
-    .nav-item i { width: 24px; }
-    .nav-item.active { background: rgba(0,255,255,0.15); color: #0ff; border-left: 3px solid #0ff; }
-    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); z-index: 999; display: none; }
-    .overlay.active { display: block; }
-    .main-content { padding: 2rem; max-width: 1300px; margin: 0 auto; }
-    .menu-toggle { position: fixed; top: 1rem; left: 1rem; z-index: 1001; background: rgba(0,255,255,0.2); border: none; font-size: 1.5rem; color: #0ff; cursor: pointer; padding: 0.4rem 0.8rem; border-radius: 0.6rem; }
-    .banner { text-align: center; margin: 0.5rem 0 2rem 0; }
-    .banner-img { width: 100%; max-width: 600px; border-radius: 1rem; border: 1px solid rgba(0,255,255,0.3); }
-    .stats-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-    .stat-card { background: linear-gradient(145deg, #0f1722, #080c14); border-radius: 1rem; padding: 0.8rem 1.5rem; text-align: center; border: 1px solid rgba(0,255,255,0.2); }
-    .stat-number { font-size: 1.8rem; font-weight: 800; color: #0ff; }
-    .stat-label { font-size: 0.7rem; text-transform: uppercase; }
-    .tab-pane { display: none; animation: fade 0.25s; }
-    .tab-pane.active { display: block; }
-    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-    .grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 700px; margin: 0 auto; }
-    .card { background: rgba(12,20,30,0.6); backdrop-filter: blur(4px); border-radius: 1.2rem; border: 1px solid rgba(0,255,255,0.2); padding: 1.5rem; }
-    .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; border-left: 3px solid #0ff; padding-left: 0.8rem; }
-    .quality-row { display: flex; gap: 0.8rem; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; }
-    .quality-btn { background: #071118; border: 1px solid #2c5f6e; border-radius: 2rem; padding: 0.4rem 1rem; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
-    .quality-btn.active { background: #0ff; color: #000; border-color: #0ff; }
-    .upload-area { border: 2px dashed rgba(0,255,255,0.4); border-radius: 1rem; background: rgba(0,20,30,0.3); padding: 0.8rem; text-align: center; cursor: pointer; margin-bottom: 1rem; transition: 0.2s; }
-    .upload-area:hover { border-color: cyan; background: rgba(0,255,255,0.05); }
-    .preview-img, .result-img { max-width: 100%; max-height: 260px; border-radius: 0.8rem; margin: 0.5rem auto 0; display: block; border: 1px solid #0ff; cursor: pointer; }
-    button { background: linear-gradient(95deg, #0077aa, #2a2a7a); border: none; padding: 0.5rem 1rem; border-radius: 2rem; font-weight: 500; color: white; cursor: pointer; transition: 0.2s; width: 100%; }
-    button:hover { transform: translateY(-2px); filter: brightness(1.05); }
-    .result-box { margin-top: 1rem; background: #010b0f; padding: 1rem; border-radius: 1rem; text-align: center; }
-    .download-btn { background: rgba(0,255,255,0.1); border: 1px solid #0ff; padding: 3px 10px; border-radius: 2rem; font-size: 0.7rem; cursor: pointer; display: inline-block; margin: 4px; text-decoration: none; color: #0ff; }
-    .flex-btns { display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem; flex-wrap: wrap; }
-    .support-section { background: rgba(12,20,30,0.6); border-radius: 1.2rem; padding: 1.2rem; margin-top: 1.5rem; }
-    .support-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.8rem; border-left: 3px solid #0ff; padding-left: 0.8rem; }
-    .social-row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 0.8rem 0; }
-    .social-link { background: #071118; padding: 0.4rem 1rem; border-radius: 2rem; color: #bbd4f0; text-decoration: none; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px; }
-    .qr-trigger { background: #071118; padding: 0.4rem 1rem; border-radius: 2rem; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
-    .qr-fullscreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); z-index: 2000; justify-content: center; align-items: center; flex-direction: column; }
-    .qr-fullscreen img { max-width: 80%; max-height: 70%; border-radius: 1rem; border: 2px solid cyan; }
-    .close-fullscreen { margin-top: 1rem; background: rgba(0,255,255,0.2); border: 1px solid cyan; padding: 0.5rem 1.5rem; border-radius: 2rem; color: cyan; cursor: pointer; }
-    footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #6c8faa; }
-    .image-modal {
-      display: none;
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: radial-gradient(circle at 10% 20%, #0a0a1a, #010005);
+      font-family: 'Inter', 'Space Grotesk', system-ui, sans-serif;
+      color: #eef5ff;
+      min-height: 100vh;
+    }
+    body::after {
+      content: "";
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.95);
-      backdrop-filter: blur(12px);
-      z-index: 3000;
-      justify-content: center;
-      align-items: center;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjciIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMDMiLz48L3N2Zz4=');
+      background-repeat: repeat;
+      pointer-events: none;
+      opacity: 0.2;
+      z-index: 0;
     }
-    .image-modal img { max-width: 90%; max-height: 85%; border-radius: 1rem; border: 2px solid cyan; }
-    .image-modal .close-modal { position: absolute; top: 20px; right: 30px; font-size: 2rem; color: cyan; cursor: pointer; background: none; border: none; width: auto; }
-    @media (max-width: 768px) { .main-content { padding: 1rem; } .grid { max-width: 100%; } }
-    .toast-notice { background: #ffaa66; color: #000; padding: 5px 10px; border-radius: 20px; font-size: 0.7rem; margin-top: 8px; display: inline-block; }
+    .menu-btn {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.2rem;
+      z-index: 1100;
+      background: rgba(0,20,35,0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid #0ff;
+      border-radius: 40px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 1.4rem;
+      color: #0ff;
+      transition: 0.2s;
+    }
+    .menu-btn:hover { background: #0ff22; box-shadow: 0 0 10px cyan; }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 270px;
+      height: 100vh;
+      background: rgba(6,8,22,0.96);
+      backdrop-filter: blur(20px);
+      z-index: 1050;
+      transition: left 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
+      border-right: 1px solid rgba(0,255,255,0.35);
+      box-shadow: 8px 0 30px rgba(0,0,0,0.6);
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+    .sidebar.open { left: 0; }
+    .sidebar-header { border-bottom: 1px solid rgba(0,255,255,0.2); padding-bottom: 0.6rem; }
+    .sidebar-header h2 {
+      font-size: 1.7rem;
+      background: linear-gradient(125deg, #fff, #0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .sidebar-header p { font-size: 0.7rem; color: #7aa2f7; margin-top: 4px; }
+    .nav-menu { display: flex; flex-direction: column; gap: 0.8rem; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 40px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(0,255,255,0.2);
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: #ccf;
+    }
+    .nav-item i { width: 28px; font-size: 1.2rem; color: #0ff; }
+    .nav-item.active, .nav-item:hover {
+      background: rgba(0,255,255,0.12);
+      border-color: #0ff;
+      box-shadow: 0 0 6px rgba(0,255,255,0.3);
+      color: white;
+    }
+    .sidebar-footer { margin-top: auto; font-size: 0.65rem; text-align: center; opacity: 0.5; }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(3px);
+      z-index: 1040;
+      display: none;
+    }
+    .overlay.active { display: block; }
+    .main-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    @media (max-width: 640px) { .main-content { padding: 0.8rem 1rem 1.5rem; } }
+    .hero-banner img, .category-banner img {
+      width: 100%;
+      border-radius: 28px;
+      box-shadow: 0 15px 25px -10px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,255,255,0.25);
+      transition: 0.2s;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+    .section { display: none; animation: fadeIn 0.3s ease; }
+    .section.active-section { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, #0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 1rem 0 1rem 0;
+      border-left: 4px solid #0ff;
+      padding-left: 0.9rem;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1.4rem;
+      margin-top: 0.8rem;
+    }
+    .cyber-card {
+      background: rgba(12,14,28,0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 26px;
+      border: 1px solid rgba(0,255,255,0.25);
+      transition: all 0.2s;
+      overflow: hidden;
+    }
+    .cyber-card:hover {
+      border-color: #0ff;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -10px rgba(0,255,255,0.2);
+    }
+    .card-header {
+      padding: 0.9rem 1.2rem 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px dashed rgba(0,255,255,0.2);
+    }
+    .card-header i { font-size: 1.6rem; color: #0ff; }
+    .card-header h3 {
+      font-weight: 700;
+      font-size: 1.2rem;
+      background: linear-gradient(145deg, #fff, #c0f0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .badge-method {
+      margin-left: auto;
+      background: #0a0f1f;
+      padding: 3px 8px;
+      border-radius: 30px;
+      font-size: 0.6rem;
+      font-weight: bold;
+      border: 1px solid #0ff;
+      color: #0ff;
+    }
+    .card-body { padding: 0.8rem 1.2rem 1.2rem; }
+    .input-group { margin-bottom: 0.8rem; }
+    .input-group label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #9bb9ff;
+    }
+    input, select, textarea {
+      width: 100%;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid #2a3f6a;
+      border-radius: 18px;
+      padding: 8px 12px;
+      color: #fff;
+      font-family: 'Inter', monospace;
+      font-size: 0.85rem;
+    }
+    select option { background: #0a0f1f; }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #0ff;
+      box-shadow: 0 0 5px rgba(0,255,255,0.4);
+    }
+    button {
+      background: linear-gradient(95deg, #0a1a2f, #010d1f);
+      border: 1px solid #0ff;
+      padding: 8px 14px;
+      border-radius: 40px;
+      font-weight: 600;
+      color: #0ff;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+      font-size: 0.85rem;
+    }
+    button:hover {
+      background: #0ff;
+      color: #000;
+      box-shadow: 0 0 12px cyan;
+    }
+    .output-area {
+      margin-top: 0.9rem;
+      background: #03050bc9;
+      border-radius: 20px;
+      padding: 10px;
+      font-size: 0.7rem;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      border-left: 3px solid #0ff;
+      overflow-x: auto;
+      max-height: 200px;
+      word-break: break-word;
+    }
+    .img-preview {
+      max-width: 100%;
+      max-height: 110px;
+      border-radius: 14px;
+      margin-top: 6px;
+      border: 1px solid cyan;
+    }
+    .stats-widget {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 1.5rem 0 1rem;
+    }
+    .stat-home-card {
+      background: rgba(0,30,45,0.5);
+      backdrop-filter: blur(8px);
+      border-radius: 28px;
+      padding: 0.8rem 1.5rem;
+      text-align: center;
+      border: 1px solid #0ff66;
+      min-width: 130px;
+    }
+    .stat-home-number { font-size: 1.8rem; font-weight: 800; color: #0ff; }
+    .social-home {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin: 1.2rem 0 1rem;
+    }
+    .social-home a { color: #ccf; font-size: 1.7rem; transition: 0.2s; }
+    .social-home a:hover { color: #0ff; transform: scale(1.05); }
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      padding: 1rem;
+      border-top: 1px solid rgba(0,255,255,0.15);
+      font-size: 0.7rem;
+      color: #7f9fcf;
+    }
+    @media (max-width: 560px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .stat-home-card { padding: 0.6rem 1rem; min-width: 100px; }
+      .stat-home-number { font-size: 1.4rem; }
+    }
   </style>
 </head>
 <body>
-<div class="app">
-  <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-brand"><div class="brand-text">INO.DIGITAL</div></div>
-    <div class="nav-sidebar">
-      <button class="nav-item active" data-tab="home"><i class="fas fa-home"></i> Home</button>
-      <button class="nav-item" data-tab="ai"><i class="fas fa-microchip"></i> AI Tools</button>
+<div class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></div>
+<div class="overlay" id="overlay"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2>INO.DIGITAL</h2>
+    <p>cyber core • premium suite</p>
+  </div>
+  <div class="nav-menu">
+    <div class="nav-item active" data-section="home"><i class="fas fa-home"></i> Beranda</div>
+    <div class="nav-item" data-section="ai"><i class="fas fa-microchip"></i> AI Tools</div>
+    <div class="nav-item" data-section="random"><i class="fas fa-dice-d6"></i> Random</div>
+    <div class="nav-item" data-section="maker"><i class="fas fa-magic"></i> Maker</div>
+    <div class="nav-item" data-section="extra"><i class="fas fa-bolt"></i> Extra</div>
+  </div>
+  <div class="sidebar-footer"><i class="fas fa-shield-alt"></i> encrypted layer</div>
+</aside>
+<div class="main-content">
+  <!-- HOME -->
+  <div id="home-section" class="section active-section">
+    <div class="hero-banner"><img src="https://files.catbox.moe/ya9m8g.png" alt="INO.DIGITAL Home"></div>
+    <div style="text-align: center; margin-top: 0.5rem;">
+      <h1 style="font-size: 2.2rem; background: linear-gradient(125deg,#fff,#0ff); -webkit-background-clip:text; background-clip:text; color:transparent;">INO.DIGITAL</h1>
+      <p style="opacity:0.8; margin-top: 0.3rem;">Next‑gen API Gateway · AI · Image · Random · Creator</p>
+    </div>
+    <div class="stats-widget">
+      <div class="stat-home-card"><i class="fas fa-chart-line"></i><div class="stat-home-number" id="statCalls">16.2K</div><div>Hits Today</div></div>
+      <div class="stat-home-card"><i class="fas fa-cubes"></i><div class="stat-home-number">18</div><div>Endpoints</div></div>
+      <div class="stat-home-card"><i class="fas fa-globe"></i><div class="stat-home-number">99.98%</div><div>Uptime</div></div>
+    </div>
+    <div class="social-home">
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-discord"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-telegram"></i></a>
     </div>
   </div>
-  <div class="overlay" id="overlay"></div>
-  <div class="main-content">
-    <!-- HOME TAB -->
-    <div id="homeTab" class="tab-pane active">
-      <div class="banner"><img src="https://files.catbox.moe/ya9m8g.png" onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=Home';" class="banner-img"><h1>INO.DIGITAL</h1><p>AI-Powered HD Upscaler</p></div>
-      <div class="stats-row"><div class="stat-card"><div class="stat-number" id="totalGen">0</div><div class="stat-label">Total Generate</div></div><div class="stat-card"><div class="stat-number">1.2K</div><div class="stat-label">Active Users</div></div><div class="stat-card"><div class="stat-number">98%</div><div class="stat-label">Kepuasan</div></div></div>
-      <div class="support-section"><div class="support-title"><i class="fas fa-share-alt"></i> Connect & Support</div><div class="social-row"><a href="https://wa.me/6281234567890" class="social-link"><i class="fab fa-whatsapp"></i> WhatsApp</a><a href="https://chat.whatsapp.com/invite" class="social-link"><i class="fab fa-whatsapp"></i> Grup WA</a><a href="https://tiktok.com/@ino.digital" class="social-link"><i class="fab fa-tiktok"></i> TikTok</a><a href="mailto:hello@ino.digital" class="social-link"><i class="fas fa-envelope"></i> Contact Dev</a></div><div class="support-title" style="margin-top:0.8rem;"><i class="fas fa-hand-holding-heart"></i> Donasi</div><div class="social-row"><div class="qr-trigger" id="qrTrigger"><i class="fas fa-qrcode"></i> Tampilkan QR Donasi</div></div></div>
+  <!-- AI TOOLS -->
+  <div id="ai-section" class="section">
+    <div class="category-banner"><img src="https://files.catbox.moe/iyfl5r.png" alt="AI Tools"></div>
+    <div class="card-grid">
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-robot"></i><h3>Blackbox AI</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Prompt (q)</label><input type="text" id="bb_prompt" placeholder="Tanyakan sesuatu..."></div><button id="btn_blackbox"><i class="fas fa-terminal"></i> Generate</button><div class="output-area" id="output_blackbox"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-comment-dots"></i><h3>ChatGPT Free</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Pesan</label><input type="text" id="chat_text" placeholder="Halo AI..."></div><div class="input-group"><label>Model</label><select id="chat_model"><option>chatgpt</option><option>deepseek</option><option>claude</option><option>gemini</option></select></div><button id="btn_chatgpt"><i class="fas fa-message"></i> Kirim</button><div class="output-area" id="output_chatgpt"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-skull"></i><h3>WormGPT</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Prompt</label><input type="text" id="worm_prompt" placeholder="Prompt..."></div><button id="btn_worm"><i class="fas fa-dragon"></i> Execute</button><div class="output-area" id="output_worm"></div></div></div>
     </div>
-
-    <!-- AI TOOLS TAB (HD Upscaler) -->
-    <div id="aiTab" class="tab-pane">
-      <div class="banner" style="margin-bottom:1rem"><img src="https://files.catbox.moe/iyfl5r.png" onerror="this.onerror=null; this.src='https://placehold.co/600x300/0a1a2a/0ff?text=AI+Tools';" class="banner-img"></div>
-      <div class="grid">
-        <div class="card">
-          <div class="card-title"><i class="fas fa-magic"></i> HD Upscaler</div>
-          <div class="quality-row" id="qualitySelector">
-            <span class="quality-btn" data-quality="4x">4x</span>
-            <span class="quality-btn" data-quality="6x">6x</span>
-            <span class="quality-btn" data-quality="8x">8x</span>
-          </div>
-          <div id="hdDropzone" class="upload-area"><i class="fas fa-cloud-upload-alt"></i> Upload image (JPEG/PNG)<input type="file" id="hdFile" accept="image/jpeg,image/png,image/webp" style="display:none"></div>
-          <div id="hdPreview" style="display:none; text-align:center"><img id="hdPreviewImg" class="preview-img" style="cursor:pointer;"></div>
-          <button id="hdUpscaleBtn" disabled>⬆️ Upscale to <span id="selectedQualityLabel">4x</span></button>
-          <div id="hdResult" class="result-box"></div>
-        </div>
-      </div>
+    <h2 class="section-title"><i class="fas fa-camera"></i> Image Processing</h2>
+    <div class="card-grid">
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-expand-alt"></i><h3>Upscale 4K</h3><span class="badge-method">POST</span></div><div class="card-body"><div class="input-group"><label>Upload Gambar</label><input type="file" id="upscale_file" accept="image/*"></div><button id="btn_upscale"><i class="fas fa-magic"></i> Upscale</button><div class="output-area" id="output_upscale"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-star-of-life"></i><h3>HD Upscaler</h3><span class="badge-method">POST</span></div><div class="card-body"><div class="input-group"><label>Gambar</label><input type="file" id="hd_file" accept="image/*"></div><div class="input-group"><label>Kualitas</label><select id="hd_quality"><option>4k</option><option>6K</option><option>8K</option></select></div><button id="btn_hd"><i class="fas fa-highlighter"></i> Spark Upscale</button><div class="output-area" id="output_hd"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-image"></i><h3>Image to Prompt</h3><span class="badge-method">POST</span></div><div class="card-body"><div class="input-group"><label>Gambar</label><input type="file" id="img2prompt_file" accept="image/*"></div><button id="btn_img2prompt"><i class="fas fa-code-branch"></i> Generate</button><div class="output-area" id="output_img2prompt"></div></div></div>
     </div>
-    <footer>INO.DIGITAL — HD Upscaler</footer>
   </div>
-  <div id="qrFullscreen" class="qr-fullscreen"><img id="qrFullImage" src=""><button class="close-fullscreen" id="closeFullscreen">Tutup</button></div>
+  <!-- RANDOM -->
+  <div id="random-section" class="section">
+    <div class="category-banner"><img src="https://files.catbox.moe/2i4bua.png" alt="Random Suite"></div>
+    <div class="card-grid">
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-landmark"></i><h3>Meme Presiden</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_meme_pres"><i class="fas fa-random"></i> Ambil Meme</button><div class="output-area" id="output_meme_pres"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-heart"></i><h3>Random PAP</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_pap"><i class="fas fa-user-secret"></i> Random PAP</button><div class="output-area" id="output_pap"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-desktop"></i><h3>Random Wallpaper</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_wall"><i class="fas fa-images"></i> Ambil Wallpaper</button><div class="output-area" id="output_wall"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-smile-wink"></i><h3>Meme Indonesia</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_meme_id"><i class="fas fa-laugh-squint"></i> Meme ID</button><div class="output-area" id="output_meme_id"></div></div></div>
+    </div>
+  </div>
+  <!-- MAKER -->
+  <div id="maker-section" class="section">
+    <div class="category-banner"><img src="https://files.catbox.moe/h9texf.png" alt="Maker Studio"></div>
+    <div class="card-grid">
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-gamepad"></i><h3>Fake Lobby FF</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Username</label><input type="text" id="ff_user" placeholder="User123"></div><button id="btn_ff"><i class="fas fa-crown"></i> Buat Gold Text</button><div class="output-area" id="output_ff"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-trophy"></i><h3>MLBB Fake Rank</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Username</label><input type="text" id="ml_user" placeholder="ProPlayer"></div><div class="input-group"><label>Rank</label><input type="text" id="ml_rank" placeholder="Mythic Glory"></div><div class="input-group"><label>Border (1-12)</label><select id="ml_border"><option value="1">Border 1</option><option value="2">Border 2</option><option value="3">Border 3</option><option value="4">Border 4</option><option value="5">Border 5</option><option value="6">Border 6</option><option value="7">Border 7</option><option value="8">Border 8</option><option value="9">Border 9</option><option value="10">Border 10</option><option value="11">Border 11</option><option value="12">Border 12</option></select></div><button id="btn_ml"><i class="fas fa-chart-line"></i> Generate Rank</button><div class="output-area" id="output_ml"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-phone-alt"></i><h3>Nokia Chat</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Pengirim</label><input type="text" id="nokia_sender" placeholder="Budi"></div><div class="input-group"><label>Pesan</label><textarea id="nokia_msg" rows="2" placeholder="Halo..."></textarea></div><button id="btn_nokia"><i class="fas fa-comment-dots"></i> Generate</button><div class="output-area" id="output_nokia"></div></div></div>
+    </div>
+  </div>
+  <!-- EXTRA -->
+  <div id="extra-section" class="section">
+    <div class="category-banner"><img src="https://files.catbox.moe/62tsye.png" alt="Extra Tools"></div>
+    <div class="card-grid">
+      <div class="cyber-card"><div class="card-header"><i class="fab fa-whatsapp"></i><h3>WA Channel Reactor</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>Channel URL</label><input type="text" id="wa_url" placeholder="https://chat.whatsapp.com/..."></div><div class="input-group"><label>Emojis (pisah koma)</label><input type="text" id="wa_emojis" placeholder="🔥,❤️,😂"></div><button id="btn_wa"><i class="fas fa-bolt"></i> React Channel</button><div class="output-area" id="output_wa"></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-download"></i><h3>All-in-One Downloader</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>URL</label><input type="text" id="dl_url" placeholder="https://..."></div><button id="btn_dl"><i class="fas fa-cloud-download-alt"></i> Ambil Data</button><div class="output-area" id="output_dl"></div></div></div>
+    </div>
+  </div>
+  <footer>⚡ INO.DIGITAL — semua endpoint terhubung ke serverless functions Vercel</footer>
 </div>
-
-<!-- Modal Zoom -->
-<div id="imageModal" class="image-modal">
-  <button class="close-modal"><i class="fas fa-times"></i></button>
-  <img id="modalImage" src="" alt="Zoom">
-</div>
-
 <script>
-  // ======================= GLOBAL =======================
-  let totalGen = localStorage.getItem('ino_total_gen') ? parseInt(localStorage.getItem('ino_total_gen')) : 2847;
-  document.getElementById('totalGen').innerText = totalGen;
-  function incGen() { totalGen++; document.getElementById('totalGen').innerText = totalGen; localStorage.setItem('ino_total_gen', totalGen); }
-  function showToast(msg, isErr=false, isWarn=false) {
-    let bg = isErr ? '#ff8888' : (isWarn ? '#ffaa66' : '#0ff');
-    let t=document.createElement('div');
-    t.style.cssText='position:fixed;bottom:20px;right:20px;background:#0a141fe6;backdrop-filter:blur(8px);border-left:3px solid '+bg+';padding:6px 12px;border-radius:10px;z-index:2000;font-size:0.75rem;color:white';
-    t.innerHTML=`<i class="fas ${isErr?'fa-times-circle':(isWarn?'fa-exclamation-triangle':'fa-check-circle')}" style="color:${bg}"></i> ${msg}`;
-    document.body.appendChild(t); setTimeout(()=>t.remove(),3000);
+  // API fetch functions – langsung menggunakan path yang sudah di‑rewrite
+  async function apiGet(endpoint, params = {}) {
+    const url = new URL(endpoint, window.location.origin);
+    Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
+    try {
+      const resp = await fetch(url.toString());
+      const text = await resp.text();
+      try { return JSON.parse(text); } catch(e) { return { raw: text, status: resp.status }; }
+    } catch (err) {
+      return { error: true, message: err.message };
+    }
   }
-
-  // Modal Zoom
-  function openModal(imgSrc) {
-    const modal = document.getElementById('imageModal');
-    const modalImg = document.getElementById('modalImage');
-    modalImg.src = imgSrc;
-    modal.style.display = 'flex';
+  async function apiPostFile(endpoint, formData) {
+    try {
+      const resp = await fetch(endpoint, { method: 'POST', body: formData });
+      const text = await resp.text();
+      try { return JSON.parse(text); } catch(e) { return { raw: text, status: resp.status }; }
+    } catch (err) {
+      return { error: true, message: err.message };
+    }
   }
-  function closeModal() {
-    document.getElementById('imageModal').style.display = 'none';
-  }
-  document.querySelector('.close-modal').addEventListener('click', closeModal);
-  document.getElementById('imageModal').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('imageModal')) closeModal();
-  });
-
-  function attachDownload(container) {
-    container.querySelectorAll('.download-btn').forEach(btn=>{
-      btn.addEventListener('click',(e)=>{
-        e.preventDefault();
-        let url=btn.getAttribute('data-url');
-        if(url){ let a=document.createElement('a'); a.href=url; a.download=url.split('/').pop()||'image.jpg'; a.click(); showToast('Download started'); }
-      });
-    });
-    const img = container.querySelector('.result-img');
-    if(img) img.onclick = () => openModal(img.src);
-  }
-
-  // ======================= QUALITY SELECTOR =======================
-  let selectedQuality = '4x';
-  const qualityBtns = document.querySelectorAll('.quality-btn');
-  const selectedQualitySpan = document.getElementById('selectedQualityLabel');
-  qualityBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      qualityBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      selectedQuality = btn.getAttribute('data-quality');
-      selectedQualitySpan.innerText = selectedQuality;
-      // Notifikasi bahwa untuk 6x/8x masih menggunakan 4x karena API terbatas
-      if (selectedQuality !== '4x') {
-        showToast(`⚠️ Pilihan ${selectedQuality} belum tersedia di API. Gambar akan di-upscale ke 4x (kualitas tertinggi).`, false, true);
+  function renderOutput(containerId, data) {
+    const div = document.getElementById(containerId);
+    if(!div) return;
+    let html = '';
+    if(data && typeof data === 'object') {
+      if(data.url || data.image_url || data.link) {
+        const imgUrl = data.url || data.image_url || data.link;
+        html = `<img src="${imgUrl}" class="img-preview" onerror="this.style.display='none'" alt="preview"><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } else if(data.status === 'error' || data.error) {
+        html = `<div style="color:#ffa0a0">⚠️ ${data.message || data.error}</div><pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } else {
+        html = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
       }
-    });
-  });
-  qualityBtns[0].classList.add('active'); // default 4x
-
-  // ======================= HD UPSCALER =======================
-  let selectedHdFile = null;
-  const hdDrop = document.getElementById('hdDropzone'), hdInput = document.getElementById('hdFile'), hdPreviewDiv = document.getElementById('hdPreview'), hdPreviewImg = document.getElementById('hdPreviewImg'), hdBtn = document.getElementById('hdUpscaleBtn');
-  hdDrop.addEventListener('click',()=>hdInput.click());
-  hdInput.addEventListener('change',(e)=>{if(e.target.files[0]) handleHdFile(e.target.files[0]);});
-  ['dragenter','dragover','dragleave','drop'].forEach(ev=>hdDrop.addEventListener(ev,e=>e.preventDefault()));
-  hdDrop.addEventListener('dragover',()=>hdDrop.classList.add('drag-over'));
-  hdDrop.addEventListener('dragleave',()=>hdDrop.classList.remove('drag-over'));
-  hdDrop.addEventListener('drop',(e)=>{e.preventDefault();hdDrop.classList.remove('drag-over');if(e.dataTransfer.files[0]) handleHdFile(e.dataTransfer.files[0]);});
-  function handleHdFile(file){ 
-    if(!file.type.startsWith('image/')) return showToast('Only images',true); 
-    selectedHdFile=file; 
-    const r=new FileReader(); 
-    r.onload=(e)=>{
-      hdPreviewImg.src=e.target.result; 
-      hdPreviewDiv.style.display='block'; 
-      hdBtn.disabled=false;
-      hdPreviewImg.onclick = () => openModal(hdPreviewImg.src);
-    }; 
-    r.readAsDataURL(file); 
+    } else if(typeof data === 'string') {
+      html = `<pre>${data.substring(0, 1000)}</pre>`;
+    } else {
+      html = `<pre>✅ Request terkirim</pre>`;
+    }
+    div.innerHTML = html;
   }
-
-  hdBtn.addEventListener('click',async()=>{
-    if(!selectedHdFile) return;
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const base64 = e.target.result.split(',')[1];
-      const filename = selectedHdFile.name;
-      const resDiv = document.getElementById('hdResult');
-      resDiv.innerHTML = '<span class="loading"></span> Mengupgrade...';
-      try {
-        // Panggil API (hanya 4x, tapi kita tetap kirim parameter quality jika API mendukung di masa depan)
-        const response = await fetch('/api/hdimage', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image: base64, filename, quality: selectedQuality })
-        });
-        const data = await response.json();
-        if (data.status === true && data.result?.url) {
-          const imgUrl = data.result.url;
-          resDiv.innerHTML = `<img src="${imgUrl}" class="result-img"><div class="flex-btns"><button class="download-btn" data-url="${imgUrl}"><i class="fas fa-download"></i> Download</button></div><div style="font-size:0.7rem; margin-top:6px;">Hasil upscale ke ${selectedQuality} (API: 4x)</div>`;
-          attachDownload(resDiv);
-          incGen();
-          if (selectedQuality !== '4x') {
-            showToast(`Hasil ditampilkan dalam kualitas 4x karena API hanya mendukung 4x.`, false, true);
-          }
-        } else {
-          throw new Error(data.message || 'Gagal upscale');
-        }
-      } catch(err) {
-        resDiv.innerHTML = `<span style="color:#ff8888">Error: ${err.message}</span><button class="retry-btn" style="background:rgba(255,100,100,0.2); border:1px solid #ff8888; margin-top:0.5rem; padding:0.2rem 0.6rem; border-radius:1rem; color:#ff8888; cursor:pointer; width:auto;" onclick="hdBtn.click()">🔄 Coba Lagi</button>`;
-      }
+  function setLoading(btnId, outId, msg) {
+    const btn = document.getElementById(btnId);
+    const out = document.getElementById(outId);
+    if(btn) { btn.disabled = true; btn.setAttribute('data-orig', btn.innerHTML); btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processing...'; }
+    if(out) out.innerHTML = `<div><i class="fas fa-circle-notch fa-spin"></i> ${msg}</div>`;
+    return () => {
+      if(btn) { btn.disabled = false; btn.innerHTML = btn.getAttribute('data-orig'); }
     };
-    reader.readAsDataURL(selectedHdFile);
+  }
+  document.querySelectorAll('button').forEach(btn => { if(!btn.getAttribute('data-orig')) btn.setAttribute('data-orig', btn.innerHTML); });
+
+  // ========== ALL ENDPOINTS ==========
+  document.getElementById('btn_blackbox').onclick = async () => {
+    const q = document.getElementById('bb_prompt').value.trim();
+    if(!q) return alert('Prompt diperlukan');
+    const reset = setLoading('btn_blackbox', 'output_blackbox', 'Menghubungi Blackbox AI...');
+    try { const res = await apiGet('/docs/api/ai/blackbox.php', { q }); renderOutput('output_blackbox', res); } catch(e) { renderOutput('output_blackbox', { error: e.message }); } finally { reset(); }
+  };
+  document.getElementById('btn_chatgpt').onclick = async () => {
+    const text = document.getElementById('chat_text').value.trim();
+    const model = document.getElementById('chat_model').value;
+    if(!text) return alert('Pesan kosong');
+    const reset = setLoading('btn_chatgpt', 'output_chatgpt', 'ChatGPT memproses...');
+    try { const res = await apiGet('/docs/api/ai/chat-gpt.php', { text, model }); renderOutput('output_chatgpt', res); } catch(e) { renderOutput('output_chatgpt', { error: e.message }); } finally { reset(); }
+  };
+  document.getElementById('btn_worm').onclick = async () => {
+    const prompt = document.getElementById('worm_prompt').value.trim();
+    if(!prompt) return alert('Prompt diperlukan');
+    const reset = setLoading('btn_worm', 'output_worm', 'WormGPT merespon...');
+    try { const res = await apiGet('/docs/api/ai/worm-gpt.php', { prompt }); renderOutput('output_worm', res); } catch(e) { renderOutput('output_worm', { error: e.message }); } finally { reset(); }
+  };
+  document.getElementById('btn_upscale').onclick = async () => {
+    const file = document.getElementById('upscale_file').files[0];
+    if(!file) return alert('Upload gambar');
+    const fd = new FormData(); fd.append('file', file);
+    const reset = setLoading('btn_upscale', 'output_upscale', 'Upscaling 4K...');
+    try { const res = await apiPostFile('/docs/api/tools/image/upscale.php', fd); renderOutput('output_upscale', res); } catch(e) { renderOutput('output_upscale', { error: e.message }); } finally { reset(); }
+  };
+  document.getElementById('btn_hd').onclick = async () => {
+    const file = document.getElementById('hd_file').files[0];
+    const quality = document.getElementById('hd_quality').value;
+    if(!file) return alert('Upload gambar');
+    const fd = new FormData(); fd.append('file', file); fd.append('quality', quality);
+    const reset = setLoading('btn_hd', 'output_hd', 'SparkPix HD...');
+    try { const res = await apiPostFile('/docs/api/tools/image/hdimage.php', fd); renderOutput('output_hd', res); } catch(e) { renderOutput('output_hd', { error: e.message }); } finally { reset(); }
+  };
+  document.getElementById('btn_img2prompt').onclick = async () => {
+    const file = document.getElementById('img2prompt_file').files[0];
+    if(!file) return alert('Upload gambar');
+    const fd = new FormData(); fd.append('file', file);
+    const reset = setLoading('btn_img2prompt', 'output_img2prompt', 'Menganalisis gambar...');
+    try { const res = await apiPostFile('/docs/api/ai-image/image-2-prompt.php', fd); renderOutput('output_img2prompt', res); } catch(e) { renderOutput('output_img2prompt', { error: e.message }); } finally { reset(); }
+  };
+  async function fetchRandom(endpoint, outId, btnId) {
+    const reset = setLoading(btnId, outId, 'Mengambil random...');
+    try { const res = await apiGet(endpoint); renderOutput(outId, res); } catch(e) { renderOutput(outId, { error: e.message }); } finally { reset(); }
+  }
+  document.getElementById('btn_meme_pres').onclick = () => fetchRandom('/docs/api/random/random-meme-presiden.php', 'output_meme_pres', 'btn_meme_pres');
+  document.getElementById('btn_pap').onclick = () => fetchRandom('/docs/api/random/random-pap.php', 'output_pap', 'btn_pap');
+  document.getElementById('btn_wall').onclick = () => fetchRandom('/docs/api/random/random-wallpaper.php', 'output_wall', 'btn_wall');
+  document.getElementById('btn_meme_id').onclick = () => fetchRandom('/docs/api/random/meme.php', 'output_meme_id', 'btn_meme_id');
+  document.getElementById('btn_ff').onclick = async () => {
+    const username = document.getElementById('ff_user').value.trim();
+    if(!username) return alert('Username FF diperlukan');
+    const reset = setLoading('btn_ff', 'output_ff', 'Membuat lobby FF...');
+    try { const res = await apiGet('/docs/api/maker/fake-lobby-ff.php', { username }); renderOutput('output_ff', res); } catch(e) { renderOutput('output_ff', { error: e.message }); } finally { reset(); }
+  };
+  document.getElementById('btn_ml').onclick = async () => {
+    const username = document.getElementById('ml_user').value.trim();
+    const rank = document.getElementById('ml_rank').value.trim();
+    const border = document.getElementById('ml_border').value;
+    if(!username) return alert('Username MLBB diperlukan');
+    const reset = setLoading('btn_ml', 'output_ml', 'Generate rank MLBB...');
+    try { const res = await apiGet('/docs/api/maker/fake-lobby-ml.php', { username, rank, border }); renderOutput('output_ml', res); } catch(e) { renderOutput('output_ml', { error: e.message }); } finally { reset(); }
+  };
+  document.getElementById('btn_nokia').onclick = async () => {
+    const sender = document.getElementById('nokia_sender').value.trim();
+    const pesan = document.getElementById('nokia_msg').value.trim();
+    if(!sender || !pesan) return alert('Isi pengirim & pesan');
+    const reset = setLoading('btn_nokia', 'output_nokia', 'Membuat chat Nokia...');
+    try { const res = await apiGet('/docs/api/maker/nokia-msg.php', { sender, pesan }); renderOutput('output_nokia', res); } catch(e) { renderOutput('output_nokia', { error: e.message }); } finally { reset(); }
+  };
+  document.getElementById('btn_wa').onclick = async () => {
+    const url = document.getElementById('wa_url').value.trim();
+    const emojis = document.getElementById('wa_emojis').value.trim();
+    if(!url || !emojis) return alert('URL dan emojis diperlukan');
+    const reset = setLoading('btn_wa', 'output_wa', 'Mengirim reaksi WA...');
+    try {
+      const res = await apiGet('/docs/api/tools/react-ch-free.php', { url, emojis, apikey: 'nanasfree' });
+      renderOutput('output_wa', res);
+    } catch(e) { renderOutput('output_wa', { error: e.message }); } finally { reset(); }
+  };
+  document.getElementById('btn_dl').onclick = async () => {
+    const dlUrl = document.getElementById('dl_url').value.trim();
+    if(!dlUrl) return alert('Masukkan URL');
+    const reset = setLoading('btn_dl', 'output_dl', 'Mengunduh data...');
+    try { const res = await apiGet('/docs/api/donwloader/all-in-one.php', { url: dlUrl }); renderOutput('output_dl', res); } catch(e) { renderOutput('output_dl', { error: e.message }); } finally { reset(); }
+  };
+
+  // SIDEBAR
+  const menuBtn = document.getElementById('menuBtn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  function toggleSidebar(open) {
+    if(open) { sidebar.classList.add('open'); overlay.classList.add('active'); }
+    else { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
+  }
+  menuBtn.onclick = () => toggleSidebar(!sidebar.classList.contains('open'));
+  overlay.onclick = () => toggleSidebar(false);
+  const navItems = document.querySelectorAll('.nav-item');
+  const sections = {
+    home: document.getElementById('home-section'),
+    ai: document.getElementById('ai-section'),
+    random: document.getElementById('random-section'),
+    maker: document.getElementById('maker-section'),
+    extra: document.getElementById('extra-section')
+  };
+  function activateSection(sectionId) {
+    Object.values(sections).forEach(sec => sec.classList.remove('active-section'));
+    sections[sectionId].classList.add('active-section');
+    navItems.forEach(item => {
+      if(item.getAttribute('data-section') === sectionId) item.classList.add('active');
+      else item.classList.remove('active');
+    });
+    if(window.innerWidth <= 1023) toggleSidebar(false);
+  }
+  navItems.forEach(item => {
+    item.addEventListener('click', () => activateSection(item.getAttribute('data-section')));
   });
-
-  // QR Donasi
-  const qrTrigger=document.getElementById('qrTrigger'), qrFull=document.getElementById('qrFullscreen'), qrImg=document.getElementById('qrFullImage'), closeQr=document.getElementById('closeFullscreen');
-  qrImg.src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=KOPAY%20NMD%20%3A%20ID1025411950211';
-  qrTrigger.onclick=()=>qrFull.style.display='flex';
-  closeQr.onclick=()=>qrFull.style.display='none';
-  qrFull.onclick=(e)=>{if(e.target===qrFull) qrFull.style.display='none';};
-
-  // Sidebar & tab
-  const menuToggle=document.getElementById('menuToggle'), sidebar=document.getElementById('sidebar'), overlay=document.getElementById('overlay');
-  function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('active'); }
-  function openSidebar(){ sidebar.classList.add('open'); overlay.classList.add('active'); }
-  menuToggle.onclick=()=>{ if(sidebar.classList.contains('open')) closeSidebar(); else openSidebar(); };
-  overlay.onclick=closeSidebar;
-  const navBtns=document.querySelectorAll('.nav-item'), panes=document.querySelectorAll('.tab-pane');
-  navBtns.forEach(btn=>{ btn.onclick=()=>{ let tabId=btn.getAttribute('data-tab')+'Tab'; navBtns.forEach(b=>b.classList.remove('active')); btn.classList.add('active'); panes.forEach(p=>p.classList.remove('active')); document.getElementById(tabId).classList.add('active'); closeSidebar(); }; });
-
-  // Loading style
-  const style=document.createElement('style');
-  style.textContent='.loading{display:inline-block;width:14px;height:14px;border:2px solid #0ff;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.drag-over{border-color:#0ff;background:rgba(0,255,255,0.05)}';
-  document.head.appendChild(style);
+  let callStat = 16200;
+  setInterval(() => {
+    const el = document.getElementById('statCalls');
+    if(el) { callStat += Math.floor(Math.random() * 35); el.innerText = callStat.toLocaleString(); }
+  }, 7000);
 </script>
 </body>
 </html>
