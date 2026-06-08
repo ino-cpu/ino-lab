@@ -1,19 +1,10 @@
 {
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
-    { "source": "/docs/api/ai/blackbox.php", "destination": "/api/ai/blackbox" },
-    { "source": "/docs/api/ai/chat-gpt.php", "destination": "/api/ai/chat-gpt" },
-    { "source": "/docs/api/ai/worm-gpt.php", "destination": "/api/ai/worm-gpt" },
-    { "source": "/docs/api/tools/image/upscale.php", "destination": "/api/tools/image/upscale" },
-    { "source": "/docs/api/tools/image/hdimage.php", "destination": "/api/tools/image/hdimage" },
-    { "source": "/docs/api/ai-image/image-2-prompt.php", "destination": "/api/ai-image/image-2-prompt" },
-    { "source": "/docs/api/random/random-meme-presiden.php", "destination": "/api/random/random-meme-presiden" },
-    { "source": "/docs/api/random/random-pap.php", "destination": "/api/random/random-pap" },
-    { "source": "/docs/api/random/random-wallpaper.php", "destination": "/api/random/random-wallpaper" },
-    { "source": "/docs/api/random/meme.php", "destination": "/api/random/meme" },
-    { "source": "/docs/api/maker/fake-lobby-ff.php", "destination": "/api/maker/fake-lobby-ff" },
-    { "source": "/docs/api/maker/fake-lobby-ml.php", "destination": "/api/maker/fake-lobby-ml" },
-    { "source": "/docs/api/maker/nokia-msg.php", "destination": "/api/maker/nokia-msg" },
-    { "source": "/docs/api/tools/react-ch-free.php", "destination": "/api/tools/react-ch-free" },
-    { "source": "/docs/api/donwloader/all-in-one.php", "destination": "/api/downloader/all-in-one" }
+    { "source": "/api/(.*)", "destination": "/api/$1" }
   ]
 }
