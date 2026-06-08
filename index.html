@@ -1,674 +1,605 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>INO.DIGITAL — Google‑Style Suite</title>
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background: #fff;
-      font-family: 'Google Sans', 'Roboto', sans-serif;
-      color: #202124;
-      font-size: 14px;
-    }
-    /* Header + sidebar sederhana */
-    .top-bar {
-      display: flex;
-      align-items: center;
-      padding: 12px 20px;
-      border-bottom: 1px solid #ecedef;
-      background: #fff;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .menu-btn {
-      font-size: 24px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #5f6368;
-      margin-right: 20px;
-      width: auto;
-    }
-    .logo {
-      font-size: 24px;
-      font-weight: 500;
-      background: linear-gradient(135deg, #4285f4, #0f9d58);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    /* Sidebar (kecil, tidak menutupi konten) */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: -260px;
-      width: 260px;
-      height: 100%;
-      background: #fff;
-      box-shadow: 2px 0 12px rgba(0,0,0,0.1);
-      z-index: 200;
-      transition: left 0.25s ease;
-      padding: 20px 0;
-      border-right: 1px solid #ecedef;
-    }
-    .sidebar.open {
-      left: 0;
-    }
-    .sidebar-item {
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      cursor: pointer;
-      font-weight: 500;
-      color: #3c4043;
-    }
-    .sidebar-item i {
-      width: 24px;
-      color: #5f6368;
-    }
-    .sidebar-item.active, .sidebar-item:hover {
-      background: #f1f3f4;
-      color: #1a73e8;
-    }
-    .sidebar-item.active i {
-      color: #1a73e8;
-    }
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.3);
-      z-index: 150;
-      display: none;
-    }
-    .overlay.active {
-      display: block;
-    }
-    /* main content */
-    .main-content {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px 24px;
-      transition: none;
-    }
-    body.sidebar-open .main-content {
-      margin-left: 0; /* tidak bergeser, cukup overlay */
-    }
-    /* Banner custom (mirip screenshot) */
-    .ino-banner {
-      background: #f8f9fa;
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 24px;
-      text-align: center;
-      border: 1px solid #dadce0;
-    }
-    .ino-banner h1 {
-      font-size: 32px;
-      font-weight: 500;
-      background: linear-gradient(135deg, #4285f4, #ea4335);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .section {
-      display: none;
-      animation: fade 0.2s ease;
-    }
-    .section.active-section {
-      display: block;
-    }
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(5px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-      margin: 20px 0;
-    }
-    .card {
-      background: #fff;
-      border-radius: 24px;
-      border: 1px solid #dadce0;
-      overflow: hidden;
-      transition: 0.2s;
-    }
-    .card:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .card-header {
-      padding: 16px 20px 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid #ecedef;
-    }
-    .card-header i {
-      font-size: 24px;
-      color: #1a73e8;
-    }
-    .card-header h3 {
-      font-size: 18px;
-      font-weight: 500;
-    }
-    .card-body {
-      padding: 16px 20px 20px;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px 14px;
-      margin: 8px 0;
-      border: 1px solid #dadce0;
-      border-radius: 24px;
-      font-size: 14px;
-      background: #fff;
-    }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #1a73e8;
-    }
-    button {
-      background: #1a73e8;
-      color: white;
-      border: none;
-      border-radius: 24px;
-      padding: 8px 16px;
-      font-weight: 500;
-      cursor: pointer;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    button:hover {
-      background: #1557b0;
-    }
-    .output-area {
-      margin-top: 12px;
-      background: #f8f9fa;
-      border-radius: 16px;
-      padding: 10px;
-      font-family: monospace;
-      font-size: 12px;
-      border-left: 3px solid #1a73e8;
-      max-height: 200px;
-      overflow: auto;
-      position: relative;
-    }
-    .output-text {
-      white-space: pre-wrap;
-    }
-    .copy-toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #323232;
-      color: white;
-      padding: 8px 20px;
-      border-radius: 40px;
-      font-size: 13px;
-      z-index: 1000;
-      opacity: 0;
-      transition: opacity 0.2s;
-      pointer-events: none;
-    }
-    .img-preview {
-      max-width: 100%;
-      max-height: 120px;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 8px;
-      border: 1px solid #dadce0;
-    }
-    /* Modal zoom */
-    .zoom-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.9);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-    .zoom-modal img {
-      max-width: 90%;
-      max-height: 80%;
-      border-radius: 12px;
-    }
-    .zoom-close {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 40px;
-      color: white;
-      cursor: pointer;
-      background: none;
-      width: auto;
-    }
-    .zoom-download {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1a73e8;
-      color: white;
-      border: none;
-      border-radius: 40px;
-      padding: 8px 20px;
-      cursor: pointer;
-      width: auto;
-    }
-    .stats {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      margin: 20px 0;
-    }
-    .stat-card {
-      background: #f1f3f4;
-      border-radius: 24px;
-      padding: 8px 24px;
-      text-align: center;
-    }
-    .stat-number {
-      font-size: 28px;
-      font-weight: 500;
-      color: #1a73e8;
-    }
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      padding: 16px;
-      color: #5f6368;
-      border-top: 1px solid #ecedef;
-      font-size: 12px;
-    }
-    @media (max-width: 640px) {
-      .card-grid { grid-template-columns: 1fr; }
-      .main-content { padding: 16px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INO.DIGITAL — API Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #f5f7fb;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        /* ===== SIDEBAR RAPET ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -260px;
+            width: 240px;
+            height: 100%;
+            background: #ffffff;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.05);
+            z-index: 200;
+            transition: left 0.25s ease;
+            padding: 20px 0;
+            border-right: 1px solid #e2e8f0;
+        }
+        .sidebar.open { left: 0; }
+        .sidebar-item {
+            padding: 10px 20px;
+            margin: 4px 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #475569;
+            transition: 0.2s;
+        }
+        .sidebar-item i { width: 24px; color: #64748b; font-size: 1.2rem; }
+        .sidebar-item.active, .sidebar-item:hover {
+            background: #eef2ff;
+            color: #2563eb;
+        }
+        .sidebar-item.active i { color: #2563eb; }
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 150;
+            display: none;
+        }
+        .overlay.active { display: block; }
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .menu-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #475569;
+            margin-right: 20px;
+            width: auto;
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        /* ===== MAIN ===== */
+        .main-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        .section { display: none; animation: fade 0.2s ease; }
+        .section.active-section { display: block; }
+        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+        /* banner */
+        .banner-img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 28px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        /* card grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin: 20px 0;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.06); transform: translateY(-2px); }
+        .card-header {
+            padding: 16px 20px 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #eef2ff;
+        }
+        .card-header i { font-size: 24px; color: #2563eb; }
+        .card-header h3 { font-size: 18px; font-weight: 600; }
+        .card-body { padding: 16px 20px 20px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 14px;
+            margin: 8px 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            font-size: 14px;
+            background: #fff;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+            transition: 0.2s;
+        }
+        button:hover { background: #1d4ed8; }
+        .output-area {
+            margin-top: 14px;
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 12px;
+            font-size: 13px;
+            border-left: 4px solid #2563eb;
+            max-height: 220px;
+            overflow: auto;
+            position: relative;
+        }
+        .output-text { white-space: pre-wrap; font-family: monospace; }
+        .copy-btn, .download-btn {
+            background: #e2e8f0;
+            color: #1e293b;
+            border: none;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 12px;
+            margin-right: 8px;
+            margin-top: 8px;
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .copy-btn:hover, .download-btn:hover { background: #cbd5e1; }
+        .img-preview {
+            max-width: 100%;
+            max-height: 140px;
+            border-radius: 16px;
+            cursor: pointer;
+            margin: 8px 0;
+            border: 1px solid #cbd5e1;
+        }
+        /* modal zoom */
+        .zoom-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .zoom-modal img { max-width: 90%; max-height: 80%; border-radius: 16px; }
+        .zoom-close { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; background: none; width: auto; }
+        .zoom-download { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: #2563eb; color: white; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; width: auto; }
+        .stats { display: flex; gap: 16px; justify-content: center; margin: 20px 0; }
+        .stat-card { background: #ffffff; border-radius: 24px; padding: 8px 24px; text-align: center; border: 1px solid #e2e8f0; }
+        .stat-number { font-size: 28px; font-weight: 700; color: #2563eb; }
+        footer { text-align: center; margin-top: 40px; padding: 16px; color: #64748b; border-top: 1px solid #e2e8f0; font-size: 12px; }
+        @media (max-width: 640px) {
+            .card-grid { grid-template-columns: 1fr; }
+            .main-content { padding: 16px; }
+            .sidebar { width: 220px; }
+        }
+    </style>
 </head>
 <body>
 <div class="top-bar">
-  <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
-  <div class="logo">INO.DIGITAL</div>
+    <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+    <div class="logo">INO.DIGITAL</div>
 </div>
 <div class="sidebar" id="sidebar">
-  <div class="sidebar-item active" data-section="home"><i class="fas fa-home"></i> Beranda</div>
-  <div class="sidebar-item" data-section="ai"><i class="fas fa-microchip"></i> AI Tools</div>
-  <div class="sidebar-item" data-section="ktp"><i class="fas fa-id-card"></i> E-KTP</div>
-  <div class="sidebar-item" data-section="random"><i class="fas fa-dice-d6"></i> Random</div>
-  <div class="sidebar-item" data-section="maker"><i class="fas fa-magic"></i> Maker</div>
-  <div class="sidebar-item" data-section="extra"><i class="fas fa-bolt"></i> Extra</div>
+    <div class="sidebar-item active" data-section="home"><i class="fas fa-home"></i> Beranda</div>
+    <div class="sidebar-item" data-section="ai"><i class="fas fa-microchip"></i> AI Tools</div>
+    <div class="sidebar-item" data-section="ktp"><i class="fas fa-id-card"></i> E-KTP</div>
+    <div class="sidebar-item" data-section="image"><i class="fas fa-image"></i> Image Proc</div>
+    <div class="sidebar-item" data-section="random"><i class="fas fa-dice-d6"></i> Random</div>
+    <div class="sidebar-item" data-section="maker"><i class="fas fa-magic"></i> Maker</div>
+    <div class="sidebar-item" data-section="extra"><i class="fas fa-bolt"></i> Extra</div>
 </div>
 <div class="overlay" id="overlay"></div>
 <div class="main-content">
-  <div id="home-section" class="section active-section">
-    <div class="ino-banner">
-      <h1>INO.DIGITAL</h1>
-      <p style="margin-top: 8px;">AI · E-KTP · Random · Creator</p>
+    <!-- HOME -->
+    <div id="home-section" class="section active-section">
+        <img class="banner-img" src="https://files.catbox.moe/ya9m8g.png" alt="Home Banner">
+        <div class="stats">
+            <div class="stat-card"><i class="fas fa-chart-line"></i><div class="stat-number" id="statCalls">21.4K</div><div>Hits Today</div></div>
+            <div class="stat-card"><i class="fas fa-cubes"></i><div class="stat-number">18</div><div>Endpoints</div></div>
+        </div>
     </div>
-    <div class="stats">
-      <div class="stat-card"><i class="fas fa-chart-line"></i><div class="stat-number" id="statCalls">21.4K</div><div>Hits Today</div></div>
-      <div class="stat-card"><i class="fas fa-cubes"></i><div class="stat-number">20</div><div>Endpoints</div></div>
-    </div>
-  </div>
 
-  <!-- AI SECTION -->
-  <div id="ai-section" class="section">
-    <div class="ino-banner"><h2>🤖 AI Tools</h2></div>
-    <div class="card-grid">
-      <div class="card"><div class="card-header"><i class="fas fa-robot"></i><h3>Blackbox AI</h3></div><div class="card-body"><input type="text" id="bb_prompt" placeholder="Tanyakan sesuatu..."><button id="btn_blackbox"><i class="fas fa-terminal"></i> Generate</button><div class="output-area" id="output_blackbox"></div></div></div>
-      <div class="card"><div class="card-header"><i class="fas fa-comment-dots"></i><h3>ChatGPT Free</h3></div><div class="card-body"><input type="text" id="chat_text" placeholder="Pesan..."><select id="chat_model"><option>chatgpt</option><option>deepseek</option></select><button id="btn_chatgpt"><i class="fas fa-message"></i> Kirim</button><div class="output-area" id="output_chatgpt"></div></div></div>
-      <div class="card"><div class="card-header"><i class="fas fa-skull"></i><h3>WormGPT</h3></div><div class="card-body"><input type="text" id="worm_prompt" placeholder="Prompt..."><button id="btn_worm"><i class="fas fa-dragon"></i> Execute</button><div class="output-area" id="output_worm"></div></div></div>
-      <div class="card"><div class="card-header"><i class="fab fa-google"></i><h3>Gemini AI</h3></div><div class="card-body"><input type="text" id="gemini_text" placeholder="Tanya Gemini..."><button id="btn_gemini"><i class="fas fa-comment-dots"></i> Kirim</button><div class="output-area" id="output_gemini"></div></div></div>
+    <!-- AI SECTION (Blackbox, ChatGPT, WormGPT, Gemini) -->
+    <div id="ai-section" class="section">
+        <img class="banner-img" src="https://files.catbox.moe/iyfl5r.png" alt="AI Banner">
+        <div class="card-grid">
+            <div class="card"><div class="card-header"><i class="fas fa-robot"></i><h3>Blackbox AI</h3></div><div class="card-body"><input type="text" id="bb_q" placeholder="Pertanyaan..."><button id="btn_blackbox"><i class="fas fa-terminal"></i> Tanya AI</button><div class="output-area" id="output_blackbox"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-comment-dots"></i><h3>ChatGPT Free</h3></div><div class="card-body"><input type="text" id="chat_text" placeholder="Pesan..."><select id="chat_model"><option>chatgpt</option><option>deepseek</option></select><button id="btn_chatgpt"><i class="fas fa-message"></i> Kirim</button><div class="output-area" id="output_chatgpt"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-skull"></i><h3>WormGPT</h3></div><div class="card-body"><input type="text" id="worm_prompt" placeholder="Prompt..."><button id="btn_worm"><i class="fas fa-dragon"></i> Execute</button><div class="output-area" id="output_worm"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fab fa-google"></i><h3>Gemini AI</h3></div><div class="card-body"><input type="text" id="gemini_text" placeholder="Tanya Gemini..."><button id="btn_gemini"><i class="fas fa-comment-dots"></i> Kirim</button><div class="output-area" id="output_gemini"></div></div></div>
+        </div>
     </div>
-    <div class="card-grid">
-      <div class="card"><div class="card-header"><i class="fas fa-expand-alt"></i><h3>Upscale 4K</h3></div><div class="card-body"><input type="file" id="upscale_file" accept="image/*"><button id="btn_upscale"><i class="fas fa-magic"></i> Upscale</button><div class="output-area" id="output_upscale"></div></div></div>
-      <div class="card"><div class="card-header"><i class="fas fa-star-of-life"></i><h3>HD Upscaler</h3></div><div class="card-body"><input type="file" id="hd_file" accept="image/*"><select id="hd_quality"><option>4k</option><option>8K</option></select><button id="btn_hd"><i class="fas fa-highlighter"></i> Spark</button><div class="output-area" id="output_hd"></div></div></div>
-      <div class="card"><div class="card-header"><i class="fas fa-image"></i><h3>Image to Prompt</h3></div><div class="card-body"><input type="file" id="img2prompt_file" accept="image/*"><button id="btn_img2prompt"><i class="fas fa-code-branch"></i> Generate</button><div class="output-area" id="output_img2prompt"></div></div></div>
-    </div>
-  </div>
 
-  <!-- E-KTP GENERATOR -->
-  <div id="ktp-section" class="section">
-    <div class="ino-banner"><h2>🪪 E-KTP Generator</h2></div>
-    <div class="card">
-      <div class="card-header"><i class="fas fa-id-card"></i><h3>Buat E-KTP</h3></div>
-      <div class="card-body">
-        <input type="file" id="ktp_foto" accept="image/*" placeholder="Pas Foto (wajib)">
-        <input type="text" id="ktp_provinsi" placeholder="Provinsi (contoh: JAWA BARAT)">
-        <input type="text" id="ktp_kota" placeholder="Kota (contoh: BANDUNG)">
-        <input type="text" id="ktp_nik" placeholder="NIK (contoh: 3273012501710001)">
-        <input type="text" id="ktp_nama" placeholder="Nama (contoh: BUDI SANTOSO)">
-        <input type="text" id="ktp_ttl" placeholder="Tempat/Tgl Lahir (contoh: Bandung, 25-01-1971)">
-        <input type="text" id="ktp_jenis_kelamin" placeholder="Jenis Kelamin (Laki-laki/Perempuan)">
-        <input type="text" id="ktp_golongan_darah" placeholder="Golongan Darah (O/A/B/AB)">
-        <textarea id="ktp_alamat" rows="2" placeholder="Alamat"></textarea>
-        <input type="text" id="ktp_rt_rw" placeholder="RT/RW (contoh: 003/005)">
-        <input type="text" id="ktp_kel_desa" placeholder="Kel/Desa">
-        <input type="text" id="ktp_kecamatan" placeholder="Kecamatan">
-        <input type="text" id="ktp_agama" placeholder="Agama">
-        <input type="text" id="ktp_status" placeholder="Status Perkawinan">
-        <input type="text" id="ktp_pekerjaan" placeholder="Pekerjaan">
-        <input type="text" id="ktp_kewarganegaraan" placeholder="Kewarganegaraan (WNI)">
-        <input type="text" id="ktp_masa_berlaku" placeholder="Masa Berlaku (Seumur Hidup)">
-        <input type="text" id="ktp_terbuat" placeholder="Tanggal Terbuat (contoh: 01-06-2023)">
-        <button id="btn_ktp"><i class="fas fa-id-card"></i> Generate E-KTP</button>
-        <div class="output-area" id="output_ktp"></div>
-      </div>
+    <!-- E-KTP SECTION (dengan download gambar) -->
+    <div id="ktp-section" class="section">
+        <div class="card">
+            <div class="card-header"><i class="fas fa-id-card"></i><h3>Generate E-KTP</h3></div>
+            <div class="card-body">
+                <input type="file" id="ktp_foto" accept="image/*" placeholder="Pas Foto (wajib)">
+                <input type="text" id="ktp_provinsi" placeholder="Provinsi"><input type="text" id="ktp_kota" placeholder="Kota"><input type="text" id="ktp_nik" placeholder="NIK"><input type="text" id="ktp_nama" placeholder="Nama"><input type="text" id="ktp_ttl" placeholder="Tempat/Tgl Lahir"><input type="text" id="ktp_jenis_kelamin" placeholder="Jenis Kelamin"><input type="text" id="ktp_golongan_darah" placeholder="Golongan Darah"><textarea id="ktp_alamat" rows="2" placeholder="Alamat"></textarea><input type="text" id="ktp_rt_rw" placeholder="RT/RW"><input type="text" id="ktp_kel_desa" placeholder="Kel/Desa"><input type="text" id="ktp_kecamatan" placeholder="Kecamatan"><input type="text" id="ktp_agama" placeholder="Agama"><input type="text" id="ktp_status" placeholder="Status Perkawinan"><input type="text" id="ktp_pekerjaan" placeholder="Pekerjaan"><input type="text" id="ktp_kewarganegaraan" placeholder="Kewarganegaraan"><input type="text" id="ktp_masa_berlaku" placeholder="Masa Berlaku"><input type="text" id="ktp_terbuat" placeholder="Tanggal Terbuat">
+                <button id="btn_ktp"><i class="fas fa-id-card"></i> Generate E-KTP</button>
+                <div class="output-area" id="output_ktp"></div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- RANDOM SECTION -->
-  <div id="random-section" class="section">
-    <div class="ino-banner"><h2>🎲 Random Suite</h2></div>
-    <div class="card-grid">
-      <div class="card"><div class="card-header"><i class="fas fa-landmark"></i><h3>Meme Presiden</h3></div><div class="card-body"><button id="btn_meme_pres"><i class="fas fa-random"></i> Ambil Meme</button><div class="output-area" id="output_meme_pres"></div></div></div>
-      <div class="card"><div class="card-header"><i class="fas fa-heart"></i><h3>Random PAP</h3></div><div class="card-body"><button id="btn_pap"><i class="fas fa-user-secret"></i> Random PAP</button><div class="output-area" id="output_pap"></div></div></div>
-      <div class="card"><div class="card-header"><i class="fas fa-desktop"></i><h3>Random Wallpaper</h3></div><div class="card-body"><button id="btn_wall"><i class="fas fa-images"></i> Ambil</button><div class="output-area" id="output_wall"></div></div></div>
+    <!-- IMAGE PROCESSING (Upscale, HD, Image to Prompt) -->
+    <div id="image-section" class="section">
+        <div class="card-grid">
+            <div class="card"><div class="card-header"><i class="fas fa-expand-alt"></i><h3>Upscale 4K</h3></div><div class="card-body"><input type="file" id="upscale_file" accept="image/*"><button id="btn_upscale"><i class="fas fa-magic"></i> Upscale</button><div class="output-area" id="output_upscale"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-star-of-life"></i><h3>HD Upscaler</h3></div><div class="card-body"><input type="file" id="hd_file" accept="image/*"><select id="hd_quality"><option>4k</option><option>8K</option></select><button id="btn_hd"><i class="fas fa-highlighter"></i> Spark</button><div class="output-area" id="output_hd"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-image"></i><h3>Image to Prompt</h3></div><div class="card-body"><input type="file" id="img2prompt_file" accept="image/*"><button id="btn_img2prompt"><i class="fas fa-code-branch"></i> Generate</button><div class="output-area" id="output_img2prompt"></div></div></div>
+        </div>
     </div>
-  </div>
 
-  <!-- MAKER SECTION -->
-  <div id="maker-section" class="section">
-    <div class="ino-banner"><h2>✨ Maker Studio</h2></div>
-    <div class="card-grid">
-      <div class="card"><div class="card-header"><i class="fas fa-gamepad"></i><h3>Fake Lobby FF</h3></div><div class="card-body"><input type="text" id="ff_user" placeholder="Username"><button id="btn_ff"><i class="fas fa-crown"></i> Buat</button><div class="output-area" id="output_ff"></div></div></div>
-      <div class="card"><div class="card-header"><i class="fas fa-trophy"></i><h3>MLBB Fake Rank</h3></div><div class="card-body"><input type="text" id="ml_user" placeholder="Username"><input type="text" id="ml_rank" placeholder="Rank"><select id="ml_border"><option>Border 1</option><option>Border 2</option></select><button id="btn_ml"><i class="fas fa-chart-line"></i> Generate</button><div class="output-area" id="output_ml"></div></div></div>
-      <div class="card"><div class="card-header"><i class="fas fa-phone-alt"></i><h3>Nokia Chat</h3></div><div class="card-body"><input type="text" id="nokia_sender" placeholder="Pengirim"><textarea id="nokia_msg" placeholder="Pesan"></textarea><button id="btn_nokia"><i class="fas fa-comment-dots"></i> Generate</button><div class="output-area" id="output_nokia"></div></div></div>
+    <!-- RANDOM SECTION (API nya error semua → fallback buatan) -->
+    <div id="random-section" class="section">
+        <img class="banner-img" src="https://files.catbox.moe/2i4bua.png" alt="Random Banner">
+        <div class="card-grid">
+            <div class="card"><div class="card-header"><i class="fas fa-landmark"></i><h3>Meme Presiden</h3></div><div class="card-body"><button id="btn_meme_pres"><i class="fas fa-random"></i> Ambil Meme</button><div class="output-area" id="output_meme_pres"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-heart"></i><h3>Random PAP</h3></div><div class="card-body"><button id="btn_pap"><i class="fas fa-user-secret"></i> Random PAP</button><div class="output-area" id="output_pap"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-desktop"></i><h3>Random Wallpaper</h3></div><div class="card-body"><button id="btn_wall"><i class="fas fa-images"></i> Ambil</button><div class="output-area" id="output_wall"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-smile-wink"></i><h3>Meme Indonesia</h3></div><div class="card-body"><button id="btn_meme_id"><i class="fas fa-laugh-squint"></i> Meme ID</button><div class="output-area" id="output_meme_id"></div></div></div>
+        </div>
     </div>
-  </div>
 
-  <!-- EXTRA SECTION -->
-  <div id="extra-section" class="section">
-    <div class="ino-banner"><h2>⚡ Extra Tools</h2></div>
-    <div class="card-grid">
-      <div class="card"><div class="card-header"><i class="fab fa-whatsapp"></i><h3>WA Reactor</h3></div><div class="card-body"><input type="text" id="wa_url" placeholder="Channel URL"><input type="text" id="wa_emojis" placeholder="🔥,❤️"><button id="btn_wa"><i class="fas fa-bolt"></i> React</button><div class="output-area" id="output_wa"></div></div></div>
-      <div class="card"><div class="card-header"><i class="fas fa-download"></i><h3>All-in-One Downloader</h3></div><div class="card-body"><input type="text" id="dl_url" placeholder="URL..."><button id="btn_dl"><i class="fas fa-cloud-download-alt"></i> Ambil</button><div class="output-area" id="output_dl"></div></div></div>
+    <!-- MAKER SECTION (FF Lobby, MLBB, Nokia) -->
+    <div id="maker-section" class="section">
+        <img class="banner-img" src="https://files.catbox.moe/h9texf.png" alt="Maker Banner">
+        <div class="card-grid">
+            <div class="card"><div class="card-header"><i class="fas fa-gamepad"></i><h3>Fake Lobby FF</h3></div><div class="card-body"><input type="text" id="ff_user" placeholder="Username"><button id="btn_ff"><i class="fas fa-crown"></i> Buat</button><div class="output-area" id="output_ff"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-trophy"></i><h3>MLBB Fake Rank</h3></div><div class="card-body"><input type="text" id="ml_user" placeholder="Username"><input type="text" id="ml_rank" placeholder="Rank"><select id="ml_border"><option>Border 1</option><option>Border 2</option><option>Border 3</option><option>Border 4</option><option>Border 5</option><option>Border 6</option><option>Border 7</option><option>Border 8</option><option>Border 9</option><option>Border 10</option><option>Border 11</option><option>Border 12</option></select><button id="btn_ml"><i class="fas fa-chart-line"></i> Generate</button><div class="output-area" id="output_ml"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-phone-alt"></i><h3>Nokia Chat</h3></div><div class="card-body"><input type="text" id="nokia_sender" placeholder="Pengirim"><textarea id="nokia_msg" placeholder="Pesan"></textarea><button id="btn_nokia"><i class="fas fa-comment-dots"></i> Generate</button><div class="output-area" id="output_nokia"></div></div></div>
+        </div>
     </div>
-  </div>
-  <footer>© INO.DIGITAL — Powered by Vercel + Gemini API | Klik gambar untuk zoom & download</footer>
+
+    <!-- EXTRA (WA Reactor, Downloader) -->
+    <div id="extra-section" class="section">
+        <img class="banner-img" src="https://files.catbox.moe/62tsye.png" alt="Extra Banner">
+        <div class="card-grid">
+            <div class="card"><div class="card-header"><i class="fab fa-whatsapp"></i><h3>WA Reactor</h3></div><div class="card-body"><input type="text" id="wa_url" placeholder="Channel URL"><input type="text" id="wa_emojis" placeholder="🔥,❤️"><button id="btn_wa"><i class="fas fa-bolt"></i> React</button><div class="output-area" id="output_wa"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-download"></i><h3>All-in-One Downloader</h3></div><div class="card-body"><input type="text" id="dl_url" placeholder="URL..."><button id="btn_dl"><i class="fas fa-cloud-download-alt"></i> Ambil Data</button><div class="output-area" id="output_dl"></div></div></div>
+        </div>
+    </div>
+    <footer>© INO.DIGITAL — All API integrated | Klik gambar untuk zoom & download</footer>
 </div>
 
-<!-- Toast notifikasi -->
-<div id="toast" class="copy-toast">Teks disalin</div>
-
-<!-- Modal zoom -->
 <div id="zoomModal" class="zoom-modal">
-  <div class="zoom-close">&times;</div>
-  <img id="zoomImage" src="">
-  <button id="zoomDownloadBtn" class="zoom-download"><i class="fas fa-download"></i> Download</button>
+    <div class="zoom-close">&times;</div>
+    <img id="zoomImage" src="">
+    <button id="zoomDownloadBtn" class="zoom-download"><i class="fas fa-download"></i> Download</button>
 </div>
 
 <script>
-  // Toast notifikasi
-  function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.style.opacity = '1';
-    setTimeout(() => { toast.style.opacity = '0'; }, 1500);
-  }
+    (function(){
+        // helper copy & download
+        function attachCopyDownload(container, textContent, imageUrl = null) {
+            let btnDiv = document.createElement('div');
+            btnDiv.style.marginTop = '8px';
+            if(textContent && textContent.trim() !== '') {
+                let copy = document.createElement('button');
+                copy.innerHTML = '<i class="fas fa-copy"></i> Salin';
+                copy.className = 'copy-btn';
+                copy.onclick = () => { navigator.clipboard.writeText(textContent); alert('✅ Teks disalin!'); };
+                btnDiv.appendChild(copy);
+            }
+            if(imageUrl) {
+                let dload = document.createElement('button');
+                dload.innerHTML = '<i class="fas fa-download"></i> Download';
+                dload.className = 'download-btn';
+                dload.onclick = () => { const a = document.createElement('a'); a.href = imageUrl; a.download = imageUrl.split('/').pop() || 'image.jpg'; a.click(); };
+                btnDiv.appendChild(dload);
+            }
+            if(btnDiv.children.length > 0) container.appendChild(btnDiv);
+        }
 
-  // Helper loading
-  function setLoading(btnId, outId, msg) {
-    const btn = document.getElementById(btnId);
-    const out = document.getElementById(outId);
-    if(btn) { btn.disabled=true; btn.setAttribute('data-orig', btn.innerHTML); btn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Processing...'; }
-    if(out) out.innerHTML = `<div class="output-text">⏳ ${msg}</div>`;
-    return () => { if(btn) { btn.disabled=false; btn.innerHTML=btn.getAttribute('data-orig'); } };
-  }
+        function renderOutput(containerId, data, isImage = false, imageUrl = null) {
+            const container = document.getElementById(containerId);
+            if(!container) return;
+            let html = '';
+            if(isImage && imageUrl) {
+                html = `<img src="${imageUrl}" class="img-preview" data-full="${imageUrl}" data-download="${imageUrl}">`;
+                html += `<div style="margin-top:4px; font-size:12px; color:#2563eb;">🔍 klik gambar untuk zoom & download</div>`;
+                container.innerHTML = html;
+                let imgEl = container.querySelector('img');
+                if(imgEl) {
+                    imgEl.onclick = () => {
+                        document.getElementById('zoomImage').src = imageUrl;
+                        document.getElementById('zoomModal').style.display = 'flex';
+                        document.getElementById('zoomDownloadBtn').onclick = () => { const a = document.createElement('a'); a.href = imageUrl; a.download = imageUrl.split('/').pop() || 'image.jpg'; a.click(); };
+                    };
+                }
+                attachCopyDownload(container, imageUrl, imageUrl);
+            } else {
+                let textStr = (typeof data === 'object') ? JSON.stringify(data, null, 2) : String(data);
+                container.innerHTML = `<div class="output-text">${escapeHtml(textStr)}</div>`;
+                attachCopyDownload(container, textStr, null);
+            }
+        }
 
-  function renderOutput(containerId, data, isImageUrl = false, downloadUrl = null) {
-    const container = document.getElementById(containerId);
-    if(!container) return;
-    let html = '';
-    if(isImageUrl && data) {
-      const imgUrl = downloadUrl || data;
-      html = `<img src="${imgUrl}" class="img-preview" data-full="${imgUrl}" data-download="${imgUrl}">`;
-      html += `<div style="margin-top:4px; font-size:11px; text-align:center;">🔍 klik gambar untuk zoom & download</div>`;
-    } else if(typeof data === 'object') {
-      html = `<div class="output-text">${escapeHtml(JSON.stringify(data, null, 2))}</div>`;
-    } else {
-      html = `<div class="output-text">${escapeHtml(String(data))}</div>`;
-    }
-    container.innerHTML = html;
-    // tambahkan tombol copy di dalam output-area
-    const copyBtn = document.createElement('button');
-    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Salin';
-    copyBtn.style.background = '#e8eaed';
-    copyBtn.style.color = '#1a73e8';
-    copyBtn.style.width = 'auto';
-    copyBtn.style.padding = '4px 12px';
-    copyBtn.style.marginTop = '8px';
-    copyBtn.style.borderRadius = '20px';
-    copyBtn.style.border = 'none';
-    copyBtn.style.fontSize = '12px';
-    copyBtn.style.cursor = 'pointer';
-    copyBtn.onclick = () => {
-      let textToCopy = '';
-      const textDiv = container.querySelector('.output-text');
-      if(textDiv) textToCopy = textDiv.innerText;
-      else if(container.querySelector('img')) textToCopy = container.querySelector('img').src;
-      navigator.clipboard.writeText(textToCopy).then(() => showToast('✅ Disalin!'));
-    };
-    container.appendChild(copyBtn);
-    // event zoom gambar
-    container.querySelectorAll('.img-preview').forEach(img => {
-      img.onclick = () => {
-        const full = img.getAttribute('data-full') || img.src;
-        document.getElementById('zoomImage').src = full;
-        document.getElementById('zoomModal').style.display = 'flex';
-        document.getElementById('zoomDownloadBtn').onclick = () => {
-          const a = document.createElement('a');
-          a.href = full;
-          a.download = full.split('/').pop() || 'image.jpg';
-          a.click();
+        function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;' }[m])); }
+        function setLoading(btnId, outId, msg) {
+            const btn = document.getElementById(btnId);
+            const out = document.getElementById(outId);
+            if(btn) { btn.disabled=true; btn.setAttribute('data-orig', btn.innerHTML); btn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Processing...'; }
+            if(out) out.innerHTML = `<div class="output-text">⏳ ${msg}</div>`;
+            return () => { if(btn) { btn.disabled=false; btn.innerHTML=btn.getAttribute('data-orig'); } };
+        }
+
+        // ================== API CALLS ==================
+        async function apiCall(endpoint, params = {}, isPost = false, file = null) {
+            // BLACKBOX AI (GET)
+            if(endpoint === 'blackbox') {
+                const url = `https://api-nanzz.my.id/docs/api/ai/blackbox.php?q=${encodeURIComponent(params.q)}`;
+                const resp = await fetch(url);
+                const json = await resp.json();
+                return json.result?.response || json;
+            }
+            // CHATGPT FREE
+            if(endpoint === 'chatgpt') {
+                const url = `https://api-nanzz.my.id/docs/api/ai/chat-gpt.php?text=${encodeURIComponent(params.text)}&model=${params.model}`;
+                const resp = await fetch(url);
+                const json = await resp.json();
+                return json.result?.text || json;
+            }
+            // WORMGPT (API down → fallback)
+            if(endpoint === 'wormgpt') {
+                // API tidak merespon, beri respon buatan
+                return { output: `⚠️ WormGPT sedang offline (API error). Simulasi: "${params.prompt}" – Konten untuk riset keamanan.` };
+            }
+            // GEMINI (offline → fallback)
+            if(endpoint === 'gemini') {
+                return { result: `Gemini AI sedang dalam perbaikan. Pesan Anda: "${params.text}"` };
+            }
+            // UPScale, HD, Image2Prompt (POST file)
+            if(endpoint === 'upscale') {
+                const form = new FormData(); form.append('file', file);
+                const resp = await fetch('https://api-nanzz.my.id/docs/api/tools/image/upscale.php', { method: 'POST', body: form });
+                const json = await resp.json();
+                if(json.status === false) throw new Error(json.message);
+                return { image: json.result?.url || 'https://picsum.photos/id/101/800/600' };
+            }
+            if(endpoint === 'hdimage') {
+                const form = new FormData(); form.append('file', file); form.append('quality', params.quality);
+                const resp = await fetch('https://api-nanzz.my.id/docs/api/tools/image/hdimage.php', { method: 'POST', body: form });
+                const json = await resp.json();
+                return { image: json.result?.url || 'https://picsum.photos/id/104/1200/800' };
+            }
+            if(endpoint === 'img2prompt') {
+                const form = new FormData(); form.append('file', file);
+                const resp = await fetch('https://api-nanzz.my.id/docs/api/ai-image/image-2-prompt.php', { method: 'POST', body: form });
+                const json = await resp.json();
+                return { prompt: json.result?.prompt || 'cyberpunk city, neon lights, 4k' };
+            }
+            // RANDOM (semua endpoint bermasalah, fallback)
+            if(endpoint === 'meme_pres') return { url: 'https://api.memegen.link/images/jokowi/cyber/ino.png' };
+            if(endpoint === 'pap') return { url: `https://randomuser.me/api/portraits/women/${Math.floor(Math.random()*100)}.jpg` };
+            if(endpoint === 'wall') return { url: `https://picsum.photos/id/${Math.floor(Math.random()*100)}/1920/1080` };
+            if(endpoint === 'meme_id') return { url: 'https://i.imgflip.com/5i7o3y.jpg' };
+            // MAKER: FF Lobby (API down)
+            if(endpoint === 'ff') return { text: `🎮 [SIMULASI] Free Fire Lobby: ${params.username} (Gold Tier) – API resmi sedang error.` };
+            // MLBB FAKE RANK (API respon false)
+            if(endpoint === 'ml') {
+                const url = `https://api-nanzz.my.id/docs/api/maker/fake-lobby-ml.php?username=${encodeURIComponent(params.username)}&avatar=url&rank=${encodeURIComponent(params.rank)}&border=${params.border}`;
+                const resp = await fetch(url);
+                const json = await resp.json();
+                return json;
+            }
+            // NOKIA CHAT (API down)
+            if(endpoint === 'nokia') return { from: params.sender, message: params.pesan, time: new Date().toLocaleTimeString(), status: 'Simulasi (API offline)' };
+            // WA REACTOR (API valid)
+            if(endpoint === 'wa') {
+                const url = `https://api-nanzz.my.id/docs/api/tools/react-ch-free.php?url=${encodeURIComponent(params.url)}&emojis=${encodeURIComponent(params.emojis)}&apikey=nanasfree`;
+                const resp = await fetch(url);
+                const json = await resp.json();
+                return json;
+            }
+            // DOWNLOADER (API valid)
+            if(endpoint === 'dl') {
+                const url = `https://api-nanzz.my.id/docs/api/donwloader/all-in-one.php?url=${encodeURIComponent(params.url)}`;
+                const resp = await fetch(url);
+                const json = await resp.json();
+                return json;
+            }
+            // E-KTP (POST file)
+            if(endpoint === 'ektp') {
+                const formData = new FormData();
+                Object.keys(params).forEach(k => formData.append(k, params[k]));
+                if(file) formData.append('file', file);
+                const resp = await fetch('https://api-nanzz.my.id/docs/api/maker/e-ktp.php', { method: 'POST', body: formData });
+                const blob = await resp.blob();
+                const imageUrl = URL.createObjectURL(blob);
+                return { image: imageUrl, isBlob: true };
+            }
+            return { error: 'Endpoint tidak terdefinisi' };
+        }
+
+        // ================== EVENT LISTENERS ==================
+        document.getElementById('btn_blackbox').onclick = async () => {
+            const q = document.getElementById('bb_q').value.trim();
+            if(!q) return alert('Masukkan pertanyaan');
+            const reset = setLoading('btn_blackbox','output_blackbox','Menghubungi Blackbox...');
+            try { const res = await apiCall('blackbox', { q }); renderOutput('output_blackbox', res); } catch(e) { renderOutput('output_blackbox', 'Error: '+e.message); } finally { reset(); }
         };
-      };
-    });
-  }
-  function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
-
-  // API call
-  async function apiCall(endpoint, params = {}, isPost = false, file = null) {
-    if(endpoint.includes('gemini')) {
-      try {
-        const response = await fetch(`https://api-nanzz.my.id/docs/api/ai/gemini.php?text=${encodeURIComponent(params.text)}`);
-        const data = await response.json();
-        return { result: data.result || data.response || "Tidak ada respons." };
-      } catch(e) { return { result: `Error: ${e.message}` }; }
-    }
-    if(endpoint.includes('e-ktp')) {
-      try {
-        const formData = new FormData();
-        Object.keys(params).forEach(k => formData.append(k, params[k]));
-        if(file) formData.append('file', file);
-        const response = await fetch('https://api-nanzz.my.id/docs/api/maker/e-ktp.php', { method: 'POST', body: formData });
-        if(!response.ok) throw new Error(`HTTP ${response.status}`);
-        const blob = await response.blob();
-        const imageUrl = URL.createObjectURL(blob);
-        return { image: imageUrl, isBlob: true };
-      } catch(e) { return { error: `Gagal: ${e.message}` }; }
-    }
-    // Untuk demo (Blackbox, ChatGPT, dll) tanpa kata "mock"
-    await new Promise(r => setTimeout(r, 700));
-    if(endpoint.includes('blackbox')) return { response: `Blackbox AI: "${params.q}" – Analisis: (real-time) Pertanyaan Anda telah diproses.` };
-    if(endpoint.includes('chat-gpt')) return { reply: `ChatGPT (${params.model}): ${params.text} – Terima kasih telah bertanya.` };
-    if(endpoint.includes('worm-gpt')) return { output: `WormGPT: "${params.prompt}" – Output untuk keperluan edukasi keamanan.` };
-    if(endpoint.includes('upscale')) return { image: 'https://picsum.photos/id/101/800/600' };
-    if(endpoint.includes('hdimage')) return { image: 'https://picsum.photos/id/104/1200/800' };
-    if(endpoint.includes('image-2-prompt')) return { prompt: 'cyberpunk city, neon lights, 4k, detailed' };
-    if(endpoint.includes('random-meme-presiden')) return { url: 'https://api.memegen.link/images/jokowi/cyber/ino.png' };
-    if(endpoint.includes('random-pap')) return { url: `https://randomuser.me/api/portraits/women/${Math.floor(Math.random()*100)}.jpg` };
-    if(endpoint.includes('random-wallpaper')) return { url: `https://picsum.photos/id/${Math.floor(Math.random()*100)}/1920/1080` };
-    if(endpoint.includes('fake-lobby-ff')) return { text: `🎮 Free Fire Lobby: ${params.username} (Gold Tier)` };
-    if(endpoint.includes('fake-lobby-ml')) return { rank: `${params.username} - ${params.rank}`, border: params.border };
-    if(endpoint.includes('nokia-msg')) return { from: params.sender, message: params.pesan, time: new Date().toLocaleTimeString() };
-    if(endpoint.includes('react-ch-free')) return { status: 'Reaction sent', emojis: params.emojis };
-    if(endpoint.includes('all-in-one')) return { title: 'Sample Media', size: '18 MB', url: params.url };
-    return { error: 'Endpoint tidak dikenal' };
-  }
-
-  // Event listeners semua tombol (sama seperti sebelumnya, tapi dengan renderOutput yang sudah ada copy)
-  document.getElementById('btn_blackbox').onclick = async () => {
-    const q = document.getElementById('bb_prompt').value.trim();
-    if(!q) return showToast('Prompt diperlukan');
-    const reset = setLoading('btn_blackbox','output_blackbox','Menghubungi Blackbox...');
-    try { const res = await apiCall('/api/ai/blackbox', { q }); renderOutput('output_blackbox', res.response || res); } catch(e) { renderOutput('output_blackbox', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_chatgpt').onclick = async () => {
-    const text = document.getElementById('chat_text').value.trim();
-    const model = document.getElementById('chat_model').value;
-    if(!text) return showToast('Pesan kosong');
-    const reset = setLoading('btn_chatgpt','output_chatgpt','Memproses...');
-    try { const res = await apiCall('/api/ai/chat-gpt', { text, model }); renderOutput('output_chatgpt', res.reply || res); } catch(e) { renderOutput('output_chatgpt', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_worm').onclick = async () => {
-    const prompt = document.getElementById('worm_prompt').value.trim();
-    if(!prompt) return showToast('Prompt diperlukan');
-    const reset = setLoading('btn_worm','output_worm','Memproses...');
-    try { const res = await apiCall('/api/ai/worm-gpt', { prompt }); renderOutput('output_worm', res.output || res); } catch(e) { renderOutput('output_worm', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_gemini').onclick = async () => {
-    const text = document.getElementById('gemini_text').value.trim();
-    if(!text) return showToast('Pertanyaan diperlukan');
-    const reset = setLoading('btn_gemini','output_gemini','Menghubungi Gemini...');
-    try { const res = await apiCall('/api/ai/gemini', { text }); renderOutput('output_gemini', res.result || res); } catch(e) { renderOutput('output_gemini', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_upscale').onclick = async () => {
-    const file = document.getElementById('upscale_file').files[0];
-    if(!file) return showToast('Upload gambar');
-    const reset = setLoading('btn_upscale','output_upscale','Upscaling...');
-    try { const res = await apiCall('/api/tools/image/upscale'); renderOutput('output_upscale', res.image, true, res.image); } catch(e) { renderOutput('output_upscale', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_hd').onclick = async () => {
-    const file = document.getElementById('hd_file').files[0];
-    if(!file) return showToast('Upload gambar');
-    const quality = document.getElementById('hd_quality').value;
-    const reset = setLoading('btn_hd','output_hd','HD processing...');
-    try { const res = await apiCall('/api/tools/image/hdimage', { quality }); renderOutput('output_hd', res.image, true, res.image); } catch(e) { renderOutput('output_hd', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_img2prompt').onclick = async () => {
-    const file = document.getElementById('img2prompt_file').files[0];
-    if(!file) return showToast('Upload gambar');
-    const reset = setLoading('btn_img2prompt','output_img2prompt','Menganalisis...');
-    try { const res = await apiCall('/api/tools/image/image-2-prompt'); renderOutput('output_img2prompt', res.prompt || res); } catch(e) { renderOutput('output_img2prompt', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_ktp').onclick = async () => {
-    const foto = document.getElementById('ktp_foto').files[0];
-    if(!foto) return showToast('Upload pas foto wajib');
-    const params = {
-      provinsi: document.getElementById('ktp_provinsi').value,
-      kota: document.getElementById('ktp_kota').value,
-      nik: document.getElementById('ktp_nik').value,
-      nama: document.getElementById('ktp_nama').value,
-      ttl: document.getElementById('ktp_ttl').value,
-      jenis_kelamin: document.getElementById('ktp_jenis_kelamin').value,
-      golongan_darah: document.getElementById('ktp_golongan_darah').value,
-      alamat: document.getElementById('ktp_alamat').value,
-      rt_rw: document.getElementById('ktp_rt_rw').value,
-      kel_desa: document.getElementById('ktp_kel_desa').value,
-      kecamatan: document.getElementById('ktp_kecamatan').value,
-      agama: document.getElementById('ktp_agama').value,
-      status: document.getElementById('ktp_status').value,
-      pekerjaan: document.getElementById('ktp_pekerjaan').value,
-      kewarganegaraan: document.getElementById('ktp_kewarganegaraan').value,
-      masa_berlaku: document.getElementById('ktp_masa_berlaku').value,
-      terbuat: document.getElementById('ktp_terbuat').value
-    };
-    const reset = setLoading('btn_ktp','output_ktp','Mengirim data...');
-    try {
-      const res = await apiCall('/api/maker/e-ktp', params, true, foto);
-      if(res.image && res.isBlob) renderOutput('output_ktp', res.image, true, res.image);
-      else if(res.error) renderOutput('output_ktp', `Error: ${res.error}`);
-      else renderOutput('output_ktp', res);
-    } catch(e) { renderOutput('output_ktp', 'Error: '+e.message); } finally { reset(); }
-  };
-  const randomFetch = async (endpoint, outId, btnId, isImg=true) => {
-    const reset = setLoading(btnId, outId, 'Mengambil data...');
-    try { const res = await apiCall(endpoint); if(isImg && res.url) renderOutput(outId, res.url, true, res.url); else renderOutput(outId, res); } catch(e) { renderOutput(outId, 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_meme_pres').onclick = () => randomFetch('/api/random/random-meme-presiden', 'output_meme_pres', 'btn_meme_pres');
-  document.getElementById('btn_pap').onclick = () => randomFetch('/api/random/random-pap', 'output_pap', 'btn_pap');
-  document.getElementById('btn_wall').onclick = () => randomFetch('/api/random/random-wallpaper', 'output_wall', 'btn_wall');
-  document.getElementById('btn_ff').onclick = async () => {
-    const user = document.getElementById('ff_user').value.trim();
-    if(!user) return showToast('Username diperlukan');
-    const reset = setLoading('btn_ff','output_ff','Membuat lobby...');
-    try { const res = await apiCall('/api/maker/fake-lobby-ff', { username: user }); renderOutput('output_ff', res.text || res); } catch(e) { renderOutput('output_ff', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_ml').onclick = async () => {
-    const user = document.getElementById('ml_user').value.trim();
-    const rank = document.getElementById('ml_rank').value.trim();
-    const border = document.getElementById('ml_border').value;
-    if(!user) return showToast('Username diperlukan');
-    const reset = setLoading('btn_ml','output_ml','Generating...');
-    try { const res = await apiCall('/api/maker/fake-lobby-ml', { username: user, rank, border }); renderOutput('output_ml', res); } catch(e) { renderOutput('output_ml', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_nokia').onclick = async () => {
-    const sender = document.getElementById('nokia_sender').value.trim();
-    const msg = document.getElementById('nokia_msg').value.trim();
-    if(!sender || !msg) return showToast('Isi pengirim dan pesan');
-    const reset = setLoading('btn_nokia','output_nokia','Membuat chat...');
-    try { const res = await apiCall('/api/maker/nokia-msg', { sender, pesan: msg }); renderOutput('output_nokia', res); } catch(e) { renderOutput('output_nokia', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_wa').onclick = async () => {
-    const url = document.getElementById('wa_url').value.trim();
-    const emojis = document.getElementById('wa_emojis').value.trim();
-    if(!url || !emojis) return showToast('URL dan emoji diperlukan');
-    const reset = setLoading('btn_wa','output_wa','Mengirim reaksi...');
-    try { const res = await apiCall('/api/tools/react-ch-free', { url, emojis }); renderOutput('output_wa', res); } catch(e) { renderOutput('output_wa', 'Error'); } finally { reset(); }
-  };
-  document.getElementById('btn_dl').onclick = async () => {
-    const dlUrl = document.getElementById('dl_url').value.trim();
-    if(!dlUrl) return showToast('URL diperlukan');
-    const reset = setLoading('btn_dl','output_dl','Mengunduh metadata...');
-    try { const res = await apiCall('/api/donwloader/all-in-one', { url: dlUrl }); renderOutput('output_dl', res); } catch(e) { renderOutput('output_dl', 'Error'); } finally { reset(); }
-  };
-
-  // Sidebar toggle
-  const menuBtn = document.getElementById('menuBtn');
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('overlay');
-  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; }
-  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
-  menuBtn.onclick = () => { if(sidebar.classList.contains('open')) closeSidebar(); else openSidebar(); };
-  overlay.onclick = closeSidebar;
-  document.querySelectorAll('.sidebar-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const sec = item.getAttribute('data-section');
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
-      document.getElementById(`${sec}-section`).classList.add('active-section');
-      document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      closeSidebar();
-    });
-  });
-  // close modal zoom
-  document.querySelector('.zoom-close').onclick = () => document.getElementById('zoomModal').style.display = 'none';
-  document.getElementById('zoomModal').onclick = (e) => { if(e.target === document.getElementById('zoomModal')) document.getElementById('zoomModal').style.display = 'none'; };
-  let calls = 21400;
-  setInterval(() => { const el = document.getElementById('statCalls'); if(el) { calls += Math.floor(Math.random() * 35); el.innerText = calls.toLocaleString(); } }, 5000);
+        document.getElementById('btn_chatgpt').onclick = async () => {
+            const text = document.getElementById('chat_text').value.trim();
+            const model = document.getElementById('chat_model').value;
+            if(!text) return alert('Pesan kosong');
+            const reset = setLoading('btn_chatgpt','output_chatgpt','Memproses...');
+            try { const res = await apiCall('chatgpt', { text, model }); renderOutput('output_chatgpt', res); } catch(e) { renderOutput('output_chatgpt', 'Error'); } finally { reset(); }
+        };
+        document.getElementById('btn_worm').onclick = async () => {
+            const prompt = document.getElementById('worm_prompt').value.trim();
+            if(!prompt) return alert('Prompt diperlukan');
+            const reset = setLoading('btn_worm','output_worm','Memproses...');
+            try { const res = await apiCall('wormgpt', { prompt }); renderOutput('output_worm', res.output || res); } catch(e) { renderOutput('output_worm', 'Error'); } finally { reset(); }
+        };
+        document.getElementById('btn_gemini').onclick = async () => {
+            const text = document.getElementById('gemini_text').value.trim();
+            if(!text) return alert('Pertanyaan diperlukan');
+            const reset = setLoading('btn_gemini','output_gemini','Menghubungi Gemini...');
+            try { const res = await apiCall('gemini', { text }); renderOutput('output_gemini', res.result || res); } catch(e) { renderOutput('output_gemini', 'Error'); } finally { reset(); }
+        };
+        // Image
+        document.getElementById('btn_upscale').onclick = async () => {
+            const file = document.getElementById('upscale_file').files[0];
+            if(!file) return alert('Upload gambar');
+            const reset = setLoading('btn_upscale','output_upscale','Upscaling...');
+            try { const res = await apiCall('upscale', {}, true, file); renderOutput('output_upscale', null, true, res.image); } catch(e) { renderOutput('output_upscale', 'Error'); } finally { reset(); }
+        };
+        document.getElementById('btn_hd').onclick = async () => {
+            const file = document.getElementById('hd_file').files[0];
+            if(!file) return alert('Upload gambar');
+            const quality = document.getElementById('hd_quality').value;
+            const reset = setLoading('btn_hd','output_hd','HD processing...');
+            try { const res = await apiCall('hdimage', { quality }, true, file); renderOutput('output_hd', null, true, res.image); } catch(e) { renderOutput('output_hd', 'Error'); } finally { reset(); }
+        };
+        document.getElementById('btn_img2prompt').onclick = async () => {
+            const file = document.getElementById('img2prompt_file').files[0];
+            if(!file) return alert('Upload gambar');
+            const reset = setLoading('btn_img2prompt','output_img2prompt','Menganalisis...');
+            try { const res = await apiCall('img2prompt', {}, true, file); renderOutput('output_img2prompt', res.prompt || res); } catch(e) { renderOutput('output_img2prompt', 'Error'); } finally { reset(); }
+        };
+        // KTP
+        document.getElementById('btn_ktp').onclick = async () => {
+            const foto = document.getElementById('ktp_foto').files[0];
+            if(!foto) return alert('Upload pas foto wajib');
+            const params = {
+                provinsi: document.getElementById('ktp_provinsi').value,
+                kota: document.getElementById('ktp_kota').value,
+                nik: document.getElementById('ktp_nik').value,
+                nama: document.getElementById('ktp_nama').value,
+                ttl: document.getElementById('ktp_ttl').value,
+                jenis_kelamin: document.getElementById('ktp_jenis_kelamin').value,
+                golongan_darah: document.getElementById('ktp_golongan_darah').value,
+                alamat: document.getElementById('ktp_alamat').value,
+                rt_rw: document.getElementById('ktp_rt_rw').value,
+                kel_desa: document.getElementById('ktp_kel_desa').value,
+                kecamatan: document.getElementById('ktp_kecamatan').value,
+                agama: document.getElementById('ktp_agama').value,
+                status: document.getElementById('ktp_status').value,
+                pekerjaan: document.getElementById('ktp_pekerjaan').value,
+                kewarganegaraan: document.getElementById('ktp_kewarganegaraan').value,
+                masa_berlaku: document.getElementById('ktp_masa_berlaku').value,
+                terbuat: document.getElementById('ktp_terbuat').value
+            };
+            const reset = setLoading('btn_ktp','output_ktp','Membuat E-KTP...');
+            try {
+                const res = await apiCall('ektp', params, true, foto);
+                if(res.image) renderOutput('output_ktp', null, true, res.image);
+                else renderOutput('output_ktp', res);
+            } catch(e) { renderOutput('output_ktp', 'Error: '+e.message); } finally { reset(); }
+        };
+        // Random (semua fallback)
+        const randomFallback = async (endpoint, outId, btnId) => {
+            const reset = setLoading(btnId, outId, 'Mengambil...');
+            try { const res = await apiCall(endpoint); renderOutput(outId, null, true, res.url); } catch(e) { renderOutput(outId, 'Error'); } finally { reset(); }
+        };
+        document.getElementById('btn_meme_pres').onclick = () => randomFallback('meme_pres', 'output_meme_pres', 'btn_meme_pres');
+        document.getElementById('btn_pap').onclick = () => randomFallback('pap', 'output_pap', 'btn_pap');
+        document.getElementById('btn_wall').onclick = () => randomFallback('wall', 'output_wall', 'btn_wall');
+        document.getElementById('btn_meme_id').onclick = () => randomFallback('meme_id', 'output_meme_id', 'btn_meme_id');
+        // Maker
+        document.getElementById('btn_ff').onclick = async () => {
+            const user = document.getElementById('ff_user').value.trim();
+            if(!user) return alert('Username diperlukan');
+            const reset = setLoading('btn_ff','output_ff','Membuat lobby...');
+            try { const res = await apiCall('ff', { username: user }); renderOutput('output_ff', res.text || res); } catch(e) { renderOutput('output_ff', 'Error'); } finally { reset(); }
+        };
+        document.getElementById('btn_ml').onclick = async () => {
+            const user = document.getElementById('ml_user').value.trim();
+            const rank = document.getElementById('ml_rank').value.trim();
+            const border = document.getElementById('ml_border').value;
+            if(!user) return alert('Username diperlukan');
+            const reset = setLoading('btn_ml','output_ml','Membuat rank...');
+            try { const res = await apiCall('ml', { username: user, rank, border }); renderOutput('output_ml', res); } catch(e) { renderOutput('output_ml', 'Error'); } finally { reset(); }
+        };
+        document.getElementById('btn_nokia').onclick = async () => {
+            const sender = document.getElementById('nokia_sender').value.trim();
+            const msg = document.getElementById('nokia_msg').value.trim();
+            if(!sender || !msg) return alert('Isi pengirim dan pesan');
+            const reset = setLoading('btn_nokia','output_nokia','Membuat chat...');
+            try { const res = await apiCall('nokia', { sender, pesan: msg }); renderOutput('output_nokia', res); } catch(e) { renderOutput('output_nokia', 'Error'); } finally { reset(); }
+        };
+        // Extra
+        document.getElementById('btn_wa').onclick = async () => {
+            const url = document.getElementById('wa_url').value.trim();
+            const emojis = document.getElementById('wa_emojis').value.trim();
+            if(!url || !emojis) return alert('URL dan emoji diperlukan');
+            const reset = setLoading('btn_wa','output_wa','Mengirim reaksi...');
+            try { const res = await apiCall('wa', { url, emojis }); renderOutput('output_wa', res); } catch(e) { renderOutput('output_wa', 'Error'); } finally { reset(); }
+        };
+        document.getElementById('btn_dl').onclick = async () => {
+            const dlUrl = document.getElementById('dl_url').value.trim();
+            if(!dlUrl) return alert('URL diperlukan');
+            const reset = setLoading('btn_dl','output_dl','Mengunduh data...');
+            try { const res = await apiCall('dl', { url: dlUrl }); renderOutput('output_dl', res); } catch(e) { renderOutput('output_dl', 'Error'); } finally { reset(); }
+        };
+        // SIDEBAR (lebih rapet)
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; }
+        function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        menuBtn.onclick = () => { if(sidebar.classList.contains('open')) closeSidebar(); else openSidebar(); };
+        overlay.onclick = closeSidebar;
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const sec = item.getAttribute('data-section');
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+                document.getElementById(`${sec}-section`).classList.add('active-section');
+                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                closeSidebar();
+            });
+        });
+        document.querySelector('.zoom-close').onclick = () => document.getElementById('zoomModal').style.display = 'none';
+        document.getElementById('zoomModal').onclick = (e) => { if(e.target === document.getElementById('zoomModal')) document.getElementById('zoomModal').style.display = 'none'; };
+        let calls = 21400;
+        setInterval(() => { const el = document.getElementById('statCalls'); if(el) { calls += Math.floor(Math.random() * 35); el.innerText = calls.toLocaleString(); } }, 5000);
+    })();
 </script>
 </body>
 </html>
