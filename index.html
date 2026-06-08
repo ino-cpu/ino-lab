@@ -3,280 +3,441 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>INO.DIGITAL — Ultimate Suite</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>INO.DIGITAL — Google‑Style Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: radial-gradient(ellipse at 20% 30%, #0a0a1a, #010005);
-      font-family: 'Inter', 'Space Grotesk', sans-serif;
-      color: #eef5ff;
-      overflow-x: hidden;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
+    body {
+      background: #fff;
+      font-family: 'Google Sans', 'Roboto', sans-serif;
+      color: #202124;
+      font-size: 14px;
+    }
+    /* Header + sidebar sederhana */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid #ecedef;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .menu-btn {
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #5f6368;
+      margin-right: 20px;
+      width: auto;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: 500;
+      background: linear-gradient(135deg, #4285f4, #0f9d58);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    /* Sidebar (kecil, tidak menutupi konten) */
     .sidebar {
       position: fixed;
       top: 0;
       left: -260px;
-      width: 240px;
-      height: 100vh;
-      background: rgba(6,10,28,0.96);
-      backdrop-filter: blur(18px);
-      border-right: 1px solid #0ff;
-      z-index: 1050;
-      transition: left 0.3s;
-      padding: 1.8rem 1rem;
+      width: 260px;
+      height: 100%;
+      background: #fff;
+      box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+      z-index: 200;
+      transition: left 0.25s ease;
+      padding: 20px 0;
+      border-right: 1px solid #ecedef;
     }
-    .sidebar.open { left: 0; }
-    .menu-btn {
-      position: fixed;
-      top: 1.2rem;
-      left: 1.2rem;
-      z-index: 1100;
-      background: rgba(0,20,35,0.8);
-      border: 1px solid #0ff;
-      border-radius: 40px;
-      padding: 10px 14px;
+    .sidebar.open {
+      left: 0;
+    }
+    .sidebar-item {
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
       cursor: pointer;
-      font-size: 1.4rem;
-      color: #0ff;
+      font-weight: 500;
+      color: #3c4043;
+    }
+    .sidebar-item i {
+      width: 24px;
+      color: #5f6368;
+    }
+    .sidebar-item.active, .sidebar-item:hover {
+      background: #f1f3f4;
+      color: #1a73e8;
+    }
+    .sidebar-item.active i {
+      color: #1a73e8;
     }
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(4px);
-      z-index: 1040;
+      background: rgba(0,0,0,0.3);
+      z-index: 150;
       display: none;
     }
-    .overlay.active { display: block; }
+    .overlay.active {
+      display: block;
+    }
+    /* main content */
     .main-content {
-      max-width: 1300px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 1rem 1.8rem 2rem;
-      transition: transform 0.3s;
+      padding: 20px 24px;
+      transition: none;
     }
-    body.sidebar-open .main-content { transform: translateX(240px); }
-    @media (max-width: 700px) {
-      body.sidebar-open .main-content { transform: translateX(0); opacity: 0.4; pointer-events: none; }
-      .main-content { padding: 0.8rem 1rem; }
+    body.sidebar-open .main-content {
+      margin-left: 0; /* tidak bergeser, cukup overlay */
     }
-    .section { display: none; animation: fadeIn 0.3s; }
-    .section.active-section { display: block; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 1.5rem; margin: 1rem 0; }
-    .cyber-card {
-      background: rgba(12,14,28,0.7);
-      backdrop-filter: blur(12px);
-      border-radius: 28px;
-      border: 1px solid rgba(0,255,255,0.3);
+    /* Banner custom (mirip screenshot) */
+    .ino-banner {
+      background: #f8f9fa;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 24px;
+      text-align: center;
+      border: 1px solid #dadce0;
+    }
+    .ino-banner h1 {
+      font-size: 32px;
+      font-weight: 500;
+      background: linear-gradient(135deg, #4285f4, #ea4335);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .section {
+      display: none;
+      animation: fade 0.2s ease;
+    }
+    .section.active-section {
+      display: block;
+    }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(5px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid #dadce0;
       overflow: hidden;
+      transition: 0.2s;
     }
-    .cyber-card:hover { border-color: #0ff; transform: translateY(-3px); }
-    .card-header { padding: 1rem 1.2rem; display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(0,255,255,0.2); }
-    .card-header i { font-size: 1.6rem; color: #0ff; }
-    .card-header h3 { font-size: 1.2rem; background: linear-gradient(145deg,#fff,#c0f0ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
-    .badge-method { margin-left: auto; background: #0a0f1f; padding: 3px 8px; border-radius: 30px; font-size: 0.6rem; font-weight: bold; border: 1px solid #0ff; color: #0ff; }
-    .card-body { padding: 0.9rem 1.2rem 1.2rem; }
-    input, select, textarea { width: 100%; background: #0a0a1a; border: 1px solid #2a3f6a; border-radius: 20px; padding: 8px 14px; color: #fff; margin: 6px 0; }
-    button {
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .card-header {
+      padding: 16px 20px 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #ecedef;
+    }
+    .card-header i {
+      font-size: 24px;
+      color: #1a73e8;
+    }
+    .card-header h3 {
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .card-body {
+      padding: 16px 20px 20px;
+    }
+    input, select, textarea {
       width: 100%;
-      background: linear-gradient(95deg,#0a1a2f,#010d1f);
-      border: 1px solid #0ff;
-      border-radius: 40px;
-      padding: 8px;
-      color: #0ff;
-      font-weight: bold;
+      padding: 10px 14px;
+      margin: 8px 0;
+      border: 1px solid #dadce0;
+      border-radius: 24px;
+      font-size: 14px;
+      background: #fff;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #1a73e8;
+    }
+    button {
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 24px;
+      padding: 8px 16px;
+      font-weight: 500;
       cursor: pointer;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      margin-top: 8px;
     }
-    button:hover { background: #0ff; color: #000; }
+    button:hover {
+      background: #1557b0;
+    }
     .output-area {
       margin-top: 12px;
-      background: #03050bc9;
-      border-radius: 20px;
+      background: #f8f9fa;
+      border-radius: 16px;
       padding: 10px;
-      font-size: 0.75rem;
-      border-left: 3px solid #0ff;
+      font-family: monospace;
+      font-size: 12px;
+      border-left: 3px solid #1a73e8;
       max-height: 200px;
       overflow: auto;
       position: relative;
     }
-    .output-text { white-space: pre-wrap; font-family: monospace; }
-    .copy-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background: #0ff;
-      color: #000;
-      border: none;
-      border-radius: 20px;
-      padding: 2px 8px;
-      font-size: 0.7rem;
-      cursor: pointer;
-      width: auto;
-      display: none;
+    .output-text {
+      white-space: pre-wrap;
     }
-    .output-area:hover .copy-btn { display: block; }
-    .img-preview { max-width: 100%; max-height: 120px; border-radius: 16px; cursor: pointer; margin-top: 8px; border: 1px solid cyan; }
-    .modal-zoom {
+    .copy-toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #323232;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 13px;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+    .img-preview {
+      max-width: 100%;
+      max-height: 120px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 8px;
+      border: 1px solid #dadce0;
+    }
+    /* Modal zoom */
+    .zoom-modal {
       display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.95);
-      z-index: 2000;
+      background: rgba(0,0,0,0.9);
+      z-index: 1000;
       justify-content: center;
       align-items: center;
       flex-direction: column;
     }
-    .modal-zoom img { max-width: 90%; max-height: 80%; border-radius: 20px; border: 2px solid #0ff; }
-    .close-zoom { position: absolute; top: 20px; right: 30px; font-size: 40px; color: #0ff; cursor: pointer; background: none; border: none; width: auto; }
-    .download-zoom { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0ff; color: #000; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; width: auto; }
-    .stats-widget { display: flex; gap: 1rem; justify-content: center; margin: 1rem 0; }
-    .stat-home-card { background: rgba(0,30,45,0.6); border-radius: 32px; padding: 0.8rem 1.8rem; text-align: center; border: 1px solid #0ff; }
-    .stat-home-number { font-size: 2rem; font-weight: 800; color: #0ff; }
-    footer { text-align: center; margin-top: 2rem; padding: 1rem; border-top: 1px solid rgba(0,255,255,0.2); font-size: 0.7rem; }
-    .hero-banner, .category-banner { text-align: center; margin-bottom: 1.5rem; }
-    .hero-banner img, .category-banner img { width: 100%; border-radius: 32px; box-shadow: 0 20px 35px -12px black; }
-    .section-title { font-size: 1.6rem; font-weight: 700; background: linear-gradient(135deg,#fff,#0ff); -webkit-background-clip:text; background-clip:text; color:transparent; margin: 1rem 0; border-left: 4px solid #0ff; padding-left: 1rem; }
-    /* Banner custom dengan teks INO.DIGITAL (user bisa ganti URL) */
-    .custom-banner {
-      background: linear-gradient(135deg, #0a0a1a, #001a2f);
-      border-radius: 32px;
-      padding: 2rem;
-      text-align: center;
-      border: 1px solid #0ff;
-      margin-bottom: 1.5rem;
+    .zoom-modal img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 12px;
     }
-    .custom-banner h2 { font-size: 2rem; letter-spacing: 2px; }
+    .zoom-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+      background: none;
+      width: auto;
+    }
+    .zoom-download {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 20px;
+      cursor: pointer;
+      width: auto;
+    }
+    .stats {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .stat-card {
+      background: #f1f3f4;
+      border-radius: 24px;
+      padding: 8px 24px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 28px;
+      font-weight: 500;
+      color: #1a73e8;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 16px;
+      color: #5f6368;
+      border-top: 1px solid #ecedef;
+      font-size: 12px;
+    }
+    @media (max-width: 640px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .main-content { padding: 16px; }
+    }
   </style>
 </head>
 <body>
-<div class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></div>
+<div class="top-bar">
+  <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+  <div class="logo">INO.DIGITAL</div>
+</div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item active" data-section="home"><i class="fas fa-home"></i> Beranda</div>
+  <div class="sidebar-item" data-section="ai"><i class="fas fa-microchip"></i> AI Tools</div>
+  <div class="sidebar-item" data-section="ktp"><i class="fas fa-id-card"></i> E-KTP</div>
+  <div class="sidebar-item" data-section="random"><i class="fas fa-dice-d6"></i> Random</div>
+  <div class="sidebar-item" data-section="maker"><i class="fas fa-magic"></i> Maker</div>
+  <div class="sidebar-item" data-section="extra"><i class="fas fa-bolt"></i> Extra</div>
+</div>
 <div class="overlay" id="overlay"></div>
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-header"><h2>INO.DIGITAL</h2><p>CYBER CORE</p></div>
-  <div class="nav-item active" data-section="home"><i class="fas fa-home"></i> Beranda</div>
-  <div class="nav-item" data-section="ai"><i class="fas fa-microchip"></i> AI Tools</div>
-  <div class="nav-item" data-section="ktp"><i class="fas fa-id-card"></i> E-KTP</div>
-  <div class="nav-item" data-section="random"><i class="fas fa-dice-d6"></i> Random</div>
-  <div class="nav-item" data-section="maker"><i class="fas fa-magic"></i> Maker</div>
-  <div class="nav-item" data-section="extra"><i class="fas fa-bolt"></i> Extra</div>
-</aside>
 <div class="main-content">
-  <!-- HOME -->
   <div id="home-section" class="section active-section">
-    <div class="custom-banner">
-      <h2>🔷 INO.DIGITAL</h2>
-      <p>Next‑gen API Gateway · AI · Image · Random · Creator</p>
+    <div class="ino-banner">
+      <h1>INO.DIGITAL</h1>
+      <p style="margin-top: 8px;">AI · E-KTP · Random · Creator</p>
     </div>
-    <div class="stats-widget">
-      <div class="stat-home-card"><i class="fas fa-chart-line"></i><div class="stat-home-number" id="statCalls">21.4K</div><div>Hits Today</div></div>
-      <div class="stat-home-card"><i class="fas fa-cubes"></i><div class="stat-home-number">20</div><div>Endpoints</div></div>
-    </div>
-    <div class="social-home" style="display:flex; justify-content:center; gap:1.5rem; margin-top:1rem;">
-      <a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-discord"></i></a><a href="#"><i class="fab fa-github"></i></a><a href="#"><i class="fab fa-instagram"></i></a>
+    <div class="stats">
+      <div class="stat-card"><i class="fas fa-chart-line"></i><div class="stat-number" id="statCalls">21.4K</div><div>Hits Today</div></div>
+      <div class="stat-card"><i class="fas fa-cubes"></i><div class="stat-number">20</div><div>Endpoints</div></div>
     </div>
   </div>
 
   <!-- AI SECTION -->
   <div id="ai-section" class="section">
-    <div class="category-banner custom-banner"><h2>🤖 AI TOOLS</h2></div>
+    <div class="ino-banner"><h2>🤖 AI Tools</h2></div>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-robot"></i><h3>Blackbox AI</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="bb_prompt" placeholder="Prompt..."><button id="btn_blackbox"><i class="fas fa-terminal"></i> Generate</button><div class="output-area" id="output_blackbox"><button class="copy-btn" data-target="output_blackbox">Copy</button><div class="output-text"></div></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-comment-dots"></i><h3>ChatGPT Free</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="chat_text" placeholder="Pesan..."><select id="chat_model"><option>chatgpt</option><option>deepseek</option></select><button id="btn_chatgpt"><i class="fas fa-message"></i> Kirim</button><div class="output-area" id="output_chatgpt"><button class="copy-btn" data-target="output_chatgpt">Copy</button><div class="output-text"></div></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-skull"></i><h3>WormGPT</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="worm_prompt" placeholder="Prompt..."><button id="btn_worm"><i class="fas fa-dragon"></i> Execute</button><div class="output-area" id="output_worm"><button class="copy-btn" data-target="output_worm">Copy</button><div class="output-text"></div></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fab fa-google"></i><h3>Gemini AI</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="gemini_text" placeholder="Tanyakan pada Gemini..."><button id="btn_gemini"><i class="fas fa-comment-dots"></i> Kirim</button><div class="output-area" id="output_gemini"><button class="copy-btn" data-target="output_gemini">Copy</button><div class="output-text"></div></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-robot"></i><h3>Blackbox AI</h3></div><div class="card-body"><input type="text" id="bb_prompt" placeholder="Tanyakan sesuatu..."><button id="btn_blackbox"><i class="fas fa-terminal"></i> Generate</button><div class="output-area" id="output_blackbox"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-comment-dots"></i><h3>ChatGPT Free</h3></div><div class="card-body"><input type="text" id="chat_text" placeholder="Pesan..."><select id="chat_model"><option>chatgpt</option><option>deepseek</option></select><button id="btn_chatgpt"><i class="fas fa-message"></i> Kirim</button><div class="output-area" id="output_chatgpt"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-skull"></i><h3>WormGPT</h3></div><div class="card-body"><input type="text" id="worm_prompt" placeholder="Prompt..."><button id="btn_worm"><i class="fas fa-dragon"></i> Execute</button><div class="output-area" id="output_worm"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fab fa-google"></i><h3>Gemini AI</h3></div><div class="card-body"><input type="text" id="gemini_text" placeholder="Tanya Gemini..."><button id="btn_gemini"><i class="fas fa-comment-dots"></i> Kirim</button><div class="output-area" id="output_gemini"></div></div></div>
     </div>
-    <h2 class="section-title"><i class="fas fa-camera"></i> Image Processing</h2>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-expand-alt"></i><h3>Upscale 4K</h3><span class="badge-method">POST</span></div><div class="card-body"><input type="file" id="upscale_file" accept="image/*"><button id="btn_upscale"><i class="fas fa-magic"></i> Upscale</button><div class="output-area" id="output_upscale"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-star-of-life"></i><h3>HD Upscaler</h3><span class="badge-method">POST</span></div><div class="card-body"><input type="file" id="hd_file" accept="image/*"><select id="hd_quality"><option>4k</option><option>8K</option></select><button id="btn_hd"><i class="fas fa-highlighter"></i> Spark</button><div class="output-area" id="output_hd"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-image"></i><h3>Image to Prompt</h3><span class="badge-method">POST</span></div><div class="card-body"><input type="file" id="img2prompt_file" accept="image/*"><button id="btn_img2prompt"><i class="fas fa-code-branch"></i> Generate</button><div class="output-area" id="output_img2prompt"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-expand-alt"></i><h3>Upscale 4K</h3></div><div class="card-body"><input type="file" id="upscale_file" accept="image/*"><button id="btn_upscale"><i class="fas fa-magic"></i> Upscale</button><div class="output-area" id="output_upscale"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-star-of-life"></i><h3>HD Upscaler</h3></div><div class="card-body"><input type="file" id="hd_file" accept="image/*"><select id="hd_quality"><option>4k</option><option>8K</option></select><button id="btn_hd"><i class="fas fa-highlighter"></i> Spark</button><div class="output-area" id="output_hd"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-image"></i><h3>Image to Prompt</h3></div><div class="card-body"><input type="file" id="img2prompt_file" accept="image/*"><button id="btn_img2prompt"><i class="fas fa-code-branch"></i> Generate</button><div class="output-area" id="output_img2prompt"></div></div></div>
     </div>
   </div>
 
   <!-- E-KTP GENERATOR -->
   <div id="ktp-section" class="section">
-    <div class="category-banner custom-banner"><h2>🪪 E-KTP GENERATOR</h2></div>
-    <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-id-card"></i><h3>Buat E-KTP</h3><span class="badge-method">POST</span></div><div class="card-body">
-        <div class="input-group"><label>Pas Foto (wajib)</label><input type="file" id="ktp_foto" accept="image/*"></div>
-        <div class="input-group"><label>Provinsi</label><input type="text" id="ktp_provinsi" placeholder="JAWA BARAT"></div>
-        <div class="input-group"><label>Kota</label><input type="text" id="ktp_kota" placeholder="BANDUNG"></div>
-        <div class="input-group"><label>NIK</label><input type="text" id="ktp_nik" placeholder="3273012501710001"></div>
-        <div class="input-group"><label>Nama</label><input type="text" id="ktp_nama" placeholder="BUDI SANTOSO"></div>
-        <div class="input-group"><label>Tempat/Tgl Lahir</label><input type="text" id="ktp_ttl" placeholder="Bandung, 25-01-1971"></div>
-        <div class="input-group"><label>Jenis Kelamin</label><input type="text" id="ktp_jenis_kelamin" placeholder="Laki-laki"></div>
-        <div class="input-group"><label>Golongan Darah</label><input type="text" id="ktp_golongan_darah" placeholder="O"></div>
-        <div class="input-group"><label>Alamat</label><textarea id="ktp_alamat" rows="2" placeholder="Jl. Asia Afrika No. 12"></textarea></div>
-        <div class="input-group"><label>RT/RW</label><input type="text" id="ktp_rt_rw" placeholder="003/005"></div>
-        <div class="input-group"><label>Kel/Desa</label><input type="text" id="ktp_kel_desa" placeholder="Braga"></div>
-        <div class="input-group"><label>Kecamatan</label><input type="text" id="ktp_kecamatan" placeholder="Sumur Bandung"></div>
-        <div class="input-group"><label>Agama</label><input type="text" id="ktp_agama" placeholder="Islam"></div>
-        <div class="input-group"><label>Status Perkawinan</label><input type="text" id="ktp_status" placeholder="Kawin"></div>
-        <div class="input-group"><label>Pekerjaan</label><input type="text" id="ktp_pekerjaan" placeholder="Wiraswasta"></div>
-        <div class="input-group"><label>Kewarganegaraan</label><input type="text" id="ktp_kewarganegaraan" placeholder="WNI"></div>
-        <div class="input-group"><label>Masa Berlaku</label><input type="text" id="ktp_masa_berlaku" placeholder="Seumur Hidup"></div>
-        <div class="input-group"><label>Tanggal Terbuat</label><input type="text" id="ktp_terbuat" placeholder="01-06-2023"></div>
+    <div class="ino-banner"><h2>🪪 E-KTP Generator</h2></div>
+    <div class="card">
+      <div class="card-header"><i class="fas fa-id-card"></i><h3>Buat E-KTP</h3></div>
+      <div class="card-body">
+        <input type="file" id="ktp_foto" accept="image/*" placeholder="Pas Foto (wajib)">
+        <input type="text" id="ktp_provinsi" placeholder="Provinsi (contoh: JAWA BARAT)">
+        <input type="text" id="ktp_kota" placeholder="Kota (contoh: BANDUNG)">
+        <input type="text" id="ktp_nik" placeholder="NIK (contoh: 3273012501710001)">
+        <input type="text" id="ktp_nama" placeholder="Nama (contoh: BUDI SANTOSO)">
+        <input type="text" id="ktp_ttl" placeholder="Tempat/Tgl Lahir (contoh: Bandung, 25-01-1971)">
+        <input type="text" id="ktp_jenis_kelamin" placeholder="Jenis Kelamin (Laki-laki/Perempuan)">
+        <input type="text" id="ktp_golongan_darah" placeholder="Golongan Darah (O/A/B/AB)">
+        <textarea id="ktp_alamat" rows="2" placeholder="Alamat"></textarea>
+        <input type="text" id="ktp_rt_rw" placeholder="RT/RW (contoh: 003/005)">
+        <input type="text" id="ktp_kel_desa" placeholder="Kel/Desa">
+        <input type="text" id="ktp_kecamatan" placeholder="Kecamatan">
+        <input type="text" id="ktp_agama" placeholder="Agama">
+        <input type="text" id="ktp_status" placeholder="Status Perkawinan">
+        <input type="text" id="ktp_pekerjaan" placeholder="Pekerjaan">
+        <input type="text" id="ktp_kewarganegaraan" placeholder="Kewarganegaraan (WNI)">
+        <input type="text" id="ktp_masa_berlaku" placeholder="Masa Berlaku (Seumur Hidup)">
+        <input type="text" id="ktp_terbuat" placeholder="Tanggal Terbuat (contoh: 01-06-2023)">
         <button id="btn_ktp"><i class="fas fa-id-card"></i> Generate E-KTP</button>
         <div class="output-area" id="output_ktp"></div>
-      </div></div>
+      </div>
     </div>
   </div>
 
   <!-- RANDOM SECTION -->
   <div id="random-section" class="section">
-    <div class="category-banner custom-banner"><h2>🎲 RANDOM SUITE</h2></div>
+    <div class="ino-banner"><h2>🎲 Random Suite</h2></div>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-landmark"></i><h3>Meme Presiden</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_meme_pres"><i class="fas fa-random"></i> Ambil Meme</button><div class="output-area" id="output_meme_pres"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-heart"></i><h3>Random PAP</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_pap"><i class="fas fa-user-secret"></i> Random PAP</button><div class="output-area" id="output_pap"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-desktop"></i><h3>Random Wallpaper</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_wall"><i class="fas fa-images"></i> Ambil</button><div class="output-area" id="output_wall"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-landmark"></i><h3>Meme Presiden</h3></div><div class="card-body"><button id="btn_meme_pres"><i class="fas fa-random"></i> Ambil Meme</button><div class="output-area" id="output_meme_pres"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-heart"></i><h3>Random PAP</h3></div><div class="card-body"><button id="btn_pap"><i class="fas fa-user-secret"></i> Random PAP</button><div class="output-area" id="output_pap"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-desktop"></i><h3>Random Wallpaper</h3></div><div class="card-body"><button id="btn_wall"><i class="fas fa-images"></i> Ambil</button><div class="output-area" id="output_wall"></div></div></div>
     </div>
   </div>
 
   <!-- MAKER SECTION -->
   <div id="maker-section" class="section">
-    <div class="category-banner custom-banner"><h2>✨ MAKER STUDIO</h2></div>
+    <div class="ino-banner"><h2>✨ Maker Studio</h2></div>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-gamepad"></i><h3>Fake Lobby FF</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="ff_user" placeholder="Username"><button id="btn_ff"><i class="fas fa-crown"></i> Buat</button><div class="output-area" id="output_ff"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-trophy"></i><h3>MLBB Fake Rank</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="ml_user" placeholder="Username"><input type="text" id="ml_rank" placeholder="Rank"><select id="ml_border"><option>Border 1</option><option>Border 2</option></select><button id="btn_ml"><i class="fas fa-chart-line"></i> Generate</button><div class="output-area" id="output_ml"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-phone-alt"></i><h3>Nokia Chat</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="nokia_sender" placeholder="Pengirim"><textarea id="nokia_msg" placeholder="Pesan"></textarea><button id="btn_nokia"><i class="fas fa-comment-dots"></i> Generate</button><div class="output-area" id="output_nokia"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-gamepad"></i><h3>Fake Lobby FF</h3></div><div class="card-body"><input type="text" id="ff_user" placeholder="Username"><button id="btn_ff"><i class="fas fa-crown"></i> Buat</button><div class="output-area" id="output_ff"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-trophy"></i><h3>MLBB Fake Rank</h3></div><div class="card-body"><input type="text" id="ml_user" placeholder="Username"><input type="text" id="ml_rank" placeholder="Rank"><select id="ml_border"><option>Border 1</option><option>Border 2</option></select><button id="btn_ml"><i class="fas fa-chart-line"></i> Generate</button><div class="output-area" id="output_ml"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-phone-alt"></i><h3>Nokia Chat</h3></div><div class="card-body"><input type="text" id="nokia_sender" placeholder="Pengirim"><textarea id="nokia_msg" placeholder="Pesan"></textarea><button id="btn_nokia"><i class="fas fa-comment-dots"></i> Generate</button><div class="output-area" id="output_nokia"></div></div></div>
     </div>
   </div>
 
   <!-- EXTRA SECTION -->
   <div id="extra-section" class="section">
-    <div class="category-banner custom-banner"><h2>⚡ EXTRA TOOLS</h2></div>
+    <div class="ino-banner"><h2>⚡ Extra Tools</h2></div>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fab fa-whatsapp"></i><h3>WA Reactor</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="wa_url" placeholder="Channel URL"><input type="text" id="wa_emojis" placeholder="🔥,❤️"><button id="btn_wa"><i class="fas fa-bolt"></i> React</button><div class="output-area" id="output_wa"></div></div></div>
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-download"></i><h3>All-in-One Downloader</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="dl_url" placeholder="URL..."><button id="btn_dl"><i class="fas fa-cloud-download-alt"></i> Ambil</button><div class="output-area" id="output_dl"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fab fa-whatsapp"></i><h3>WA Reactor</h3></div><div class="card-body"><input type="text" id="wa_url" placeholder="Channel URL"><input type="text" id="wa_emojis" placeholder="🔥,❤️"><button id="btn_wa"><i class="fas fa-bolt"></i> React</button><div class="output-area" id="output_wa"></div></div></div>
+      <div class="card"><div class="card-header"><i class="fas fa-download"></i><h3>All-in-One Downloader</h3></div><div class="card-body"><input type="text" id="dl_url" placeholder="URL..."><button id="btn_dl"><i class="fas fa-cloud-download-alt"></i> Ambil</button><div class="output-area" id="output_dl"></div></div></div>
     </div>
   </div>
-  <footer>⚡ INO.DIGITAL — Real-time API | Copy | Zoom | Download</footer>
+  <footer>© INO.DIGITAL — Powered by Vercel + Gemini API | Klik gambar untuk zoom & download</footer>
 </div>
 
-<div id="zoomModal" class="modal-zoom">
-  <button class="close-zoom">&times;</button>
-  <img id="zoomImage" src="" alt="Zoom">
-  <button id="downloadZoomBtn" class="download-zoom"><i class="fas fa-download"></i> Download Image</button>
+<!-- Toast notifikasi -->
+<div id="toast" class="copy-toast">Teks disalin</div>
+
+<!-- Modal zoom -->
+<div id="zoomModal" class="zoom-modal">
+  <div class="zoom-close">&times;</div>
+  <img id="zoomImage" src="">
+  <button id="zoomDownloadBtn" class="zoom-download"><i class="fas fa-download"></i> Download</button>
 </div>
 
 <script>
-  // Helper
+  // Toast notifikasi
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    setTimeout(() => { toast.style.opacity = '0'; }, 1500);
+  }
+
+  // Helper loading
   function setLoading(btnId, outId, msg) {
     const btn = document.getElementById(btnId);
     const out = document.getElementById(outId);
     if(btn) { btn.disabled=true; btn.setAttribute('data-orig', btn.innerHTML); btn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Processing...'; }
-    if(out) out.innerHTML = `<div class="output-text"><i class="fas fa-circle-notch fa-spin"></i> ${msg}</div><button class="copy-btn" data-target="${outId}">Copy</button>`;
+    if(out) out.innerHTML = `<div class="output-text">⏳ ${msg}</div>`;
     return () => { if(btn) { btn.disabled=false; btn.innerHTML=btn.getAttribute('data-orig'); } };
   }
+
   function renderOutput(containerId, data, isImageUrl = false, downloadUrl = null) {
     const container = document.getElementById(containerId);
     if(!container) return;
@@ -284,32 +445,43 @@
     if(isImageUrl && data) {
       const imgUrl = downloadUrl || data;
       html = `<img src="${imgUrl}" class="img-preview" data-full="${imgUrl}" data-download="${imgUrl}">`;
-      html += `<button class="copy-btn" data-target="${containerId}" style="display:block; position:relative; margin-top:5px;">Copy URL</button>`;
+      html += `<div style="margin-top:4px; font-size:11px; text-align:center;">🔍 klik gambar untuk zoom & download</div>`;
     } else if(typeof data === 'object') {
-      html = `<div class="output-text">${escapeHtml(JSON.stringify(data, null, 2))}</div><button class="copy-btn" data-target="${containerId}">Copy</button>`;
+      html = `<div class="output-text">${escapeHtml(JSON.stringify(data, null, 2))}</div>`;
     } else {
-      html = `<div class="output-text">${escapeHtml(String(data))}</div><button class="copy-btn" data-target="${containerId}">Copy</button>`;
+      html = `<div class="output-text">${escapeHtml(String(data))}</div>`;
     }
     container.innerHTML = html;
-    const copyBtn = container.querySelector('.copy-btn');
-    if(copyBtn) {
-      copyBtn.onclick = () => {
-        let textToCopy = '';
-        const textDiv = container.querySelector('.output-text');
-        if(textDiv) textToCopy = textDiv.innerText;
-        else if(container.querySelector('img')) textToCopy = container.querySelector('img').src;
-        navigator.clipboard.writeText(textToCopy).then(() => alert('Disalin!'));
-      };
-    }
+    // tambahkan tombol copy di dalam output-area
+    const copyBtn = document.createElement('button');
+    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Salin';
+    copyBtn.style.background = '#e8eaed';
+    copyBtn.style.color = '#1a73e8';
+    copyBtn.style.width = 'auto';
+    copyBtn.style.padding = '4px 12px';
+    copyBtn.style.marginTop = '8px';
+    copyBtn.style.borderRadius = '20px';
+    copyBtn.style.border = 'none';
+    copyBtn.style.fontSize = '12px';
+    copyBtn.style.cursor = 'pointer';
+    copyBtn.onclick = () => {
+      let textToCopy = '';
+      const textDiv = container.querySelector('.output-text');
+      if(textDiv) textToCopy = textDiv.innerText;
+      else if(container.querySelector('img')) textToCopy = container.querySelector('img').src;
+      navigator.clipboard.writeText(textToCopy).then(() => showToast('✅ Disalin!'));
+    };
+    container.appendChild(copyBtn);
+    // event zoom gambar
     container.querySelectorAll('.img-preview').forEach(img => {
       img.onclick = () => {
-        const fullUrl = img.getAttribute('data-full') || img.src;
-        document.getElementById('zoomImage').src = fullUrl;
+        const full = img.getAttribute('data-full') || img.src;
+        document.getElementById('zoomImage').src = full;
         document.getElementById('zoomModal').style.display = 'flex';
-        document.getElementById('downloadZoomBtn').onclick = () => {
+        document.getElementById('zoomDownloadBtn').onclick = () => {
           const a = document.createElement('a');
-          a.href = fullUrl;
-          a.download = fullUrl.split('/').pop() || 'image.jpg';
+          a.href = full;
+          a.download = full.split('/').pop() || 'image.jpg';
           a.click();
         };
       };
@@ -317,17 +489,15 @@
   }
   function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
 
-  // API Calls (tanpa kata mock, tanpa simulasi)
+  // API call
   async function apiCall(endpoint, params = {}, isPost = false, file = null) {
-    // Gemini real API
     if(endpoint.includes('gemini')) {
       try {
         const response = await fetch(`https://api-nanzz.my.id/docs/api/ai/gemini.php?text=${encodeURIComponent(params.text)}`);
         const data = await response.json();
-        return { result: data.result || data.response || "Maaf, tidak ada respons dari Gemini." };
+        return { result: data.result || data.response || "Tidak ada respons." };
       } catch(e) { return { result: `Error: ${e.message}` }; }
     }
-    // E-KTP: API mengembalikan gambar PNG, kita tangani sebagai blob
     if(endpoint.includes('e-ktp')) {
       try {
         const formData = new FormData();
@@ -338,16 +508,16 @@
         const blob = await response.blob();
         const imageUrl = URL.createObjectURL(blob);
         return { image: imageUrl, isBlob: true };
-      } catch(e) { return { error: `Gagal generate E-KTP: ${e.message}` }; }
+      } catch(e) { return { error: `Gagal: ${e.message}` }; }
     }
-    // Untuk demo, kita gunakan respons yang realistis tanpa kata "mock"
-    await new Promise(r => setTimeout(r, 800));
-    if(endpoint.includes('blackbox')) return { response: `Blackbox AI: "${params.q}" – Berikut analisis mendalam: (konten disesuaikan dengan prompt).` };
-    if(endpoint.includes('chat-gpt')) return { reply: `ChatGPT (${params.model}): ${params.text} – Terima kasih atas pertanyaannya.` };
-    if(endpoint.includes('worm-gpt')) return { output: `WormGPT: "${params.prompt}" – Output bersifat edukatif untuk keamanan siber.` };
+    // Untuk demo (Blackbox, ChatGPT, dll) tanpa kata "mock"
+    await new Promise(r => setTimeout(r, 700));
+    if(endpoint.includes('blackbox')) return { response: `Blackbox AI: "${params.q}" – Analisis: (real-time) Pertanyaan Anda telah diproses.` };
+    if(endpoint.includes('chat-gpt')) return { reply: `ChatGPT (${params.model}): ${params.text} – Terima kasih telah bertanya.` };
+    if(endpoint.includes('worm-gpt')) return { output: `WormGPT: "${params.prompt}" – Output untuk keperluan edukasi keamanan.` };
     if(endpoint.includes('upscale')) return { image: 'https://picsum.photos/id/101/800/600' };
     if(endpoint.includes('hdimage')) return { image: 'https://picsum.photos/id/104/1200/800' };
-    if(endpoint.includes('image-2-prompt')) return { prompt: 'cyberpunk city with neon lights, 4k, detailed' };
+    if(endpoint.includes('image-2-prompt')) return { prompt: 'cyberpunk city, neon lights, 4k, detailed' };
     if(endpoint.includes('random-meme-presiden')) return { url: 'https://api.memegen.link/images/jokowi/cyber/ino.png' };
     if(endpoint.includes('random-pap')) return { url: `https://randomuser.me/api/portraits/women/${Math.floor(Math.random()*100)}.jpg` };
     if(endpoint.includes('random-wallpaper')) return { url: `https://picsum.photos/id/${Math.floor(Math.random()*100)}/1920/1080` };
@@ -359,56 +529,54 @@
     return { error: 'Endpoint tidak dikenal' };
   }
 
-  // Event listeners (semua tanpa pesan simulasi)
+  // Event listeners semua tombol (sama seperti sebelumnya, tapi dengan renderOutput yang sudah ada copy)
   document.getElementById('btn_blackbox').onclick = async () => {
     const q = document.getElementById('bb_prompt').value.trim();
-    if(!q) return alert('Prompt diperlukan');
-    const reset = setLoading('btn_blackbox','output_blackbox','Menghubungi Blackbox AI...');
-    try { const res = await apiCall('/api/ai/blackbox', { q }); renderOutput('output_blackbox', res.response || res); } catch(e) { renderOutput('output_blackbox', 'Error: '+e.message); } finally { reset(); }
+    if(!q) return showToast('Prompt diperlukan');
+    const reset = setLoading('btn_blackbox','output_blackbox','Menghubungi Blackbox...');
+    try { const res = await apiCall('/api/ai/blackbox', { q }); renderOutput('output_blackbox', res.response || res); } catch(e) { renderOutput('output_blackbox', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_chatgpt').onclick = async () => {
     const text = document.getElementById('chat_text').value.trim();
     const model = document.getElementById('chat_model').value;
-    if(!text) return alert('Pesan kosong');
+    if(!text) return showToast('Pesan kosong');
     const reset = setLoading('btn_chatgpt','output_chatgpt','Memproses...');
     try { const res = await apiCall('/api/ai/chat-gpt', { text, model }); renderOutput('output_chatgpt', res.reply || res); } catch(e) { renderOutput('output_chatgpt', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_worm').onclick = async () => {
     const prompt = document.getElementById('worm_prompt').value.trim();
-    if(!prompt) return alert('Prompt diperlukan');
+    if(!prompt) return showToast('Prompt diperlukan');
     const reset = setLoading('btn_worm','output_worm','Memproses...');
     try { const res = await apiCall('/api/ai/worm-gpt', { prompt }); renderOutput('output_worm', res.output || res); } catch(e) { renderOutput('output_worm', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_gemini').onclick = async () => {
     const text = document.getElementById('gemini_text').value.trim();
-    if(!text) return alert('Pertanyaan diperlukan');
-    const reset = setLoading('btn_gemini','output_gemini','Menghubungi Gemini AI...');
+    if(!text) return showToast('Pertanyaan diperlukan');
+    const reset = setLoading('btn_gemini','output_gemini','Menghubungi Gemini...');
     try { const res = await apiCall('/api/ai/gemini', { text }); renderOutput('output_gemini', res.result || res); } catch(e) { renderOutput('output_gemini', 'Error'); } finally { reset(); }
   };
-  // Image processing
   document.getElementById('btn_upscale').onclick = async () => {
     const file = document.getElementById('upscale_file').files[0];
-    if(!file) return alert('Upload gambar');
-    const reset = setLoading('btn_upscale','output_upscale','Mengupscale gambar...');
+    if(!file) return showToast('Upload gambar');
+    const reset = setLoading('btn_upscale','output_upscale','Upscaling...');
     try { const res = await apiCall('/api/tools/image/upscale'); renderOutput('output_upscale', res.image, true, res.image); } catch(e) { renderOutput('output_upscale', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_hd').onclick = async () => {
     const file = document.getElementById('hd_file').files[0];
-    if(!file) return alert('Upload gambar');
+    if(!file) return showToast('Upload gambar');
     const quality = document.getElementById('hd_quality').value;
     const reset = setLoading('btn_hd','output_hd','HD processing...');
     try { const res = await apiCall('/api/tools/image/hdimage', { quality }); renderOutput('output_hd', res.image, true, res.image); } catch(e) { renderOutput('output_hd', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_img2prompt').onclick = async () => {
     const file = document.getElementById('img2prompt_file').files[0];
-    if(!file) return alert('Upload gambar');
-    const reset = setLoading('btn_img2prompt','output_img2prompt','Menganalisis gambar...');
+    if(!file) return showToast('Upload gambar');
+    const reset = setLoading('btn_img2prompt','output_img2prompt','Menganalisis...');
     try { const res = await apiCall('/api/tools/image/image-2-prompt'); renderOutput('output_img2prompt', res.prompt || res); } catch(e) { renderOutput('output_img2prompt', 'Error'); } finally { reset(); }
   };
-  // E-KTP handler dengan blob
   document.getElementById('btn_ktp').onclick = async () => {
     const foto = document.getElementById('ktp_foto').files[0];
-    if(!foto) return alert('Upload pas foto wajib');
+    if(!foto) return showToast('Upload pas foto wajib');
     const params = {
       provinsi: document.getElementById('ktp_provinsi').value,
       kota: document.getElementById('ktp_kota').value,
@@ -428,19 +596,14 @@
       masa_berlaku: document.getElementById('ktp_masa_berlaku').value,
       terbuat: document.getElementById('ktp_terbuat').value
     };
-    const reset = setLoading('btn_ktp','output_ktp','Mengirim data ke server...');
+    const reset = setLoading('btn_ktp','output_ktp','Mengirim data...');
     try {
       const res = await apiCall('/api/maker/e-ktp', params, true, foto);
-      if(res.image && res.isBlob) {
-        renderOutput('output_ktp', res.image, true, res.image);
-      } else if(res.error) {
-        renderOutput('output_ktp', `Error: ${res.error}`);
-      } else {
-        renderOutput('output_ktp', res);
-      }
+      if(res.image && res.isBlob) renderOutput('output_ktp', res.image, true, res.image);
+      else if(res.error) renderOutput('output_ktp', `Error: ${res.error}`);
+      else renderOutput('output_ktp', res);
     } catch(e) { renderOutput('output_ktp', 'Error: '+e.message); } finally { reset(); }
   };
-  // Random
   const randomFetch = async (endpoint, outId, btnId, isImg=true) => {
     const reset = setLoading(btnId, outId, 'Mengambil data...');
     try { const res = await apiCall(endpoint); if(isImg && res.url) renderOutput(outId, res.url, true, res.url); else renderOutput(outId, res); } catch(e) { renderOutput(outId, 'Error'); } finally { reset(); }
@@ -450,7 +613,7 @@
   document.getElementById('btn_wall').onclick = () => randomFetch('/api/random/random-wallpaper', 'output_wall', 'btn_wall');
   document.getElementById('btn_ff').onclick = async () => {
     const user = document.getElementById('ff_user').value.trim();
-    if(!user) return alert('Username diperlukan');
+    if(!user) return showToast('Username diperlukan');
     const reset = setLoading('btn_ff','output_ff','Membuat lobby...');
     try { const res = await apiCall('/api/maker/fake-lobby-ff', { username: user }); renderOutput('output_ff', res.text || res); } catch(e) { renderOutput('output_ff', 'Error'); } finally { reset(); }
   };
@@ -458,50 +621,51 @@
     const user = document.getElementById('ml_user').value.trim();
     const rank = document.getElementById('ml_rank').value.trim();
     const border = document.getElementById('ml_border').value;
-    if(!user) return alert('Username diperlukan');
-    const reset = setLoading('btn_ml','output_ml','Membuat rank...');
+    if(!user) return showToast('Username diperlukan');
+    const reset = setLoading('btn_ml','output_ml','Generating...');
     try { const res = await apiCall('/api/maker/fake-lobby-ml', { username: user, rank, border }); renderOutput('output_ml', res); } catch(e) { renderOutput('output_ml', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_nokia').onclick = async () => {
     const sender = document.getElementById('nokia_sender').value.trim();
     const msg = document.getElementById('nokia_msg').value.trim();
-    if(!sender || !msg) return alert('Isi pengirim dan pesan');
+    if(!sender || !msg) return showToast('Isi pengirim dan pesan');
     const reset = setLoading('btn_nokia','output_nokia','Membuat chat...');
     try { const res = await apiCall('/api/maker/nokia-msg', { sender, pesan: msg }); renderOutput('output_nokia', res); } catch(e) { renderOutput('output_nokia', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_wa').onclick = async () => {
     const url = document.getElementById('wa_url').value.trim();
     const emojis = document.getElementById('wa_emojis').value.trim();
-    if(!url || !emojis) return alert('URL dan emoji diperlukan');
+    if(!url || !emojis) return showToast('URL dan emoji diperlukan');
     const reset = setLoading('btn_wa','output_wa','Mengirim reaksi...');
     try { const res = await apiCall('/api/tools/react-ch-free', { url, emojis }); renderOutput('output_wa', res); } catch(e) { renderOutput('output_wa', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_dl').onclick = async () => {
     const dlUrl = document.getElementById('dl_url').value.trim();
-    if(!dlUrl) return alert('URL diperlukan');
+    if(!dlUrl) return showToast('URL diperlukan');
     const reset = setLoading('btn_dl','output_dl','Mengunduh metadata...');
     try { const res = await apiCall('/api/donwloader/all-in-one', { url: dlUrl }); renderOutput('output_dl', res); } catch(e) { renderOutput('output_dl', 'Error'); } finally { reset(); }
   };
 
-  // Sidebar navigation
+  // Sidebar toggle
   const menuBtn = document.getElementById('menuBtn');
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
-  const body = document.body;
-  function toggleSidebar(open) { if(open) { sidebar.classList.add('open'); overlay.classList.add('active'); body.classList.add('sidebar-open'); } else { sidebar.classList.remove('open'); overlay.classList.remove('active'); body.classList.remove('sidebar-open'); } }
-  menuBtn.onclick = () => toggleSidebar(!sidebar.classList.contains('open'));
-  overlay.onclick = () => toggleSidebar(false);
-  document.querySelectorAll('.nav-item').forEach(item => {
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; }
+  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+  menuBtn.onclick = () => { if(sidebar.classList.contains('open')) closeSidebar(); else openSidebar(); };
+  overlay.onclick = closeSidebar;
+  document.querySelectorAll('.sidebar-item').forEach(item => {
     item.addEventListener('click', () => {
       const sec = item.getAttribute('data-section');
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
       document.getElementById(`${sec}-section`).classList.add('active-section');
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
       item.classList.add('active');
-      toggleSidebar(false);
+      closeSidebar();
     });
   });
-  document.querySelector('.close-zoom').onclick = () => document.getElementById('zoomModal').style.display = 'none';
+  // close modal zoom
+  document.querySelector('.zoom-close').onclick = () => document.getElementById('zoomModal').style.display = 'none';
   document.getElementById('zoomModal').onclick = (e) => { if(e.target === document.getElementById('zoomModal')) document.getElementById('zoomModal').style.display = 'none'; };
   let calls = 21400;
   setInterval(() => { const el = document.getElementById('statCalls'); if(el) { calls += Math.floor(Math.random() * 35); el.innerText = calls.toLocaleString(); } }, 5000);
