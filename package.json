@@ -1,5 +1,14 @@
 {
   "name": "ino-digital-api",
   "version": "1.0.0",
-  "dependencies": {}
+  "description": "API Suite for INO.DIGITAL",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@vercel/node": "^3.0.0"
+  }
 }
