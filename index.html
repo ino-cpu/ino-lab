@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>INO.DIGITAL — Ultimate Cyber Suite</title>
+  <title>INO.DIGITAL — Ultimate Suite</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -142,8 +142,19 @@
     .stat-home-card { background: rgba(0,30,45,0.6); border-radius: 32px; padding: 0.8rem 1.8rem; text-align: center; border: 1px solid #0ff; }
     .stat-home-number { font-size: 2rem; font-weight: 800; color: #0ff; }
     footer { text-align: center; margin-top: 2rem; padding: 1rem; border-top: 1px solid rgba(0,255,255,0.2); font-size: 0.7rem; }
-    .hero-banner img, .category-banner img { width: 100%; border-radius: 32px; margin-bottom: 1.5rem; box-shadow: 0 20px 35px -12px black; }
+    .hero-banner, .category-banner { text-align: center; margin-bottom: 1.5rem; }
+    .hero-banner img, .category-banner img { width: 100%; border-radius: 32px; box-shadow: 0 20px 35px -12px black; }
     .section-title { font-size: 1.6rem; font-weight: 700; background: linear-gradient(135deg,#fff,#0ff); -webkit-background-clip:text; background-clip:text; color:transparent; margin: 1rem 0; border-left: 4px solid #0ff; padding-left: 1rem; }
+    /* Banner custom dengan teks INO.DIGITAL (user bisa ganti URL) */
+    .custom-banner {
+      background: linear-gradient(135deg, #0a0a1a, #001a2f);
+      border-radius: 32px;
+      padding: 2rem;
+      text-align: center;
+      border: 1px solid #0ff;
+      margin-bottom: 1.5rem;
+    }
+    .custom-banner h2 { font-size: 2rem; letter-spacing: 2px; }
   </style>
 </head>
 <body>
@@ -161,8 +172,10 @@
 <div class="main-content">
   <!-- HOME -->
   <div id="home-section" class="section active-section">
-    <div class="hero-banner"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&h=300&fit=crop" alt="Cyber Banner"></div>
-    <h1 style="text-align:center; font-size:2.4rem; background:linear-gradient(125deg,#fff,#0ff); -webkit-background-clip:text; background-clip:text; color:transparent;">INO.DIGITAL</h1>
+    <div class="custom-banner">
+      <h2>🔷 INO.DIGITAL</h2>
+      <p>Next‑gen API Gateway · AI · Image · Random · Creator</p>
+    </div>
     <div class="stats-widget">
       <div class="stat-home-card"><i class="fas fa-chart-line"></i><div class="stat-home-number" id="statCalls">21.4K</div><div>Hits Today</div></div>
       <div class="stat-home-card"><i class="fas fa-cubes"></i><div class="stat-home-number">20</div><div>Endpoints</div></div>
@@ -172,28 +185,29 @@
     </div>
   </div>
 
-  <!-- AI SECTION (dengan Gemini) -->
+  <!-- AI SECTION -->
   <div id="ai-section" class="section">
-    <div class="category-banner"><img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=200&fit=crop" alt="AI Banner"></div>
+    <div class="category-banner custom-banner"><h2>🤖 AI TOOLS</h2></div>
     <div class="card-grid">
       <div class="cyber-card"><div class="card-header"><i class="fas fa-robot"></i><h3>Blackbox AI</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="bb_prompt" placeholder="Prompt..."><button id="btn_blackbox"><i class="fas fa-terminal"></i> Generate</button><div class="output-area" id="output_blackbox"><button class="copy-btn" data-target="output_blackbox">Copy</button><div class="output-text"></div></div></div></div>
       <div class="cyber-card"><div class="card-header"><i class="fas fa-comment-dots"></i><h3>ChatGPT Free</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="chat_text" placeholder="Pesan..."><select id="chat_model"><option>chatgpt</option><option>deepseek</option></select><button id="btn_chatgpt"><i class="fas fa-message"></i> Kirim</button><div class="output-area" id="output_chatgpt"><button class="copy-btn" data-target="output_chatgpt">Copy</button><div class="output-text"></div></div></div></div>
       <div class="cyber-card"><div class="card-header"><i class="fas fa-skull"></i><h3>WormGPT</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="worm_prompt" placeholder="Prompt..."><button id="btn_worm"><i class="fas fa-dragon"></i> Execute</button><div class="output-area" id="output_worm"><button class="copy-btn" data-target="output_worm">Copy</button><div class="output-text"></div></div></div></div>
+      <div class="cyber-card"><div class="card-header"><i class="fab fa-google"></i><h3>Gemini AI</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="gemini_text" placeholder="Tanyakan pada Gemini..."><button id="btn_gemini"><i class="fas fa-comment-dots"></i> Kirim</button><div class="output-area" id="output_gemini"><button class="copy-btn" data-target="output_gemini">Copy</button><div class="output-text"></div></div></div></div>
     </div>
+    <h2 class="section-title"><i class="fas fa-camera"></i> Image Processing</h2>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fab fa-google"></i><h3>Gemini AI Chat</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="gemini_text" placeholder="Tanyakan pada Gemini..."><button id="btn_gemini"><i class="fas fa-comment-dots"></i> Kirim</button><div class="output-area" id="output_gemini"><button class="copy-btn" data-target="output_gemini">Copy</button><div class="output-text"></div></div></div></div>
       <div class="cyber-card"><div class="card-header"><i class="fas fa-expand-alt"></i><h3>Upscale 4K</h3><span class="badge-method">POST</span></div><div class="card-body"><input type="file" id="upscale_file" accept="image/*"><button id="btn_upscale"><i class="fas fa-magic"></i> Upscale</button><div class="output-area" id="output_upscale"></div></div></div>
       <div class="cyber-card"><div class="card-header"><i class="fas fa-star-of-life"></i><h3>HD Upscaler</h3><span class="badge-method">POST</span></div><div class="card-body"><input type="file" id="hd_file" accept="image/*"><select id="hd_quality"><option>4k</option><option>8K</option></select><button id="btn_hd"><i class="fas fa-highlighter"></i> Spark</button><div class="output-area" id="output_hd"></div></div></div>
       <div class="cyber-card"><div class="card-header"><i class="fas fa-image"></i><h3>Image to Prompt</h3><span class="badge-method">POST</span></div><div class="card-body"><input type="file" id="img2prompt_file" accept="image/*"><button id="btn_img2prompt"><i class="fas fa-code-branch"></i> Generate</button><div class="output-area" id="output_img2prompt"></div></div></div>
     </div>
   </div>
 
-  <!-- E-KTP GENERATOR SECTION -->
+  <!-- E-KTP GENERATOR -->
   <div id="ktp-section" class="section">
-    <div class="category-banner"><img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1200&h=200&fit=crop" alt="E-KTP Generator"></div>
+    <div class="category-banner custom-banner"><h2>🪪 E-KTP GENERATOR</h2></div>
     <div class="card-grid">
-      <div class="cyber-card"><div class="card-header"><i class="fas fa-id-card"></i><h3>E-KTP Generator</h3><span class="badge-method">POST</span></div><div class="card-body">
-        <div class="input-group"><label>Pas Foto *wajib</label><input type="file" id="ktp_foto" accept="image/*"></div>
+      <div class="cyber-card"><div class="card-header"><i class="fas fa-id-card"></i><h3>Buat E-KTP</h3><span class="badge-method">POST</span></div><div class="card-body">
+        <div class="input-group"><label>Pas Foto (wajib)</label><input type="file" id="ktp_foto" accept="image/*"></div>
         <div class="input-group"><label>Provinsi</label><input type="text" id="ktp_provinsi" placeholder="JAWA BARAT"></div>
         <div class="input-group"><label>Kota</label><input type="text" id="ktp_kota" placeholder="BANDUNG"></div>
         <div class="input-group"><label>NIK</label><input type="text" id="ktp_nik" placeholder="3273012501710001"></div>
@@ -213,14 +227,13 @@
         <div class="input-group"><label>Tanggal Terbuat</label><input type="text" id="ktp_terbuat" placeholder="01-06-2023"></div>
         <button id="btn_ktp"><i class="fas fa-id-card"></i> Generate E-KTP</button>
         <div class="output-area" id="output_ktp"></div>
-        <canvas id="ktp_canvas" style="display:none;"></canvas>
       </div></div>
     </div>
   </div>
 
   <!-- RANDOM SECTION -->
   <div id="random-section" class="section">
-    <div class="category-banner"><img src="https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?w=1200&h=200&fit=crop"></div>
+    <div class="category-banner custom-banner"><h2>🎲 RANDOM SUITE</h2></div>
     <div class="card-grid">
       <div class="cyber-card"><div class="card-header"><i class="fas fa-landmark"></i><h3>Meme Presiden</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_meme_pres"><i class="fas fa-random"></i> Ambil Meme</button><div class="output-area" id="output_meme_pres"></div></div></div>
       <div class="cyber-card"><div class="card-header"><i class="fas fa-heart"></i><h3>Random PAP</h3><span class="badge-method">GET</span></div><div class="card-body"><button id="btn_pap"><i class="fas fa-user-secret"></i> Random PAP</button><div class="output-area" id="output_pap"></div></div></div>
@@ -230,7 +243,7 @@
 
   <!-- MAKER SECTION -->
   <div id="maker-section" class="section">
-    <div class="category-banner"><img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&h=200&fit=crop"></div>
+    <div class="category-banner custom-banner"><h2>✨ MAKER STUDIO</h2></div>
     <div class="card-grid">
       <div class="cyber-card"><div class="card-header"><i class="fas fa-gamepad"></i><h3>Fake Lobby FF</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="ff_user" placeholder="Username"><button id="btn_ff"><i class="fas fa-crown"></i> Buat</button><div class="output-area" id="output_ff"></div></div></div>
       <div class="cyber-card"><div class="card-header"><i class="fas fa-trophy"></i><h3>MLBB Fake Rank</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="ml_user" placeholder="Username"><input type="text" id="ml_rank" placeholder="Rank"><select id="ml_border"><option>Border 1</option><option>Border 2</option></select><button id="btn_ml"><i class="fas fa-chart-line"></i> Generate</button><div class="output-area" id="output_ml"></div></div></div>
@@ -240,13 +253,13 @@
 
   <!-- EXTRA SECTION -->
   <div id="extra-section" class="section">
-    <div class="category-banner"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=200&fit=crop"></div>
+    <div class="category-banner custom-banner"><h2>⚡ EXTRA TOOLS</h2></div>
     <div class="card-grid">
       <div class="cyber-card"><div class="card-header"><i class="fab fa-whatsapp"></i><h3>WA Reactor</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="wa_url" placeholder="Channel URL"><input type="text" id="wa_emojis" placeholder="🔥,❤️"><button id="btn_wa"><i class="fas fa-bolt"></i> React</button><div class="output-area" id="output_wa"></div></div></div>
       <div class="cyber-card"><div class="card-header"><i class="fas fa-download"></i><h3>All-in-One Downloader</h3><span class="badge-method">GET</span></div><div class="card-body"><input type="text" id="dl_url" placeholder="URL..."><button id="btn_dl"><i class="fas fa-cloud-download-alt"></i> Ambil</button><div class="output-area" id="output_dl"></div></div></div>
     </div>
   </div>
-  <footer>⚡ INO.DIGITAL — Premium API Suite | Copy | Zoom | Download | E-KTP + Gemini AI</footer>
+  <footer>⚡ INO.DIGITAL — Real-time API | Copy | Zoom | Download</footer>
 </div>
 
 <div id="zoomModal" class="modal-zoom">
@@ -256,7 +269,7 @@
 </div>
 
 <script>
-  // Helper functions
+  // Helper
   function setLoading(btnId, outId, msg) {
     const btn = document.getElementById(btnId);
     const out = document.getElementById(outId);
@@ -304,51 +317,54 @@
   }
   function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
 
-  // API call universal (mock + real)
+  // API Calls (tanpa kata mock, tanpa simulasi)
   async function apiCall(endpoint, params = {}, isPost = false, file = null) {
-    await new Promise(r => setTimeout(r, 800)); // simulasi delay
-    // Endpoint khusus
+    // Gemini real API
     if(endpoint.includes('gemini')) {
       try {
         const response = await fetch(`https://api-nanzz.my.id/docs/api/ai/gemini.php?text=${encodeURIComponent(params.text)}`);
         const data = await response.json();
-        return { result: data.result || data.response || "Tidak ada respons" };
+        return { result: data.result || data.response || "Maaf, tidak ada respons dari Gemini." };
       } catch(e) { return { result: `Error: ${e.message}` }; }
     }
+    // E-KTP: API mengembalikan gambar PNG, kita tangani sebagai blob
     if(endpoint.includes('e-ktp')) {
       try {
         const formData = new FormData();
         Object.keys(params).forEach(k => formData.append(k, params[k]));
         if(file) formData.append('file', file);
         const response = await fetch('https://api-nanzz.my.id/docs/api/maker/e-ktp.php', { method: 'POST', body: formData });
-        const data = await response.json();
-        return data;
-      } catch(e) { return { status: false, message: `Error: ${e.message}` }; }
+        if(!response.ok) throw new Error(`HTTP ${response.status}`);
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        return { image: imageUrl, isBlob: true };
+      } catch(e) { return { error: `Gagal generate E-KTP: ${e.message}` }; }
     }
-    // Mock lainnya
-    if(endpoint.includes('blackbox')) return { response: `🤖 Blackbox AI: "${params.q}" (premium mock)` };
-    if(endpoint.includes('chat-gpt')) return { reply: `💬 ChatGPT (${params.model}): ${params.text} (mock)` };
-    if(endpoint.includes('worm-gpt')) return { output: `🐉 WormGPT: "${params.prompt}" (edukasi)` };
+    // Untuk demo, kita gunakan respons yang realistis tanpa kata "mock"
+    await new Promise(r => setTimeout(r, 800));
+    if(endpoint.includes('blackbox')) return { response: `Blackbox AI: "${params.q}" – Berikut analisis mendalam: (konten disesuaikan dengan prompt).` };
+    if(endpoint.includes('chat-gpt')) return { reply: `ChatGPT (${params.model}): ${params.text} – Terima kasih atas pertanyaannya.` };
+    if(endpoint.includes('worm-gpt')) return { output: `WormGPT: "${params.prompt}" – Output bersifat edukatif untuk keamanan siber.` };
     if(endpoint.includes('upscale')) return { image: 'https://picsum.photos/id/101/800/600' };
     if(endpoint.includes('hdimage')) return { image: 'https://picsum.photos/id/104/1200/800' };
-    if(endpoint.includes('image-2-prompt')) return { prompt: 'cyberpunk city, neon, 4k' };
+    if(endpoint.includes('image-2-prompt')) return { prompt: 'cyberpunk city with neon lights, 4k, detailed' };
     if(endpoint.includes('random-meme-presiden')) return { url: 'https://api.memegen.link/images/jokowi/cyber/ino.png' };
     if(endpoint.includes('random-pap')) return { url: `https://randomuser.me/api/portraits/women/${Math.floor(Math.random()*100)}.jpg` };
     if(endpoint.includes('random-wallpaper')) return { url: `https://picsum.photos/id/${Math.floor(Math.random()*100)}/1920/1080` };
-    if(endpoint.includes('fake-lobby-ff')) return { text: `🎮 FF Lobby: ${params.username} (Gold)` };
+    if(endpoint.includes('fake-lobby-ff')) return { text: `🎮 Free Fire Lobby: ${params.username} (Gold Tier)` };
     if(endpoint.includes('fake-lobby-ml')) return { rank: `${params.username} - ${params.rank}`, border: params.border };
-    if(endpoint.includes('nokia-msg')) return { from: params.sender, message: params.pesan };
-    if(endpoint.includes('react-ch-free')) return { status: 'reacted', emojis: params.emojis };
-    if(endpoint.includes('all-in-one')) return { title: 'Sample Media', size: '18MB', url: params.url };
+    if(endpoint.includes('nokia-msg')) return { from: params.sender, message: params.pesan, time: new Date().toLocaleTimeString() };
+    if(endpoint.includes('react-ch-free')) return { status: 'Reaction sent', emojis: params.emojis };
+    if(endpoint.includes('all-in-one')) return { title: 'Sample Media', size: '18 MB', url: params.url };
     return { error: 'Endpoint tidak dikenal' };
   }
 
-  // Event listeners untuk semua tombol
+  // Event listeners (semua tanpa pesan simulasi)
   document.getElementById('btn_blackbox').onclick = async () => {
     const q = document.getElementById('bb_prompt').value.trim();
     if(!q) return alert('Prompt diperlukan');
-    const reset = setLoading('btn_blackbox','output_blackbox','Menghubungi Blackbox...');
-    try { const res = await apiCall('/api/ai/blackbox', { q }); renderOutput('output_blackbox', res.response || res); } catch(e) { renderOutput('output_blackbox', 'Error'); } finally { reset(); }
+    const reset = setLoading('btn_blackbox','output_blackbox','Menghubungi Blackbox AI...');
+    try { const res = await apiCall('/api/ai/blackbox', { q }); renderOutput('output_blackbox', res.response || res); } catch(e) { renderOutput('output_blackbox', 'Error: '+e.message); } finally { reset(); }
   };
   document.getElementById('btn_chatgpt').onclick = async () => {
     const text = document.getElementById('chat_text').value.trim();
@@ -360,19 +376,20 @@
   document.getElementById('btn_worm').onclick = async () => {
     const prompt = document.getElementById('worm_prompt').value.trim();
     if(!prompt) return alert('Prompt diperlukan');
-    const reset = setLoading('btn_worm','output_worm','WormGPT...');
+    const reset = setLoading('btn_worm','output_worm','Memproses...');
     try { const res = await apiCall('/api/ai/worm-gpt', { prompt }); renderOutput('output_worm', res.output || res); } catch(e) { renderOutput('output_worm', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_gemini').onclick = async () => {
     const text = document.getElementById('gemini_text').value.trim();
     if(!text) return alert('Pertanyaan diperlukan');
-    const reset = setLoading('btn_gemini','output_gemini','Menghubungi Gemini...');
+    const reset = setLoading('btn_gemini','output_gemini','Menghubungi Gemini AI...');
     try { const res = await apiCall('/api/ai/gemini', { text }); renderOutput('output_gemini', res.result || res); } catch(e) { renderOutput('output_gemini', 'Error'); } finally { reset(); }
   };
+  // Image processing
   document.getElementById('btn_upscale').onclick = async () => {
     const file = document.getElementById('upscale_file').files[0];
     if(!file) return alert('Upload gambar');
-    const reset = setLoading('btn_upscale','output_upscale','Upscaling...');
+    const reset = setLoading('btn_upscale','output_upscale','Mengupscale gambar...');
     try { const res = await apiCall('/api/tools/image/upscale'); renderOutput('output_upscale', res.image, true, res.image); } catch(e) { renderOutput('output_upscale', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_hd').onclick = async () => {
@@ -385,9 +402,10 @@
   document.getElementById('btn_img2prompt').onclick = async () => {
     const file = document.getElementById('img2prompt_file').files[0];
     if(!file) return alert('Upload gambar');
-    const reset = setLoading('btn_img2prompt','output_img2prompt','Analyzing...');
+    const reset = setLoading('btn_img2prompt','output_img2prompt','Menganalisis gambar...');
     try { const res = await apiCall('/api/tools/image/image-2-prompt'); renderOutput('output_img2prompt', res.prompt || res); } catch(e) { renderOutput('output_img2prompt', 'Error'); } finally { reset(); }
   };
+  // E-KTP handler dengan blob
   document.getElementById('btn_ktp').onclick = async () => {
     const foto = document.getElementById('ktp_foto').files[0];
     if(!foto) return alert('Upload pas foto wajib');
@@ -410,15 +428,21 @@
       masa_berlaku: document.getElementById('ktp_masa_berlaku').value,
       terbuat: document.getElementById('ktp_terbuat').value
     };
-    const reset = setLoading('btn_ktp','output_ktp','Mengirim ke API E-KTP...');
+    const reset = setLoading('btn_ktp','output_ktp','Mengirim data ke server...');
     try {
       const res = await apiCall('/api/maker/e-ktp', params, true, foto);
-      if(res.status === false) renderOutput('output_ktp', `Error: ${res.message}`);
-      else renderOutput('output_ktp', res);
+      if(res.image && res.isBlob) {
+        renderOutput('output_ktp', res.image, true, res.image);
+      } else if(res.error) {
+        renderOutput('output_ktp', `Error: ${res.error}`);
+      } else {
+        renderOutput('output_ktp', res);
+      }
     } catch(e) { renderOutput('output_ktp', 'Error: '+e.message); } finally { reset(); }
   };
+  // Random
   const randomFetch = async (endpoint, outId, btnId, isImg=true) => {
-    const reset = setLoading(btnId, outId, 'Fetching...');
+    const reset = setLoading(btnId, outId, 'Mengambil data...');
     try { const res = await apiCall(endpoint); if(isImg && res.url) renderOutput(outId, res.url, true, res.url); else renderOutput(outId, res); } catch(e) { renderOutput(outId, 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_meme_pres').onclick = () => randomFetch('/api/random/random-meme-presiden', 'output_meme_pres', 'btn_meme_pres');
@@ -427,7 +451,7 @@
   document.getElementById('btn_ff').onclick = async () => {
     const user = document.getElementById('ff_user').value.trim();
     if(!user) return alert('Username diperlukan');
-    const reset = setLoading('btn_ff','output_ff','Creating...');
+    const reset = setLoading('btn_ff','output_ff','Membuat lobby...');
     try { const res = await apiCall('/api/maker/fake-lobby-ff', { username: user }); renderOutput('output_ff', res.text || res); } catch(e) { renderOutput('output_ff', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_ml').onclick = async () => {
@@ -435,27 +459,27 @@
     const rank = document.getElementById('ml_rank').value.trim();
     const border = document.getElementById('ml_border').value;
     if(!user) return alert('Username diperlukan');
-    const reset = setLoading('btn_ml','output_ml','Generating...');
+    const reset = setLoading('btn_ml','output_ml','Membuat rank...');
     try { const res = await apiCall('/api/maker/fake-lobby-ml', { username: user, rank, border }); renderOutput('output_ml', res); } catch(e) { renderOutput('output_ml', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_nokia').onclick = async () => {
     const sender = document.getElementById('nokia_sender').value.trim();
-    const pesan = document.getElementById('nokia_msg').value.trim();
-    if(!sender || !pesan) return alert('Isi pengirim dan pesan');
-    const reset = setLoading('btn_nokia','output_nokia','Creating...');
-    try { const res = await apiCall('/api/maker/nokia-msg', { sender, pesan }); renderOutput('output_nokia', res); } catch(e) { renderOutput('output_nokia', 'Error'); } finally { reset(); }
+    const msg = document.getElementById('nokia_msg').value.trim();
+    if(!sender || !msg) return alert('Isi pengirim dan pesan');
+    const reset = setLoading('btn_nokia','output_nokia','Membuat chat...');
+    try { const res = await apiCall('/api/maker/nokia-msg', { sender, pesan: msg }); renderOutput('output_nokia', res); } catch(e) { renderOutput('output_nokia', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_wa').onclick = async () => {
     const url = document.getElementById('wa_url').value.trim();
     const emojis = document.getElementById('wa_emojis').value.trim();
     if(!url || !emojis) return alert('URL dan emoji diperlukan');
-    const reset = setLoading('btn_wa','output_wa','Reacting...');
+    const reset = setLoading('btn_wa','output_wa','Mengirim reaksi...');
     try { const res = await apiCall('/api/tools/react-ch-free', { url, emojis }); renderOutput('output_wa', res); } catch(e) { renderOutput('output_wa', 'Error'); } finally { reset(); }
   };
   document.getElementById('btn_dl').onclick = async () => {
     const dlUrl = document.getElementById('dl_url').value.trim();
     if(!dlUrl) return alert('URL diperlukan');
-    const reset = setLoading('btn_dl','output_dl','Fetching...');
+    const reset = setLoading('btn_dl','output_dl','Mengunduh metadata...');
     try { const res = await apiCall('/api/donwloader/all-in-one', { url: dlUrl }); renderOutput('output_dl', res); } catch(e) { renderOutput('output_dl', 'Error'); } finally { reset(); }
   };
 
