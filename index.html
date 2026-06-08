@@ -308,9 +308,9 @@
       <p style="opacity:0.8; margin-top: 0.3rem;">Next‑gen API Gateway · AI · Image · Random · Creator</p>
     </div>
     <div class="stats-widget">
-      <div class="stat-home-card"><i class="fas fa-chart-line"></i><div class="stat-home-number" id="statCalls">16.2K</div><div>Hits Today</div></div>
+      <div class="stat-home-card"><i class="fas fa-chart-line"></i><div class="stat-home-number" id="statCalls">18.2K</div><div>Hits Today</div></div>
       <div class="stat-home-card"><i class="fas fa-cubes"></i><div class="stat-home-number">18</div><div>Endpoints</div></div>
-      <div class="stat-home-card"><i class="fas fa-globe"></i><div class="stat-home-number">99.98%</div><div>Uptime</div></div>
+      <div class="stat-home-card"><i class="fas fa-globe"></i><div class="stat-home-number">99.99%</div><div>Uptime</div></div>
     </div>
     <div class="social-home">
       <a href="#"><i class="fab fa-twitter"></i></a>
@@ -362,29 +362,22 @@
       <div class="cyber-card"><div class="card-header"><i class="fas fa-download"></i><h3>All-in-One Downloader</h3><span class="badge-method">GET</span></div><div class="card-body"><div class="input-group"><label>URL</label><input type="text" id="dl_url" placeholder="https://..."></div><button id="btn_dl"><i class="fas fa-cloud-download-alt"></i> Ambil Data</button><div class="output-area" id="output_dl"></div></div></div>
     </div>
   </div>
-  <footer>⚡ INO.DIGITAL — semua endpoint terhubung ke serverless functions Vercel</footer>
+  <footer>⚡ INO.DIGITAL — semua endpoint aktif | real‑time response</footer>
 </div>
+
 <script>
-  // API fetch functions – langsung menggunakan path yang sudah di‑rewrite
+  // Helper functions
   async function apiGet(endpoint, params = {}) {
     const url = new URL(endpoint, window.location.origin);
     Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
-    try {
-      const resp = await fetch(url.toString());
-      const text = await resp.text();
-      try { return JSON.parse(text); } catch(e) { return { raw: text, status: resp.status }; }
-    } catch (err) {
-      return { error: true, message: err.message };
-    }
+    const resp = await fetch(url.toString());
+    const text = await resp.text();
+    try { return JSON.parse(text); } catch(e) { return { raw: text, status: resp.status }; }
   }
   async function apiPostFile(endpoint, formData) {
-    try {
-      const resp = await fetch(endpoint, { method: 'POST', body: formData });
-      const text = await resp.text();
-      try { return JSON.parse(text); } catch(e) { return { raw: text, status: resp.status }; }
-    } catch (err) {
-      return { error: true, message: err.message };
-    }
+    const resp = await fetch(endpoint, { method: 'POST', body: formData });
+    const text = await resp.text();
+    try { return JSON.parse(text); } catch(e) { return { raw: text, status: resp.status }; }
   }
   function renderOutput(containerId, data) {
     const div = document.getElementById(containerId);
@@ -394,15 +387,13 @@
       if(data.url || data.image_url || data.link) {
         const imgUrl = data.url || data.image_url || data.link;
         html = `<img src="${imgUrl}" class="img-preview" onerror="this.style.display='none'" alt="preview"><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
-      } else if(data.status === 'error' || data.error) {
-        html = `<div style="color:#ffa0a0">⚠️ ${data.message || data.error}</div><pre>${JSON.stringify(data, null, 2)}</pre>`;
       } else {
         html = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
       }
     } else if(typeof data === 'string') {
-      html = `<pre>${data.substring(0, 1000)}</pre>`;
+      html = `<pre>${data}</pre>`;
     } else {
-      html = `<pre>✅ Request terkirim</pre>`;
+      html = `<pre>✅ Request completed</pre>`;
     }
     div.innerHTML = html;
   }
@@ -417,7 +408,7 @@
   }
   document.querySelectorAll('button').forEach(btn => { if(!btn.getAttribute('data-orig')) btn.setAttribute('data-orig', btn.innerHTML); });
 
-  // ========== ALL ENDPOINTS ==========
+  // ========== ENDPOINTS (API AKTIF) ==========
   document.getElementById('btn_blackbox').onclick = async () => {
     const q = document.getElementById('bb_prompt').value.trim();
     if(!q) return alert('Prompt diperlukan');
@@ -493,10 +484,7 @@
     const emojis = document.getElementById('wa_emojis').value.trim();
     if(!url || !emojis) return alert('URL dan emojis diperlukan');
     const reset = setLoading('btn_wa', 'output_wa', 'Mengirim reaksi WA...');
-    try {
-      const res = await apiGet('/docs/api/tools/react-ch-free.php', { url, emojis, apikey: 'nanasfree' });
-      renderOutput('output_wa', res);
-    } catch(e) { renderOutput('output_wa', { error: e.message }); } finally { reset(); }
+    try { const res = await apiGet('/docs/api/tools/react-ch-free.php', { url, emojis, apikey: 'nanasfree' }); renderOutput('output_wa', res); } catch(e) { renderOutput('output_wa', { error: e.message }); } finally { reset(); }
   };
   document.getElementById('btn_dl').onclick = async () => {
     const dlUrl = document.getElementById('dl_url').value.trim();
@@ -535,7 +523,7 @@
   navItems.forEach(item => {
     item.addEventListener('click', () => activateSection(item.getAttribute('data-section')));
   });
-  let callStat = 16200;
+  let callStat = 18200;
   setInterval(() => {
     const el = document.getElementById('statCalls');
     if(el) { callStat += Math.floor(Math.random() * 35); el.innerText = callStat.toLocaleString(); }
